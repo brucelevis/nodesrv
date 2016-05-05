@@ -4,7 +4,7 @@
 
 GateSrvEntity = {
     --组件
-    [1] = {
+    [__COMPONENTS] = {
         NetComponent = {},
         GateSrv = {},
     },

@@ -31,8 +31,8 @@ class Entity
         virtual int save();
         virtual void update(long long cur_tick);
         virtual void awake();
-        virtual int recv(MsgHeader* header, const char* data, size_t datalen);
-        virtual int unreach(MsgHeader* header, const char* data, size_t datalen);
+        virtual int recv(MsgHeader* header, const void* data, size_t datalen);
+        virtual int unreach(MsgHeader* header, const void* data, size_t datalen);
 
         //组件相关
         int add_component(Component* component);
@@ -44,8 +44,8 @@ class Entity
         ScriptComponent* get_script(const char* classname);
 
         //消息相关
-        int reg_msg(unsigned sysid, Component* component);
-        int unreg_msg(unsigned sysid, Component* component);
+        int reg_msg(unsigned int id, Component* component);
+        int unreg_msg(unsigned int id, Component* component);
         
         //子对象相关
         Entity* get_child(int index);

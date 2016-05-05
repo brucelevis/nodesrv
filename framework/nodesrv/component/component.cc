@@ -27,12 +27,12 @@ void Component::update(long long cur_tick)
 
 }
 
-int Component::recv(MsgHeader* header, const char* data, size_t datalen)
+int Component::recv(MsgHeader* header, const void* data, size_t datalen)
 {
     return 0;
 }
 
-int Component::unreach(MsgHeader* header, const char* data, size_t datalen)
+int Component::unreach(MsgHeader* header, const void* data, size_t datalen)
 {
     return 0;
 }

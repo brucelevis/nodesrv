@@ -25,8 +25,8 @@ class Component
         virtual ~Component();
         virtual void awake();
         virtual void update(long long cur_tick);
-        virtual int recv(MsgHeader* header, const char* data, size_t datalen);
-        virtual int unreach(MsgHeader* header, const char* data, size_t datalen);
+        virtual int recv(MsgHeader* header, const void* data, size_t datalen);
+        virtual int unreach(MsgHeader* header, const void* data, size_t datalen);
         int pushluafunction(const char *func);
         int lua_printstack(); 
         Entity *get_entity();

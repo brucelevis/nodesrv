@@ -24,11 +24,11 @@ void Entity::create()
 
 }
 
-int Entity::unreach(MsgHeader* header, const char* data, size_t datalen)
+int Entity::unreach(MsgHeader* header, const void* data, size_t datalen)
 {
     printf("entity[%d] recv datalen(%ld)\n", id, datalen);
     std::map<unsigned int, Component*>::iterator it;
-    it = msg_map.find(header->sysid);
+    it = msg_map.find(header->id);
     if (it != msg_map.end())
     {
         Component* component = it->second;
@@ -38,15 +38,15 @@ int Entity::unreach(MsgHeader* header, const char* data, size_t datalen)
 }
 
 
-int Entity::recv(MsgHeader* header, const char* data, size_t datalen)
+int Entity::recv(MsgHeader* header, const void* data, size_t datalen)
 {
     printf("entity[%d] recv datalen(%ld)\n", id, datalen);
     std::map<unsigned int, Component*>::iterator it;
-    it = msg_map.find(header->sysid);
+    it = msg_map.find(header->id);
     if (it != msg_map.end())
     {
         Component* component = it->second;
-        component->recv(header, data, datalen);
+        return component->recv(header, data, datalen);
     }
     //for (int i = component_vector.size() - 1; i >= 0; i--)
     //{
@@ -108,16 +108,16 @@ void Entity::update(long long cur_tick)
     }
 }
 
-int Entity::reg_msg(unsigned sysid, Component* component)
+int Entity::reg_msg(unsigned int id, Component* component)
 {
-    msg_map[sysid] = component;
+    msg_map[id] = component;
     return 0;
 }
 
-int Entity::unreg_msg(unsigned sysid, Component* component)
+int Entity::unreg_msg(unsigned int id, Component* component)
 {
     std::map<unsigned int, Component*>::iterator it;
-    it = msg_map.find(sysid);
+    it = msg_map.find(id);
     if (it != msg_map.end())
     {
         msg_map.erase(it);

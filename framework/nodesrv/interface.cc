@@ -1,6 +1,6 @@
 /*
 ** Lua binding: nodeapi
-** Generated automatically by tolua++-1.0.92 on Fri Apr 15 14:43:14 2016.
+** Generated automatically by tolua++-1.0.92 on Wed May  4 18:16:58 2016.
 */
 
 #ifndef __cplusplus
@@ -19,6 +19,7 @@ TOLUA_API int  tolua_nodeapi_open (lua_State* tolua_S);
 #include "components/testcomponent.h"
 #include "components/scriptcomponent.h"
 #include "components/netcomponent.h"
+#include "components/httpcomponent.h"
 #include "node/node.h"
 #include "node/nodemgr.h"
 
@@ -42,6 +43,13 @@ static int tolua_collect_TestComponent (lua_State* tolua_S)
 static int tolua_collect_ScriptComponent (lua_State* tolua_S)
 {
  ScriptComponent* self = (ScriptComponent*) tolua_tousertype(tolua_S,1,0);
+	delete self;
+	return 0;
+}
+
+static int tolua_collect_HttpComponent (lua_State* tolua_S)
+{
+ HttpComponent* self = (HttpComponent*) tolua_tousertype(tolua_S,1,0);
 	delete self;
 	return 0;
 }
@@ -84,6 +92,7 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"Component");
  tolua_usertype(tolua_S,"NetComponent");
  tolua_usertype(tolua_S,"Node");
+ tolua_usertype(tolua_S,"HttpComponent");
  tolua_usertype(tolua_S,"Entity");
  tolua_usertype(tolua_S,"Type");
  tolua_usertype(tolua_S,"aeFileProc");
@@ -432,7 +441,7 @@ static int tolua_nodeapi_Entity_recv00(lua_State* tolua_S)
  if (
      !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
      !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isuserdata(tolua_S,3,0,&tolua_err) ||
      !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,5,&tolua_err)
  )
@@ -442,7 +451,7 @@ static int tolua_nodeapi_Entity_recv00(lua_State* tolua_S)
  {
   Entity* self = (Entity*)  tolua_tousertype(tolua_S,1,0);
   MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
+  const void* data = ((const void*)  tolua_touserdata(tolua_S,3,0));
   size_t datalen = ((size_t)  tolua_tonumber(tolua_S,4,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv'",NULL);
@@ -470,7 +479,7 @@ static int tolua_nodeapi_Entity_unreach00(lua_State* tolua_S)
  if (
      !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
      !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isuserdata(tolua_S,3,0,&tolua_err) ||
      !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,5,&tolua_err)
  )
@@ -480,7 +489,7 @@ static int tolua_nodeapi_Entity_unreach00(lua_State* tolua_S)
  {
   Entity* self = (Entity*)  tolua_tousertype(tolua_S,1,0);
   MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
+  const void* data = ((const void*)  tolua_touserdata(tolua_S,3,0));
   size_t datalen = ((size_t)  tolua_tonumber(tolua_S,4,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'unreach'",NULL);
@@ -742,13 +751,13 @@ static int tolua_nodeapi_Entity_reg_msg00(lua_State* tolua_S)
 #endif
  {
   Entity* self = (Entity*)  tolua_tousertype(tolua_S,1,0);
-  unsigned sysid = ((unsigned)  tolua_tonumber(tolua_S,2,0));
+  unsigned int id = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
   Component* component = ((Component*)  tolua_tousertype(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'reg_msg'",NULL);
 #endif
   {
-   int tolua_ret = (int)  self->reg_msg(sysid,component);
+   int tolua_ret = (int)  self->reg_msg(id,component);
    tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
   }
  }
@@ -778,13 +787,13 @@ static int tolua_nodeapi_Entity_unreg_msg00(lua_State* tolua_S)
 #endif
  {
   Entity* self = (Entity*)  tolua_tousertype(tolua_S,1,0);
-  unsigned sysid = ((unsigned)  tolua_tonumber(tolua_S,2,0));
+  unsigned int id = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
   Component* component = ((Component*)  tolua_tousertype(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'unreg_msg'",NULL);
 #endif
   {
-   int tolua_ret = (int)  self->unreg_msg(sysid,component);
+   int tolua_ret = (int)  self->unreg_msg(id,component);
    tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
   }
  }
@@ -1271,7 +1280,7 @@ static int tolua_nodeapi_Component_recv00(lua_State* tolua_S)
  if (
      !tolua_isusertype(tolua_S,1,"Component",0,&tolua_err) ||
      !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isuserdata(tolua_S,3,0,&tolua_err) ||
      !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,5,&tolua_err)
  )
@@ -1281,7 +1290,7 @@ static int tolua_nodeapi_Component_recv00(lua_State* tolua_S)
  {
   Component* self = (Component*)  tolua_tousertype(tolua_S,1,0);
   MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
+  const void* data = ((const void*)  tolua_touserdata(tolua_S,3,0));
   size_t datalen = ((size_t)  tolua_tonumber(tolua_S,4,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv'",NULL);
@@ -1309,7 +1318,7 @@ static int tolua_nodeapi_Component_unreach00(lua_State* tolua_S)
  if (
      !tolua_isusertype(tolua_S,1,"Component",0,&tolua_err) ||
      !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isuserdata(tolua_S,3,0,&tolua_err) ||
      !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,5,&tolua_err)
  )
@@ -1319,7 +1328,7 @@ static int tolua_nodeapi_Component_unreach00(lua_State* tolua_S)
  {
   Component* self = (Component*)  tolua_tousertype(tolua_S,1,0);
   MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
+  const void* data = ((const void*)  tolua_touserdata(tolua_S,3,0));
   size_t datalen = ((size_t)  tolua_tonumber(tolua_S,4,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'unreach'",NULL);
@@ -2139,103 +2148,6 @@ static int tolua_nodeapi_NetComponent_update00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: connect of class  NetComponent */
-#ifndef TOLUA_DISABLE_tolua_nodeapi_NetComponent_connect00
-static int tolua_nodeapi_NetComponent_connect00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"NetComponent",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  NetComponent* self = (NetComponent*)  tolua_tousertype(tolua_S,1,0);
-  int sockfd = ((int)  tolua_tonumber(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'connect'",NULL);
-#endif
-  {
-   int tolua_ret = (int)  self->connect(sockfd);
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'connect'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: real_connect of class  NetComponent */
-#ifndef TOLUA_DISABLE_tolua_nodeapi_NetComponent_real_connect00
-static int tolua_nodeapi_NetComponent_real_connect00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"NetComponent",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  NetComponent* self = (NetComponent*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'real_connect'",NULL);
-#endif
-  {
-   int tolua_ret = (int)  self->real_connect();
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'real_connect'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: connect of class  NetComponent */
-#ifndef TOLUA_DISABLE_tolua_nodeapi_NetComponent_connect01
-static int tolua_nodeapi_NetComponent_connect01(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"NetComponent",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,4,&tolua_err)
- )
-  goto tolua_lerror;
- else
- {
-  NetComponent* self = (NetComponent*)  tolua_tousertype(tolua_S,1,0);
-  const char* host = ((const char*)  tolua_tostring(tolua_S,2,0));
-  unsigned short port = ((unsigned short)  tolua_tonumber(tolua_S,3,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'connect'",NULL);
-#endif
-  {
-   int tolua_ret = (int)  self->connect(host,port);
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-tolua_lerror:
- return tolua_nodeapi_NetComponent_connect00(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: listen of class  NetComponent */
 #ifndef TOLUA_DISABLE_tolua_nodeapi_NetComponent_listen00
 static int tolua_nodeapi_NetComponent_listen00(lua_State* tolua_S)
@@ -2280,22 +2192,24 @@ static int tolua_nodeapi_NetComponent_send00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"NetComponent",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,4,&tolua_err)
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
   NetComponent* self = (NetComponent*)  tolua_tousertype(tolua_S,1,0);
-  const char* data = ((const char*)  tolua_tostring(tolua_S,2,0));
-  size_t size = ((size_t)  tolua_tonumber(tolua_S,3,0));
+  int sockfd = ((int)  tolua_tonumber(tolua_S,2,0));
+  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send'",NULL);
 #endif
   {
-   int tolua_ret = (int)  self->send(data,size);
+   int tolua_ret = (int)  self->send(sockfd,data,size);
    tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
   }
  }
@@ -2303,6 +2217,160 @@ static int tolua_nodeapi_NetComponent_send00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'send'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new of class  HttpComponent */
+#ifndef TOLUA_DISABLE_tolua_nodeapi_HttpComponent_new00
+static int tolua_nodeapi_HttpComponent_new00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"HttpComponent",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   HttpComponent* tolua_ret = (HttpComponent*)  new HttpComponent();
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"HttpComponent");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  HttpComponent */
+#ifndef TOLUA_DISABLE_tolua_nodeapi_HttpComponent_new00_local
+static int tolua_nodeapi_HttpComponent_new00_local(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"HttpComponent",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   HttpComponent* tolua_ret = (HttpComponent*)  new HttpComponent();
+   tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"HttpComponent");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: delete of class  HttpComponent */
+#ifndef TOLUA_DISABLE_tolua_nodeapi_HttpComponent_delete00
+static int tolua_nodeapi_HttpComponent_delete00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"HttpComponent",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  HttpComponent* self = (HttpComponent*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'",NULL);
+#endif
+  delete self;
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: recv of class  HttpComponent */
+#ifndef TOLUA_DISABLE_tolua_nodeapi_HttpComponent_recv00
+static int tolua_nodeapi_HttpComponent_recv00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"HttpComponent",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
+     !tolua_isuserdata(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  HttpComponent* self = (HttpComponent*)  tolua_tousertype(tolua_S,1,0);
+  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
+  const void* data = ((const void*)  tolua_touserdata(tolua_S,3,0));
+  size_t datalen = ((size_t)  tolua_tonumber(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv'",NULL);
+#endif
+  {
+   int tolua_ret = (int)  self->recv(header,data,datalen);
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'recv'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: awake of class  HttpComponent */
+#ifndef TOLUA_DISABLE_tolua_nodeapi_HttpComponent_awake00
+static int tolua_nodeapi_HttpComponent_awake00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"HttpComponent",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  HttpComponent* self = (HttpComponent*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'awake'",NULL);
+#endif
+  {
+   self->awake();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'awake'.",&tolua_err);
  return 0;
 #endif
 }
@@ -3736,11 +3804,21 @@ TOLUA_API int tolua_nodeapi_open (lua_State* tolua_S)
    tolua_function(tolua_S,".call",tolua_nodeapi_NetComponent_new00_local);
    tolua_function(tolua_S,"delete",tolua_nodeapi_NetComponent_delete00);
    tolua_function(tolua_S,"update",tolua_nodeapi_NetComponent_update00);
-   tolua_function(tolua_S,"connect",tolua_nodeapi_NetComponent_connect00);
-   tolua_function(tolua_S,"real_connect",tolua_nodeapi_NetComponent_real_connect00);
-   tolua_function(tolua_S,"connect",tolua_nodeapi_NetComponent_connect01);
    tolua_function(tolua_S,"listen",tolua_nodeapi_NetComponent_listen00);
    tolua_function(tolua_S,"send",tolua_nodeapi_NetComponent_send00);
+  tolua_endmodule(tolua_S);
+  #ifdef __cplusplus
+  tolua_cclass(tolua_S,"HttpComponent","HttpComponent","Component",tolua_collect_HttpComponent);
+  #else
+  tolua_cclass(tolua_S,"HttpComponent","HttpComponent","Component",NULL);
+  #endif
+  tolua_beginmodule(tolua_S,"HttpComponent");
+   tolua_function(tolua_S,"new",tolua_nodeapi_HttpComponent_new00);
+   tolua_function(tolua_S,"new_local",tolua_nodeapi_HttpComponent_new00_local);
+   tolua_function(tolua_S,".call",tolua_nodeapi_HttpComponent_new00_local);
+   tolua_function(tolua_S,"delete",tolua_nodeapi_HttpComponent_delete00);
+   tolua_function(tolua_S,"recv",tolua_nodeapi_HttpComponent_recv00);
+   tolua_function(tolua_S,"awake",tolua_nodeapi_HttpComponent_awake00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"Node","Node","",tolua_collect_Node);

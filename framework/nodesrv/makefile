@@ -1,9 +1,10 @@
 
-INCLUDE_DIRS =-I. -I../../3rd/protobuf/src -I../../3rd/lua/src -I../../3rd/mysql/include -I../../3rd/hiredis -I../../3rd/tolua++
+INCLUDE_DIRS =-I. -I../../3rd/protobuf/src -I../../3rd/lua/src -I../../3rd/mysql/include -I../../3rd/hiredis -I../../3rd/tolua++ -I../../3rd/http-parser
 
 LIB_DIRS =
 
-LIBS =../../3rd/lua/src/liblua.a ../../3rd/mysql/lib/libmysqlclient.a ../../3rd/hiredis/libhiredis.a ../../3rd/tolua++/tolua++.a 
+LIBS =../../3rd/lua/src/liblua.a ../../3rd/mysql/lib/libmysqlclient.a ../../3rd/hiredis/libhiredis.a ../../3rd/tolua++/tolua++.a  
+
 DY_LIBS = -lm -ldl -lreadline -lhistory -lncurses -lpthread
 
 CFLAGS=-O2 -Wall
@@ -17,6 +18,8 @@ SOURCE = $(wildcard \
 		 components/*.cc\
 		 script/*.cc\
 		 type/*.cc\
+		 encrypt/*.cc\
+		 ../../3rd/http-parser/http_parser.cc\
 		 interface.cc\
 		 nodeapi.cc\
 		 ) 
