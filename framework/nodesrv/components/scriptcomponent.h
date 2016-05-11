@@ -18,6 +18,7 @@ class ScriptComponent : public Component
 
         virtual void awake();
         virtual void update(long long cur_tick);
+        virtual int recv(Message* msg);
 
         int call(const char* str);
         int test();

@@ -31,6 +31,8 @@ class Entity
         virtual int save();
         virtual void update(long long cur_tick);
         virtual void awake();
+
+        virtual int recv(Message* msg);
         virtual int recv(MsgHeader* header, const void* data, size_t datalen);
         virtual int unreach(MsgHeader* header, const void* data, size_t datalen);
 

@@ -152,31 +152,38 @@ void NetComponent::ev_readable(int sockfd)
         {
             char* rptr = Recvbuf::getrptr(sockfd);
             int datalen = Recvbuf::datalen(sockfd);
-            int packetlen = dispatch(rptr, datalen);
-            if (packetlen == 0)
+            if (datalen <= 0)
             {
                 Recvbuf::buf2line(sockfd);
                 break;
             }
-            else if (packetlen > 0)
+            int packetlen = dispatch(sockfd, rptr, datalen);
+            if (packetlen > 0)
             {
                 Recvbuf::rskip(sockfd, packetlen);
+            }
+            if (packetlen == 0)
+            {
+                Recvbuf::buf2line(sockfd);
+                break;
             }
         }
         break;
     }
 }
 
-int NetComponent::dispatch(char* data, size_t datalen)
+int NetComponent::dispatch(int sockfd, char* data, size_t datalen)
 {
-    static MsgHeader header;
-    header.src_nodeid = 0;
-    header.src_entityid = 0;
-    header.dst_entityid = 0;
-    header.dst_nodeid = 0;
-    header.id = MSG_NET_RAW_DATA;
-    header.len = sizeof(MsgHeader) + datalen;
-    int ir = this->entity->recv(&header, (const char*)data, datalen);
+    static Message msg;
+    msg.src_nodeid = 0;
+    msg.src_entityid = 0;
+    msg.dst_entityid = 0;
+    msg.dst_nodeid = 0;
+    msg.id = MSG_NET_RAW_DATA;
+    msg.sockfd = sockfd;
+    msg.data = data;
+    msg.datalen = datalen;
+    int ir = this->entity->recv(&msg);
     return ir;
 }
 
@@ -202,21 +209,15 @@ void NetComponent::ev_accept(int listenfd)
     Sendbuf::create(sockfd);
     Recvbuf::create(sockfd, 1024);
 
-    static MsgHeader header;
-    header.src_nodeid = 0;
-    header.src_entityid = 0;
-    header.dst_entityid = 0;
-    header.dst_nodeid = 0;
-    header.id = MSG_NEW_CONNECTION;
-    header.len = sizeof(MsgHeader) + sizeof(sockfd);
+    static Message msg;
+    msg.src_nodeid = 0;
+    msg.src_entityid = 0;
+    msg.dst_entityid = 0;
+    msg.dst_nodeid = 0;
+    msg.id = MSG_NEW_CONNECTION;
 
-    static struct 
-    {
-        int sockfd;    
-    } data;
-
-    data.sockfd = sockfd;
-    this->entity->recv(&header, (const void*)&data, sizeof(data));
+    msg.sockfd = sockfd;
+    this->entity->recv(&msg);
 }
 
 
@@ -227,7 +228,7 @@ void NetComponent::real_close(int sockfd, const char* reason)
    Sendbuf::free(sockfd);
 }
 
-int NetComponent::send(int sockfd, const char *data, size_t size)
+int NetComponent::send(int sockfd, const void* data, size_t size)
 {
     //插入到缓冲区
     char* buf= Sendbuf::alloc(sockfd,  size);

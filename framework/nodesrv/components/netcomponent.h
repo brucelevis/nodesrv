@@ -14,7 +14,7 @@ class NetComponent : public Component
     public:
         virtual void update(long long cur_tick);
         int listen(const char* host, unsigned short port);
-        int send(int sockfd, const char* data, size_t size);
+        int send(int sockfd, const void* data, size_t size);
         int send_str(int sockfd, const char* data);
 //tolua_end
     public:
@@ -22,7 +22,7 @@ class NetComponent : public Component
         void ev_writable(int listenfd);
         void ev_readable(int listenfd);
     private:
-        int dispatch(char* data, size_t datalen);
+        int dispatch(int sockfd, char* data, size_t datalen);
         void real_close(int sockfd, const char* reason);
     private:
         int listenfd_;

@@ -27,6 +27,11 @@ void Component::update(long long cur_tick)
 
 }
 
+int Component::recv(Message* msg)
+{
+    return 0;
+}
+
 int Component::recv(MsgHeader* header, const void* data, size_t datalen)
 {
     return 0;
@@ -97,3 +102,17 @@ void Component::forward_entity_msg(int dst_nodeid, int dst_entityid, int msgid, 
     NodeMgr::forward_entity_msg(this->entity, dst_nodeid, dst_entityid, msgid, data, size);
 }
 
+int Component::reg_msg(unsigned int id)
+{
+    return this->entity->reg_msg(id, this);
+}
+
+int Component::unreg_msg(unsigned int id)
+{
+    return this->entity->unreg_msg(id, this);
+}
+
+int Component::get_component(lua_State* L)
+{
+    return this->entity->get_component(L);
+}

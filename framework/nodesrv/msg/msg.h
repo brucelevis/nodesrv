@@ -1,25 +1,33 @@
 #ifndef _MSG_H_
 #define _MSG_H_
+#include <stdint.h>
+#include <stdlib.h>
+
+//tolua_begin
+typedef struct tagMessage
+{
+    uint32_t src_entityid;
+    uint32_t src_nodeid;
+    uint32_t dst_entityid;
+    uint32_t dst_nodeid;
+    uint32_t id;
+    int sockfd;
+    int sid;
+    const char* data;
+    size_t datalen;
+}Message;
 
 typedef struct tagMsgHeader
 {
-    unsigned int len;
+    uint32_t len;
     //源实体id
-    unsigned int src_entityid;
-    unsigned int src_nodeid;
+    uint32_t src_entityid;
+    uint32_t src_nodeid;
     //目标实体id
-    unsigned int dst_entityid;
-    unsigned int dst_nodeid;
+    uint32_t dst_entityid;
+    uint32_t dst_nodeid;
     //消息id
-    union 
-    {
-        unsigned int id;
-        struct 
-        {
-            unsigned short sysid;
-            unsigned short cmdid;
-        };
-    };
+    uint32_t id;
 } MsgHeader;
 
 //发送消息
@@ -45,5 +53,7 @@ typedef struct tagCreateEntityMsg
 } CreateEntityMsg;
 
 #pragma pack(pop)
+
+//tolua_end
 
 #endif

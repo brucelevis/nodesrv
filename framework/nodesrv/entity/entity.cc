@@ -38,6 +38,19 @@ int Entity::unreach(MsgHeader* header, const void* data, size_t datalen)
 }
 
 
+int Entity::recv(Message* msg)
+{
+    printf("entity[%d] recv msg\n", this->id);
+    std::map<unsigned int, Component*>::iterator it;
+    it = msg_map.find(msg->id);
+    if (it != msg_map.end())
+    {
+        Component* component = it->second;
+        return component->recv(msg);
+    }
+    return 0;
+}
+
 int Entity::recv(MsgHeader* header, const void* data, size_t datalen)
 {
     printf("entity[%d] recv datalen(%ld)\n", id, datalen);
@@ -48,15 +61,6 @@ int Entity::recv(MsgHeader* header, const void* data, size_t datalen)
         Component* component = it->second;
         return component->recv(header, data, datalen);
     }
-    //for (int i = component_vector.size() - 1; i >= 0; i--)
-    //{
-        //Component* component = component_vector[i];
-        //int ir = component->recv(header, data, datalen);
-        //if (ir > 0)
-        //{
-            //break;
-        //}
-    //}
     return 0;
 }
 
