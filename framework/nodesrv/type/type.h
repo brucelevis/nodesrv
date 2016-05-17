@@ -13,6 +13,7 @@ public:
 #define DECLAR(classname) \
     public:\
     virtual Type* get_type();\
+    virtual const char* get_type_name();\
     static Type* type;
 
 #define IMPLEMENT(classname) \
@@ -20,6 +21,10 @@ public:
     Type* classname::get_type()\
     {\
         return classname::type;\
+    }\
+    const char* classname::get_type_name()\
+    {\
+        return classname::type->name;\
     }
 
 #endif

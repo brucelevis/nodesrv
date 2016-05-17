@@ -7,11 +7,7 @@ print('==========nodesrv=================')
 print('')
 
 require('data/lib')
-require('data/gatesrv/actor1')
-require('data/actorcontroller')
+require('data/gatesrv/gatesrv')
+require('data/gatesrv/gatesrvcontroller')
 
-local entity = Node.create_entity_local(nodesrv, 'Actor1Prefab')
-local net_component = Entity.get_component(entity, 'NetComponent')
-NetComponent.listen(net_component, '0.0.0.0', 6666)
-
---print('listen', Node.listen(nodesrv, '127.0.0.1', 9090))
+mynode:create_entity_local('GateSrvPrefab')

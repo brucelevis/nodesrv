@@ -6,6 +6,7 @@
 #include <stdlib.h> 
 #include <stdio.h>
 #include <vector>
+#include <string>
 #include <map>
 extern "C" {
 #include "lua.h"
@@ -40,7 +41,6 @@ class Entity
         int add_component(Component* component);
         ScriptComponent* add_script(const char* scriptname);
         int del_component(Component* component);
-        Component* get_component(int index);
         Component* get_component(const char* name);
         int get_component(lua_State* L);
         ScriptComponent* get_script(const char* classname);
@@ -69,6 +69,7 @@ class Entity
         std::vector<Entity*> children;
         std::vector<Component*> component_vector;
         std::map<unsigned int, Component*> msg_map;
+        std::map<std::string, Component*> component_map;
 };//tolua_export
 
 #endif

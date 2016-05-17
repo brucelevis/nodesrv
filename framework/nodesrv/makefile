@@ -3,7 +3,7 @@ INCLUDE_DIRS =-I. -I../../3rd/protobuf/src -I../../3rd/lua/src -I../../3rd/mysql
 
 LIB_DIRS =
 
-LIBS =../../3rd/lua/src/liblua.a ../../3rd/mysql/lib/libmysqlclient.a ../../3rd/hiredis/libhiredis.a ../../3rd/tolua++/tolua++.a  
+LIBS =../../lib/libprotobuf.a ../../3rd/lua/src/liblua.a ../../3rd/mysql/lib/libmysqlclient.a ../../3rd/hiredis/libhiredis.a ../../3rd/tolua++/tolua++.a  
 
 DY_LIBS = -lm -ldl -lreadline -lhistory -lncurses -lpthread
 
@@ -14,8 +14,9 @@ SOURCE = $(wildcard \
 		 msg/*.cc\
 		 node/*.cc\
 		 net/*.cc\
+		 log/*.cc\
 		 component/*.cc\
-		 components/*.cc\
+		 container/*.cc\
 		 script/*.cc\
 		 type/*.cc\
 		 encrypt/*.cc\

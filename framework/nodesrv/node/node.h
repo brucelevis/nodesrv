@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <pthread.h>
+#include <google/protobuf/message.h>
 extern "C" {
 #include "lua.h"
 #include "lualib.h"
@@ -15,6 +16,7 @@ extern "C" {
 
 #include "net/ae.h"
 #include "msg/msg.h"
+#include "container/buffer.h"
 
 class Entity;
 
@@ -62,17 +64,10 @@ class Node
          * 返回节点id
          */
         int get_id();
-
         bool is_local();
         void set_local(bool v);
-
         bool is_disconnect();
-
         Entity* create_entity_local(const char* filepath = 0);
-
-        void ev_accept(int sockfd);
-        void ev_writable(int sockfd);
-        void ev_readable(int sockfd);
 
         void recv(MsgHeader* header, const char* data, size_t size);
         void recv_entity_msg(MsgHeader* header, const char* data, size_t size);
@@ -80,6 +75,8 @@ class Node
         void recv_create_entity(MsgHeader* header, const char* data, size_t size);
 
         void send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const char* data, size_t size);
+        void send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, Buffer* buffer);
+        void send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, ::google::protobuf::Message* msg);
         void forward_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const char* data, size_t size);
         void forward_entity_msg(MsgHeader* header, const char* data, size_t size);
         void send_node_reg();
@@ -88,11 +85,15 @@ class Node
         int create_file_event(int fd, int mask, aeFileProc* proc, void* clientData);
         void delete_file_event(int fd, int mask);
 
+//tolua_end
         int dofile(const char* filepath);
         int pushluafunction(const char *func);
         int lua_printstack(); 
-//tolua_end
-
+        void ev_accept(int sockfd);
+        void ev_writable(int sockfd);
+        void ev_readable(int sockfd);
+    public:
+        lua_State* L;
     private:
         int dispatch(char *data, size_t datalen);
         int real_close(const char* err);

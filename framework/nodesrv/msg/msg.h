@@ -15,7 +15,7 @@ typedef struct tagMessage
     int sid;
     const char* data;
     size_t datalen;
-}Message;
+} Message;
 
 typedef struct tagMsgHeader
 {

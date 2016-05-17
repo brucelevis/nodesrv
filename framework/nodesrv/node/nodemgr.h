@@ -3,7 +3,9 @@
 #define _NODEMGR_H_
 
 #include "node/node.h"
+#include "container/buffer.h"
 #include <vector>
+#include <google/protobuf/message.h>
 #include <map>
 
 class Node;
@@ -28,13 +30,16 @@ namespace NodeMgr
      */
     Node* find_node(int nodeid);
 
-    Node* create_temp_node();
-
     /*
      * 创建节点
      */
+    Node* create_temp_node();
     Node* create_node_local(int nodeid, const char* mainfile);
     Node* create_node_remote(int nodeid);
+
+    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, ::google::protobuf::Message* msg);
+    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, Buffer* buffer);
+    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t size);
     void forward_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t len);
     void send_create_entity(Entity* src_entity, int dst_nodeid, const char* filepath);
 };

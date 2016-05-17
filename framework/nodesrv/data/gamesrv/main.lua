@@ -7,8 +7,7 @@ print('==========nodesrv=================')
 print('')
 
 require('data/lib')
-require('data/node2/actor2')
-require('data/node2/sendcreateentity')
+require('data/gamesrv/gamesrv')
+require('data/gamesrv/gamesrvcontroller')
 
-print('create entity local', Node.create_entity_local(nodesrv, 'Actor2Prefab'))
---print('connect', Node.connect(nodesrv, '127.0.0.1', 9090))
+mynode:create_entity_local('GameSrvPrefab')

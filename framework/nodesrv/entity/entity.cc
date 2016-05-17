@@ -2,7 +2,7 @@
 #include "entity.h"
 
 #include "component/component.h"
-#include "components/scriptcomponent.h"
+#include "component/scriptcomponent.h"
 
 
 #include <string.h>
@@ -26,7 +26,7 @@ void Entity::create()
 
 int Entity::unreach(MsgHeader* header, const void* data, size_t datalen)
 {
-    printf("entity[%d] recv datalen(%ld)\n", id, datalen);
+    printf("entity[%d] unreach datalen(%ld)\n", id, datalen);
     std::map<unsigned int, Component*>::iterator it;
     it = msg_map.find(header->id);
     if (it != msg_map.end())
@@ -75,20 +75,32 @@ ScriptComponent* Entity::add_script(const char* scriptname)
     printf("entity[%d] add script %s\n", this->id, scriptname);
     ScriptComponent* component = new ScriptComponent(scriptname);
     component_vector.push_back(component);
+    component_map[scriptname] = component;
     component->set_entity(this);
     return component;
 }
 
 int Entity::add_component(Component* component)
 {
-    printf("entity[%d] add component %s\n", this->id, component->get_type()->name);
+    printf("entity[%d] add component %s\n", this->id, component->get_type_name());
     component_vector.push_back(component);
+    component_map[component->get_type_name()] = component;
     component->set_entity(this);
     return 0;
 }
 
 int Entity::del_component(Component* component)
 {
+    std::map<std::string, Component*>::iterator it = component_map.begin();
+    for (; it != component_map.end(); it++)
+    {
+        if (component == it->second)
+        {
+            component_map.erase(it);
+            break;
+        }
+    }
+ 
     for (int i = component_vector.size() - 1; i >= 0; i--)
     {
         if (component_vector[i] == component)
@@ -196,60 +208,57 @@ int Entity::del_child(int index)
     return 0; 
 }
 
-Component* Entity::get_component(int index)
-{
-    if (index < 0 || index >= (int)component_vector.size())
-    {
-        return NULL;
-    }
-    return component_vector[index];
-}
 
 Component* Entity::get_component(const char* name)
 {
-    for (int i = 0; i < (int)component_vector.size(); i++)
+    std::map<std::string, Component*>::iterator it;
+    it = component_map.find(name);
+    if (it == component_map.end())
     {
-        Component* component = component_vector[i];
-        if(!strcmp(component->get_type()->name, name))
-        {
-            return component;
-        }
+        return NULL;
     }
-    return NULL;
+    return it->second;
 }
 
 int Entity::get_component(lua_State* L)
 {
     const char* classname = ((const char*)  tolua_tostring(L, 2, 0));
-    for (size_t i = 0; i < component_vector.size(); i++)
+    std::map<std::string, Component*>::iterator it;
+    it = component_map.find(classname);
+    if (it == component_map.end())
     {
-        Component* component = component_vector[i];
-        if(!strcmp(component->get_type()->name, classname))
-        {
-            tolua_pushusertype(L, (void*)component, classname);
-            return 1;
-        }
+        lua_pushnil(L);
+        return 1;
     }
-    lua_pushnil(L);
+    tolua_pushusertype(L, (void*)it->second, classname);
     return 1;
 }
 
 ScriptComponent* Entity::get_script(const char* classname)
 {
-    for (int i = 0; i < (int)component_vector.size(); i++)
+    std::map<std::string, Component*>::iterator it;
+    it = component_map.find(classname);
+    if (it == component_map.end())
     {
-        Component* component = component_vector[i];
-        if(component->get_type() == ScriptComponent::type && !strcmp(((ScriptComponent*)component)->modname, classname))
-        {
-            return (ScriptComponent*)component;
-        }
+        return NULL;
     }
-    return NULL;
+    Component* component = it->second;
+    if (component->get_type() != ScriptComponent::type)
+    {
+        return NULL;
+    }
+    return (ScriptComponent*)component;
 }
 
 
 void Entity::awake()
 {
+    //std::map<std::string, Component*>::iterator it = component_map.begin();
+    //for (; it != component_map.end(); it++)
+    //{
+        //Component* component = it->second;
+        //component->awake();    
+    //}
     for (int i = 0; i < (int)component_vector.size(); i++)
     {
         Component* component = component_vector[i];

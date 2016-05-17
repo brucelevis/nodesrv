@@ -77,8 +77,7 @@ int Component::lua_printstack()
 
 lua_State* Component::get_lua_state()
 {
-    lua_State* L = Nodeapi::L;
-    return L;
+    return this->entity->node->L;
 }
 
 Node* Component::get_node()

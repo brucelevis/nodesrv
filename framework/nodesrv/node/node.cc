@@ -20,6 +20,11 @@
 #include <stdio.h>
 #include <errno.h>
 
+extern "C"{
+    int luaopen_nodeapi (lua_State* tolua_S);
+}
+
+
 static void _ev_accept(struct aeEventLoop *eventLoop, int sockfd, void *clientData, int mask)
 {
     Node* node = (Node*)clientData;
@@ -52,11 +57,13 @@ Node::Node(int nodeid)
 
 void Node::main(const char* mainfile)
 {
-    lua_State* L = Nodeapi::L;
+    L = lua_open();
+    luaL_openlibs(L);
+    luaopen_nodeapi(L);
     strcpy(this->mainfile, mainfile);
     //将自己注册到lua
     tolua_pushusertype(L, (void*)this, "Node");
-    lua_setglobal(L, "nodesrv");
+    lua_setglobal(L, "mynode");
     //创建事件
     loop_ = aeCreateEventLoop(10240);
     if (mainfile[0] != 0)
@@ -355,7 +362,6 @@ void Node::forward_entity_msg(Entity* src_entity, int dst_entityid, int msgid, c
     header.dst_entityid = dst_entityid;
     header.dst_nodeid = this->id;
     header.id = msgid;
-
     //先发给本地实体
     Entity* entity = find_entity(dst_entityid);
     if (entity)
@@ -404,6 +410,56 @@ void Node::recv_entity_msg(MsgHeader* header, const char* data, size_t size)
     }
 }
 
+void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, ::google::protobuf::Message* msg)
+{
+    /*  
+    printf("node[%d] send entity msg\n", id);
+    Node* src_node = src_entity->node;
+    if (!src_node)
+    {
+        return;
+    }
+    int msg_size = msg->ByteSize();
+    static MsgHeader header;
+    header.src_nodeid = src_node->get_id();
+    header.src_entityid = src_entity->id;
+    header.dst_entityid = dst_entityid;
+    header.dst_nodeid = this->id;
+    header.id = msgid;
+    header.len = sizeof(MsgHeader) + msg_size;
+    //发给本地实体
+    Entity* entity = find_entity(dst_entityid);
+    if (entity)
+    {
+    //    entity->recv(&header, data, size);
+        return;
+    } 
+    if (is_disconnect())
+    {
+        printf("node[%d] is disconnect\n", get_id());
+     //   src_entity->unreach(&header, data, size);
+        return;
+    }
+    //插入到缓冲区
+    char* buf= Sendbuf::alloc(this->sockfd_,  header.len);
+    if (!buf)
+    {
+        return;
+    }
+    printf("node[%d] send %ld to sockfd(%d)\n", id, header.len, this->sockfd_);
+    memcpy(buf, &header, sizeof(header));
+    msg->SerializeToArray(buf + sizeof(header), msg_size);
+    Sendbuf::flush(this->sockfd_, buf, header.len);
+    create_file_event(this->sockfd_, AE_WRITABLE, _ev_writable, this);
+    */
+}
+
+void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, Buffer* buffer)
+{
+    send_entity_msg(src_entity, dst_entityid, msgid, buffer->get_buffer(), buffer->size());
+}
+
+
 void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const char* data, size_t size)
 {
     printf("node[%d] send entity msg\n", id);
@@ -419,7 +475,6 @@ void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, cons
     header.dst_nodeid = this->id;
     header.id = msgid;
     header.len = sizeof(MsgHeader) + size;
-
     //发给本地实体
     Entity* entity = find_entity(dst_entityid);
     if (entity)
@@ -472,10 +527,11 @@ int Node::get_id()
 
 int Node::add_entity(Entity* entity)
 {
-   entity_map_[entity->id] = entity; 
-   entity_vector_.push_back(entity);
-   entity->node = this;
-   return 0;
+    printf("node[%d] add entity(%d)\n", this->id, entity->id);
+    entity_map_[entity->id] = entity; 
+    entity_vector_.push_back(entity);
+    entity->node = this;
+    return 0;
 }
 
 
@@ -497,7 +553,7 @@ int Node::real_close(const char* err)
 
 bool Node::is_disconnect()
 {
-    return this->is_connect_;
+    return !this->is_connect_;
 }
 
 
@@ -569,7 +625,6 @@ void Node::delete_file_event(int fd, int mask)
 
 int Node::dofile(const char* filepath)
 {
-    lua_State* L = Nodeapi::L;
     if(luaL_dofile(L, filepath))
     {
         if (lua_isstring(L, -1))
@@ -583,7 +638,6 @@ int Node::dofile(const char* filepath)
 Entity* Node::create_entity_local(const char* filepath)
 {
     printf("node[%d] create entity local %s\n", this->id, filepath);
-    lua_State* L = Nodeapi::L;
     if (filepath == NULL)
     {
         Entity* entity = new Entity();
@@ -618,7 +672,6 @@ Entity* Node::create_entity_local(const char* filepath)
 
 int Node::pushluafunction(const char *func)
 {
-    lua_State* L = Nodeapi::L;
     char *start = (char *)func;
     char *class_name = start;
     char *pfunc = start;
@@ -670,7 +723,6 @@ int Node::pushluafunction(const char *func)
 
 int Node::lua_printstack() 
 {
-    lua_State* L = Nodeapi::L;
     lua_getglobal(L, "debug");  
     lua_getfield(L, -1, "traceback");  
     lua_pcall(L, 0, 1, 0);   

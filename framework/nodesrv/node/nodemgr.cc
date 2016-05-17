@@ -87,12 +87,22 @@ namespace NodeMgr
         return NULL;
     }
 
+    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t len)
+    {
+        Node* node = find_node(dst_nodeid);
+        if (!node)
+        {
+            return;
+        }
+        node->send_entity_msg(src_entity, dst_entityid, msgid, data, len);
+    }
+
     void forward_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t len)
     {
         Node* node = find_node(dst_nodeid);
         if (!node)
         {
-
+            return;
         }
         node->forward_entity_msg(src_entity, dst_entityid, msgid, data, len);
     }
@@ -108,4 +118,23 @@ namespace NodeMgr
         node->send_create_entity(src_entity, filepath);
     }
 
+    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, ::google::protobuf::Message* msg)
+    {
+        Node* node = find_node(dst_nodeid);
+        if (!node)
+        {
+            return;
+        }
+        node->send_entity_msg(src_entity, dst_entityid, msgid, msg);
+    }
+
+    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, Buffer* buffer)
+    {
+        Node* node = find_node(dst_nodeid);
+        if (!node)
+        {
+            return;
+        }
+        node->send_entity_msg(src_entity, dst_entityid, msgid, buffer);
+    }
 };

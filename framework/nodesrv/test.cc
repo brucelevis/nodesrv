@@ -10,11 +10,11 @@ int main(int argc, char **argv)
 
     Nodeapi::init();
 
-    printf("create node local 1\n");
+    printf("\ncreate node local 1\n");
     NodeMgr::create_node_local(1, "data/gatesrv/main.lua");
 
-    //printf("create node local 2\n");
-    //NodeMgr::create_node_local(2, "data/node2/main.lua");
+    printf("\ncreate node local 2\n");
+    NodeMgr::create_node_local(2, "data/gamesrv/main.lua");
 
     for(;;)
     {
