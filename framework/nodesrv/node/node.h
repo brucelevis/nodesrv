@@ -68,6 +68,7 @@ class Node
         void set_local(bool v);
         bool is_disconnect();
         Entity* create_entity_local(const char* filepath = 0);
+        void create_entity_remote(Entity* src_entity, const char* filepath);
 
         void recv(MsgHeader* header, const char* data, size_t size);
         void recv_entity_msg(MsgHeader* header, const char* data, size_t size);
@@ -79,13 +80,13 @@ class Node
         void send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, ::google::protobuf::Message* msg);
         void forward_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const char* data, size_t size);
         void forward_entity_msg(MsgHeader* header, const char* data, size_t size);
-        void send_node_reg();
-        void send_create_entity(Entity* src_entity, const char* filepath);
-
-        int create_file_event(int fd, int mask, aeFileProc* proc, void* clientData);
-        void delete_file_event(int fd, int mask);
 
 //tolua_end
+        void send_node_reg();
+        int create_file_event(int fd, int mask, aeFileProc* proc, void* clientData);
+        void delete_file_event(int fd, int mask);
+        void transfer_entity(Entity* src_entity); 
+
         int dofile(const char* filepath);
         int pushluafunction(const char *func);
         int lua_printstack(); 

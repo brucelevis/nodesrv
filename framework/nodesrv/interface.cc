@@ -1,6 +1,6 @@
 /*
 ** Lua binding: nodeapi
-** Generated automatically by tolua++-1.0.92 on Fri May 13 15:06:57 2016.
+** Generated automatically by tolua++-1.0.92 on Wed May 18 14:28:04 2016.
 */
 
 #ifndef __cplusplus
@@ -3184,6 +3184,41 @@ static int tolua_nodeapi_Node_create_entity_local00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: create_entity_remote of class  Node */
+#ifndef TOLUA_DISABLE_tolua_nodeapi_Node_create_entity_remote00
+static int tolua_nodeapi_Node_create_entity_remote00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
+  const char* filepath = ((const char*)  tolua_tostring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create_entity_remote'",NULL);
+#endif
+  {
+   self->create_entity_remote(src_entity,filepath);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'create_entity_remote'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: recv of class  Node */
 #ifndef TOLUA_DISABLE_tolua_nodeapi_Node_recv00
 static int tolua_nodeapi_Node_recv00(lua_State* tolua_S)
@@ -3514,147 +3549,6 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: send_node_reg of class  Node */
-#ifndef TOLUA_DISABLE_tolua_nodeapi_Node_send_node_reg00
-static int tolua_nodeapi_Node_send_node_reg00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_node_reg'",NULL);
-#endif
-  {
-   self->send_node_reg();
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'send_node_reg'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: send_create_entity of class  Node */
-#ifndef TOLUA_DISABLE_tolua_nodeapi_Node_send_create_entity00
-static int tolua_nodeapi_Node_send_create_entity00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,4,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
-  const char* filepath = ((const char*)  tolua_tostring(tolua_S,3,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_create_entity'",NULL);
-#endif
-  {
-   self->send_create_entity(src_entity,filepath);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'send_create_entity'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: create_file_event of class  Node */
-#ifndef TOLUA_DISABLE_tolua_nodeapi_Node_create_file_event00
-static int tolua_nodeapi_Node_create_file_event00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,4,"aeFileProc",0,&tolua_err) ||
-     !tolua_isuserdata(tolua_S,5,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,6,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  int fd = ((int)  tolua_tonumber(tolua_S,2,0));
-  int mask = ((int)  tolua_tonumber(tolua_S,3,0));
-  aeFileProc* proc = ((aeFileProc*)  tolua_tousertype(tolua_S,4,0));
-  void* clientData = ((void*)  tolua_touserdata(tolua_S,5,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create_file_event'",NULL);
-#endif
-  {
-   int tolua_ret = (int)  self->create_file_event(fd,mask,proc,clientData);
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'create_file_event'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: delete_file_event of class  Node */
-#ifndef TOLUA_DISABLE_tolua_nodeapi_Node_delete_file_event00
-static int tolua_nodeapi_Node_delete_file_event00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,4,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  int fd = ((int)  tolua_tonumber(tolua_S,2,0));
-  int mask = ((int)  tolua_tonumber(tolua_S,3,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete_file_event'",NULL);
-#endif
-  {
-   self->delete_file_event(fd,mask);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'delete_file_event'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* function: NodeMgr::update */
 #ifndef TOLUA_DISABLE_tolua_nodeapi_NodeMgr_update00
 static int tolua_nodeapi_NodeMgr_update00(lua_State* tolua_S)
@@ -3799,6 +3693,36 @@ static int tolua_nodeapi_NodeMgr_create_node_remote00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* function: NodeMgr::transfer_entity */
+#ifndef TOLUA_DISABLE_tolua_nodeapi_NodeMgr_transfer_entity00
+static int tolua_nodeapi_NodeMgr_transfer_entity00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
+  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  {
+   NodeMgr::transfer_entity(src_entity,dst_nodeid);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'transfer_entity'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* function: NodeMgr::send_entity_msg */
 #ifndef TOLUA_DISABLE_tolua_nodeapi_NodeMgr_send_entity_msg00
 static int tolua_nodeapi_NodeMgr_send_entity_msg00(lua_State* tolua_S)
@@ -3937,9 +3861,9 @@ static int tolua_nodeapi_NodeMgr_forward_entity_msg00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* function: NodeMgr::send_create_entity */
-#ifndef TOLUA_DISABLE_tolua_nodeapi_NodeMgr_send_create_entity00
-static int tolua_nodeapi_NodeMgr_send_create_entity00(lua_State* tolua_S)
+/* function: NodeMgr::create_entity_remote */
+#ifndef TOLUA_DISABLE_tolua_nodeapi_NodeMgr_create_entity_remote00
+static int tolua_nodeapi_NodeMgr_create_entity_remote00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -3957,13 +3881,13 @@ static int tolua_nodeapi_NodeMgr_send_create_entity00(lua_State* tolua_S)
   int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
   const char* filepath = ((const char*)  tolua_tostring(tolua_S,3,0));
   {
-   NodeMgr::send_create_entity(src_entity,dst_nodeid,filepath);
+   NodeMgr::create_entity_remote(src_entity,dst_nodeid,filepath);
   }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'send_create_entity'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'create_entity_remote'.",&tolua_err);
  return 0;
 #endif
 }
@@ -5320,6 +5244,7 @@ TOLUA_API int tolua_nodeapi_open (lua_State* tolua_S)
    tolua_function(tolua_S,"set_local",tolua_nodeapi_Node_set_local00);
    tolua_function(tolua_S,"is_disconnect",tolua_nodeapi_Node_is_disconnect00);
    tolua_function(tolua_S,"create_entity_local",tolua_nodeapi_Node_create_entity_local00);
+   tolua_function(tolua_S,"create_entity_remote",tolua_nodeapi_Node_create_entity_remote00);
    tolua_function(tolua_S,"recv",tolua_nodeapi_Node_recv00);
    tolua_function(tolua_S,"recv_entity_msg",tolua_nodeapi_Node_recv_entity_msg00);
    tolua_function(tolua_S,"recv_node_reg",tolua_nodeapi_Node_recv_node_reg00);
@@ -5329,10 +5254,6 @@ TOLUA_API int tolua_nodeapi_open (lua_State* tolua_S)
    tolua_function(tolua_S,"send_entity_msg",tolua_nodeapi_Node_send_entity_msg02);
    tolua_function(tolua_S,"forward_entity_msg",tolua_nodeapi_Node_forward_entity_msg00);
    tolua_function(tolua_S,"forward_entity_msg",tolua_nodeapi_Node_forward_entity_msg01);
-   tolua_function(tolua_S,"send_node_reg",tolua_nodeapi_Node_send_node_reg00);
-   tolua_function(tolua_S,"send_create_entity",tolua_nodeapi_Node_send_create_entity00);
-   tolua_function(tolua_S,"create_file_event",tolua_nodeapi_Node_create_file_event00);
-   tolua_function(tolua_S,"delete_file_event",tolua_nodeapi_Node_delete_file_event00);
   tolua_endmodule(tolua_S);
   tolua_module(tolua_S,"NodeMgr",0);
   tolua_beginmodule(tolua_S,"NodeMgr");
@@ -5341,11 +5262,12 @@ TOLUA_API int tolua_nodeapi_open (lua_State* tolua_S)
    tolua_function(tolua_S,"create_temp_node",tolua_nodeapi_NodeMgr_create_temp_node00);
    tolua_function(tolua_S,"create_node_local",tolua_nodeapi_NodeMgr_create_node_local00);
    tolua_function(tolua_S,"create_node_remote",tolua_nodeapi_NodeMgr_create_node_remote00);
+   tolua_function(tolua_S,"transfer_entity",tolua_nodeapi_NodeMgr_transfer_entity00);
    tolua_function(tolua_S,"send_entity_msg",tolua_nodeapi_NodeMgr_send_entity_msg00);
    tolua_function(tolua_S,"send_entity_msg",tolua_nodeapi_NodeMgr_send_entity_msg01);
    tolua_function(tolua_S,"send_entity_msg",tolua_nodeapi_NodeMgr_send_entity_msg02);
    tolua_function(tolua_S,"forward_entity_msg",tolua_nodeapi_NodeMgr_forward_entity_msg00);
-   tolua_function(tolua_S,"send_create_entity",tolua_nodeapi_NodeMgr_send_create_entity00);
+   tolua_function(tolua_S,"create_entity_remote",tolua_nodeapi_NodeMgr_create_entity_remote00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Message","Message","",NULL);
   tolua_beginmodule(tolua_S,"Message");

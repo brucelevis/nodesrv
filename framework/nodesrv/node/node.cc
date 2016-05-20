@@ -583,9 +583,9 @@ void Node::recv_create_entity(MsgHeader* header, const char* data, size_t size)
     create_entity_local(msg->filepath);
 }
 
-void Node::send_create_entity(Entity* src_entity, const char* filepath)
+void Node::create_entity_remote(Entity* src_entity, const char* filepath)
 {
-    printf("node[%d] send create entity\n", this->id);
+    printf("node[%d] send create entity %s\n", this->id, filepath);
 
     unsigned short str_len = strlen(filepath);
     Node* src_node = src_entity->node;
@@ -731,3 +731,7 @@ int Node::lua_printstack()
     return 0;
 }
 
+void Node::transfer_entity(Entity* src_entity)
+{
+
+} 

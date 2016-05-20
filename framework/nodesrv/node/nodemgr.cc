@@ -107,7 +107,7 @@ namespace NodeMgr
         node->forward_entity_msg(src_entity, dst_entityid, msgid, data, len);
     }
 
-    void send_create_entity(Entity* src_entity, int dst_nodeid, const char* filepath)
+    void create_entity_remote(Entity* src_entity, int dst_nodeid, const char* filepath)
     {
         Node* node = find_node(dst_nodeid);
         if (!node)
@@ -115,7 +115,7 @@ namespace NodeMgr
             printf("node[%d] not found\n", dst_nodeid);
             return;
         }
-        node->send_create_entity(src_entity, filepath);
+        node->create_entity_remote(src_entity, filepath);
     }
 
     void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, ::google::protobuf::Message* msg)
@@ -136,5 +136,15 @@ namespace NodeMgr
             return;
         }
         node->send_entity_msg(src_entity, dst_entityid, msgid, buffer);
+    }
+
+    void transfer_entity(Entity* src_entity, int dst_nodeid)
+    {
+        Node* node = find_node(dst_nodeid);
+        if (!node)
+        {
+            return;
+        }
+        node->transfer_entity(src_entity);
     }
 };

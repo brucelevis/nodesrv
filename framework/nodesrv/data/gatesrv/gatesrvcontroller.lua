@@ -24,10 +24,11 @@ function update(self, tick)
         --buffer:write_int8(3)
         --buffer:write_int8(3)
         --NodeMgr.send_entity_msg(self.entity, 2, 0, 111, buffer)
-        is_sent = true
-        print('ActorController update', self.xxx)
-        local login_login = RpcMessage.encode('Login.LOGIN', 1, 2, 3, 4)
-        NodeMgr.send_entity_msg(self.entity, 2, 0, 1233, login_login)
+        --print('ActorController update', self.xxx)
+        --local login_login = RpcMessage.encode('Login.LOGIN', 1, 2, 3, 4)
+        --NodeMgr.send_entity_msg(self.entity, 2, 0, 1233, login_login)
+        --NodeMgr.create_entity_remote(self.entity, 2, 'GameSrvPrefab')
+        --is_sent = true
     end
 end
 

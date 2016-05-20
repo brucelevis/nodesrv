@@ -53,7 +53,6 @@ void Component::set_entity(Entity* entity)
     this->entity = entity;
 }
 
-
 int Component::create_file_event(int fd, int mask, aeFileProc* proc, void* clientData)
 {
     return this->entity->node->create_file_event(fd, mask, proc, clientData);

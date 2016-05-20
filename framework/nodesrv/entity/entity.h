@@ -2,6 +2,7 @@
 #define _ENTITY_H_
 
 #include "msg/msg.h"
+#include "container/buffer.h"
 
 #include <stdlib.h> 
 #include <stdio.h>
@@ -57,12 +58,12 @@ class Entity
         int indexof(Entity* entity);
         Entity* get_parent();
 
+        //保存相关
     public:
         int id;
         void* data;
         Node* node;
         char name[64];
-
 //tolua_end
     private:
         Entity* parent;

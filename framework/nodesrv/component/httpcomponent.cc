@@ -41,7 +41,7 @@ typedef struct tagFrameHeader
 typedef struct tagHttpSession
 {
     int sockfd; 
-    int sid;
+    unsigned int sid;
     int is_upgrade;
 } HttpSession;
 
