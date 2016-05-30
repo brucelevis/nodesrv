@@ -1,9 +1,9 @@
 
-INCLUDE_DIRS =-I. -I../../3rd/protobuf/src -I../../3rd/lua/src -I../../3rd/mysql/include -I../../3rd/hiredis -I../../3rd/tolua++ -I../../3rd/http-parser
+INCLUDE_DIRS =-I. -I../3rd/protobuf/src -I../3rd/lua/src -I../3rd/mysql/include -I../3rd/hiredis -I../3rd/tolua++ -I../3rd/http-parser
 
 LIB_DIRS =
 
-LIBS =../../lib/libprotobuf.a ../../3rd/lua/src/liblua.a ../../3rd/mysql/lib/libmysqlclient.a ../../3rd/hiredis/libhiredis.a ../../3rd/tolua++/tolua++.a  
+LIBS =../lib/libprotobuf.a ../3rd/lua/src/liblua.a ../3rd/mysql/lib/libmysqlclient.a ../3rd/hiredis/libhiredis.a ../3rd/tolua++/tolua++.a  
 
 DY_LIBS = -lm -ldl -lreadline -lhistory -lncurses -lpthread
 
@@ -20,7 +20,7 @@ SOURCE = $(wildcard \
 		 script/*.cc\
 		 type/*.cc\
 		 encrypt/*.cc\
-		 ../../3rd/http-parser/http_parser.cc\
+		 ../3rd/http-parser/http_parser.cc\
 		 interface.cc\
 		 nodeapi.cc\
 		 ) 
@@ -50,7 +50,7 @@ $(LIB):$(OBJ)
 	ranlib $@
 
 tolua:
-	../../3rd/tolua++/tolua++ -n nodeapi -o interface.cc interface.pkg
+	../3rd/tolua++/tolua++ -n nodeapi -o interface.cc interface.pkg
 
 
 clean:
