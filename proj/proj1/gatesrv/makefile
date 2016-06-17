@@ -7,14 +7,13 @@ DY_LIBS = -lm -ldl -lreadline -lhistory -lncurses -lpthread
 CFLAGS=-O2 -Wall
 
 SOURCE = $(wildcard \
-		 entity/*.cc\
-		 gate/*.cc\
+		 dbsrv/*.cc\
 		 *.cc\
 		 ) 
 
 OBJ = $(patsubst %.cc,%.o,$(SOURCE))
 
-EXE = gatesrv
+EXE = dbsrv 
 
 %.o:%.cc
 	g++ $(CFLAGS) -c $< -o $@ $(INCLUDE_DIRS)
@@ -23,7 +22,7 @@ ${EXE}:$(OBJ)
 	g++ -o $(EXE) $(OBJ) $(LIBS)  $(DY_LIBS)
 
 tolua:
-	../../3rd/tolua++/tolua++ -n gatesrv -o interface.cc interface.pkg
+	../../3rd/tolua++/tolua++ -n dbsrv -o interface.cc interface.pkg
 
 clean:
 	rm -rf $(EXE)
