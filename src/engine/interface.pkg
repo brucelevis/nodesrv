@@ -1,3 +1,4 @@
+$cfile "neox.h"
 $cfile "type/type.h"
 $cfile "entity/entity.h"
 $cfile "component/component.h"
@@ -11,3 +12,5 @@ $cfile "msg/msg.h"
 $cfile "container/buffer.h"
 $cfile "msg/rpc.h"
 $cfile "file/file.h"
+
+$lfile "data/lib.lua"

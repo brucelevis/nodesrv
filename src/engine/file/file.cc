@@ -9,6 +9,21 @@
 namespace File 
 {
 
+bool cdself()
+{
+    //static char dir[1024];
+    //int count = readlink( "/proc/self/exe", dir, sizeof(dir));
+    //if(count < 0 || count >= sizeof(dir)) 
+    //{
+        //return false;
+    //}
+	//if(::chdir(dir)) 
+    //{
+        //return false;
+    //}
+    return true;
+}
+
 //功能：当前目录
 char* getcwd()
 {
@@ -19,7 +34,7 @@ char* getcwd()
 }
 
 //功能：切换目录
-bool chdir(char *dir)
+bool chdir(const char *dir)
 {
 	if(::chdir(dir)) 
     {
@@ -96,6 +111,32 @@ bool rename(char *src, char *dst)
     return true;
 }
 
+const char* dirname(const char* path)
+{
+    static char result[128];
+    int str_len = strlen(path);
+    int startpos = 0;
+    int endpos = str_len - 1;
+    for (int i = str_len - 1; i >= 0; i--) 
+    {
+        if (path[i] == '/' or path[i] == '\\') 
+        {
+            endpos = i;
+            break;
+        }
+    }
+    if (startpos < endpos)
+    {
+        memcpy(result, path, endpos - startpos + 1);
+        result[endpos - startpos + 1] = 0;
+        return result;
+    } else 
+    {
+        strcpy(result, path);
+        return result;
+    }
+}
+
 int basename(lua_State* L)
 {
     char *name;
@@ -165,11 +206,11 @@ int listdir(lua_State *L)
                 lua_pushstring(L, "type");
                 if(ent->d_type & DT_DIR)
                 {
-                    lua_pushstring(L, "dir");
+                    lua_pushnumber(L, TYPE_DIR);
                 }
                 else
                 {
-                    lua_pushstring(L, "file");
+                    lua_pushnumber(L, TYPE_FILE);
                 }
                 lua_settable(L, -3);
 

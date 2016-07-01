@@ -54,7 +54,7 @@ namespace NodeMgr
         {
             node->set_local(true);
         }
-        Log::log("nodemgr add node id(%d) addr(%lld)", node->get_id(), (long long)node);
+        Log::info("nodemgr add node id(%d) addr(%lld)", node->get_id(), (long long)node);
         node_map_[nodeid] = node;
         node_vector_.push_back(node);
         node->on_create();

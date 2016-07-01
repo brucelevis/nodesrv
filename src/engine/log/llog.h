@@ -1,7 +1,13 @@
+#ifndef __LLOG_H__
+#define __LLOG_H__
+extern "C" {
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+#include <tolua++.h>
+}
 
-//tolua_begin
-namespace Log
-{
-    void log(const char* str);
-};
-//tolua_end
+int luaopen_log(lua_State *L);
+
+
+#endif

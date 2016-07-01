@@ -91,20 +91,20 @@ class Node
         void delete_file_event(int fd, int mask);
         void transfer_entity(Entity* src_entity); 
 
-        int dofile(const char* filepath);
-        int lua_pushfunction(const char *func);
-        int lua_printstack(); 
-        bool lua_getvalue(const char *fieldname);
-        const char* lua_getstring(const char *fieldname);
-        int64_t lua_getnumber(const char *fieldname);
-
-        void lua_reglib(int (*p)(lua_State* L));
-
 
         void ev_accept(int sockfd);
         void ev_writable(int sockfd);
         void ev_readable(int sockfd);
         void on_create();
+
+        int lua_printstack(); 
+        int lua_pushfunction(const char *func);
+        bool lua_getvalue(const char *fieldname);
+        const char* lua_getstring(const char *fieldname);
+        int64_t lua_getnumber(const char *fieldname);
+        void lua_reglib(int (*p)(lua_State* L));
+        int lua_dofile(const char* filepath);
+
     private:
         int dispatch(char *data, size_t datalen);
         int real_close(const char* err);

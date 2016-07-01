@@ -7,6 +7,8 @@
 #include "net/recvbuf.h"
 #include "node/nodemgr.h"
 #include "log/log.h"
+#include "script/script.h"
+#include "json/ljson.h"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -21,8 +23,9 @@
 #include <errno.h>
 
 extern "C"{
-    int luaopen_nodesrv(lua_State* tolua_S);
+    int luaopen_neox(lua_State* tolua_S);
 }
+
 
 static void _ev_accept(struct aeEventLoop *eventLoop, int sockfd, void *clientData, int mask)
 {
@@ -52,16 +55,12 @@ Node::Node(int nodeid)
     name[0] = 0;
 }
 
-void Node::lua_reglib(int (*p)(lua_State* L))
-{
-    p(this->L);
-}
-
 void Node::on_create()
 {
     L = lua_open();
     luaL_openlibs(L);
-    luaopen_nodesrv(L);
+    luaopen_json(L);
+    luaopen_neox(L);
 }
 
 void Node::main(const char* mainfile)
@@ -73,7 +72,7 @@ void Node::main(const char* mainfile)
     loop_ = aeCreateEventLoop(10240);
     if (mainfile[0] != 0)
     {
-        dofile(mainfile);
+        lua_dofile(mainfile);
     }
 }
 
@@ -532,7 +531,7 @@ int Node::get_id()
 
 int Node::add_entity(Entity* entity)
 {
-    Log::log("node[%d] add entity(%d)", this->id, entity->id);
+    Log::info("node[%d] add entity(%d)", this->id, entity->id);
     entity_map_[entity->id] = entity; 
     entity_vector_.push_back(entity);
     entity->node = this;
@@ -628,21 +627,10 @@ void Node::delete_file_event(int fd, int mask)
     aeDeleteFileEvent(loop_, fd, mask);
 }
 
-int Node::dofile(const char* filepath)
-{
-    if(luaL_dofile(L, filepath))
-    {
-        if (lua_isstring(L, -1))
-        {
-            printf("dofile error %s\n", lua_tostring(L, -1));
-        }
-    }
-    return 0;
-}
 
 Entity* Node::create_entity_local(const char* filepath)
 {
-    Log::log("node[%d] create entity local %s", this->id, filepath);
+    Log::info("node[%d] create entity local %s", this->id, filepath);
     Entity* entity = NULL;
     if (filepath == NULL)
     {
@@ -651,7 +639,6 @@ Entity* Node::create_entity_local(const char* filepath)
     else 
     {
         //调用脚本初始化实体
-        //dofile(filepath);
         lua_getglobal(L, "instantiate");
         lua_getglobal(L, filepath);
         if (lua_pcall(L, 1, 1, 0) != 0)
@@ -675,6 +662,132 @@ Entity* Node::create_entity_local(const char* filepath)
     this->add_entity(entity);
     entity->awake();
     return entity;
+}
+
+
+void Node::transfer_entity(Entity* src_entity)
+{
+
+} 
+
+int Node::lua_printstack() 
+{
+    lua_getglobal(L, "debug");  
+    lua_getfield(L, -1, "traceback");  
+    lua_pcall(L, 0, 1, 0);   
+    const char* sz = lua_tostring(L, -1);  
+    printf("%s\n", sz);
+    return 0;
+}
+
+
+int Node::lua_pushfunction(const char *func)
+{
+    char *start = (char *)func;
+    char *class_name = start;
+    char *pfunc = start;
+    while(*pfunc != 0)
+    {
+        if(*pfunc == '.' && class_name == start)
+        {
+            *pfunc = 0;
+            lua_getglobal(L, class_name);
+            *pfunc = '.';
+            if(lua_isnil(L, -1)){
+                return 1;
+            }
+            class_name = pfunc + 1;
+        }else if(*pfunc == '.')
+        {
+            *pfunc = 0;
+            lua_pushstring(L, class_name);
+            lua_gettable(L, -2);
+            *pfunc = '.';
+            if(lua_isnil(L, -1))
+            {
+                return 2;
+            }
+            lua_remove(L, -2);//弹出table
+            class_name = pfunc + 1;
+        }
+        pfunc++;
+    }
+    if(class_name == start)
+    {
+        lua_getglobal(L, class_name);
+        if(lua_isnil(L, -1))
+        {
+            return 3;
+        }
+    }else
+    {
+        lua_pushstring(L, class_name);
+        lua_gettable(L, -2);
+        if(lua_isnil(L, -1))
+        {
+            return 4;
+        }
+        lua_remove(L, -2);//弹出table
+    }
+    return 0;     
+}
+
+bool Node::lua_getvalue(const char *fieldname)
+{
+    static char fieldbuf[128];
+    strcpy(fieldbuf, fieldname);
+    char *start = (char *)fieldbuf;
+    char *class_name = start;
+    char *pfunc = start;
+    while(*pfunc != 0)
+    {
+        if(*pfunc == '.' && class_name == start)
+        {
+            *pfunc = 0;
+            lua_getglobal(L, class_name);
+            *pfunc = '.';
+            if(lua_isnil(L, -1)){
+                lua_pop(L, 1);
+                return false;
+            }
+            class_name = pfunc + 1;
+        }else if(*pfunc == '.')
+        {
+            *pfunc = 0;
+            lua_pushstring(L, class_name);
+            lua_gettable(L, -2);
+            *pfunc = '.';
+            if(lua_isnil(L, -1))
+            {
+                lua_pop(L, 2);
+                return false;
+            }
+            lua_remove(L, -2);//弹出table
+            class_name = pfunc + 1;
+        }
+        pfunc++;
+    }
+    if(class_name == start)
+    {
+        lua_getglobal(L, class_name);
+        if(lua_isnil(L, -1))
+        {
+            lua_pop(L, 1);
+            return false;
+        }
+        return (int64_t)lua_tonumber(L, -1);
+    }else
+    {
+        lua_pushstring(L, class_name);
+        lua_gettable(L, -2);
+        if(lua_isnil(L, -1))
+        {
+            lua_pop(L, 2);
+            return false;
+        }
+        lua_remove(L, -2);//弹出table
+    }
+    return true;
 }
 
 const char* Node::lua_getstring(const char *fieldname)
@@ -709,126 +822,20 @@ int64_t Node::lua_getnumber(const char *fieldname)
     return result;
 }
 
-bool Node::lua_getvalue(const char *fieldname)
+void Node::lua_reglib(int (*p)(lua_State* L))
 {
-    static char fieldbuf[128];
-    strcpy(fieldbuf, fieldname);
-    char *start = (char *)fieldbuf;
-    char *class_name = start;
-    char *pfunc = start;
-    while(*pfunc != 0)
-    {
-        if(*pfunc == '.' && class_name == start)
-        {
-            *pfunc = 0;
-            lua_getglobal(L, class_name);
-            *pfunc = '.';
-            if(lua_isnil(L, -1)){
-                lua_pop(L, 1);
-                return false;
-            }
-            class_name = pfunc + 1;
-        }else if(*pfunc == '.')
-        {
-            *pfunc = 0;
-            lua_pushstring(L, class_name);
-            lua_gettable(L, -2);
-            *pfunc = '.';
-            if(lua_isnil(L, -1))
-            {
-                lua_pop(L, 2);
-                return false;
-            }
-    	    lua_remove(L, -2);//弹出table
-            class_name = pfunc + 1;
-        }
-        pfunc++;
-    }
-    if(class_name == start)
-    {
-        lua_getglobal(L, class_name);
-        if(lua_isnil(L, -1))
-        {
-            lua_pop(L, 1);
-            return false;
-        }
-        return (int64_t)lua_tonumber(L, -1);
-    }else
-    {
-        lua_pushstring(L, class_name);
-        lua_gettable(L, -2);
-        if(lua_isnil(L, -1))
-        {
-            lua_pop(L, 2);
-            return false;
-        }
-        lua_remove(L, -2);//弹出table
-    }
-    return true;
+    p(L);
 }
 
-int Node::lua_pushfunction(const char *func)
+int Node::lua_dofile(const char* filepath)
 {
-    char *start = (char *)func;
-    char *class_name = start;
-    char *pfunc = start;
-    while(*pfunc != 0)
+    if(luaL_dofile(L, filepath))
     {
-        if(*pfunc == '.' && class_name == start)
+        if (lua_isstring(L, -1))
         {
-            *pfunc = 0;
-            lua_getglobal(L, class_name);
-            *pfunc = '.';
-            if(lua_isnil(L, -1)){
-                return 1;
-            }
-            class_name = pfunc + 1;
-        }else if(*pfunc == '.')
-        {
-            *pfunc = 0;
-            lua_pushstring(L, class_name);
-            lua_gettable(L, -2);
-            *pfunc = '.';
-            if(lua_isnil(L, -1))
-            {
-                return 2;
-            }
-    	    lua_remove(L, -2);//弹出table
-            class_name = pfunc + 1;
+            printf("dofile error %s\n", lua_tostring(L, -1));
         }
-        pfunc++;
     }
-    if(class_name == start)
-    {
-        lua_getglobal(L, class_name);
-        if(lua_isnil(L, -1))
-        {
-            return 3;
-        }
-    }else
-    {
-        lua_pushstring(L, class_name);
-        lua_gettable(L, -2);
-        if(lua_isnil(L, -1))
-        {
-            return 4;
-        }
-        lua_remove(L, -2);//弹出table
-    }
-    return 0;     
-}
-
-int Node::lua_printstack() 
-{
-    lua_getglobal(L, "debug");  
-    lua_getfield(L, -1, "traceback");  
-    lua_pcall(L, 0, 1, 0);   
-    const char* sz = lua_tostring(L, -1);  
-    printf("%s\n", sz);
     return 0;
 }
 
-void Node::transfer_entity(Entity* src_entity)
-{
-
-} 

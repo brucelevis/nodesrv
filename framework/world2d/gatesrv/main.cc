@@ -1,6 +1,4 @@
-#include "nodesrv.h"
-#include <stdio.h>
-#include <string.h>
+#include "stdafx.h"
 
 extern "C" 
 { 
@@ -10,22 +8,20 @@ extern "C"
 
 int main(int argc, char **argv)
 {
-    /*  
-    char buf[1024];
-    int count = readlink( "/proc/self/exe", buf, 1024);
-    if(count < 0 || count >= 1024) 
-    {
-        return EXIT_FAILURE;
-    }
-    printf("safsfsaf\%s\n", buf);
-    */
+    //切换工作路径
+    const char* self_dir = File::dirname(argv[0]);
+    File::chdir(self_dir);
+    Log::info("running dir is %s", File::getcwd());
+
+    //守护进程
+    Neox::fork_daemon();
+
+    //创建主节点
     Node* node = NodeMgr::create_node_local(1); 
     node->lua_reglib(luaopen_gatesrv);
     node->main("main.lua");
-    for(;;)
-    {
-        sleep(1);
-        NodeMgr::update(time(NULL));
-    }
+
+    //主循环
+    Neox::loop();
     return 0;
 }

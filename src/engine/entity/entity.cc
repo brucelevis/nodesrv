@@ -35,7 +35,7 @@ void Entity::create()
 
 int Entity::unreach(MsgHeader* header, const void* data, size_t datalen)
 {
-    Log::log("entity[%d] unreach datalen(%ld)", id, datalen);
+    Log::info("entity[%d] unreach datalen(%ld)", id, datalen);
     std::map<unsigned int, Component*>::iterator it;
     it = msg_map.find(header->id);
     if (it != msg_map.end())
@@ -49,7 +49,7 @@ int Entity::unreach(MsgHeader* header, const void* data, size_t datalen)
 
 int Entity::recv(Message* msg)
 {
-    Log::log("entity[%d] recv msg", this->id);
+    Log::info("entity[%d] recv msg", this->id);
     std::map<unsigned int, Component*>::iterator it;
     it = msg_map.find(msg->id);
     if (it != msg_map.end())
@@ -62,7 +62,7 @@ int Entity::recv(Message* msg)
 
 int Entity::recv(MsgHeader* header, const void* data, size_t datalen)
 {
-    Log::log("entity[%d] recv datalen(%ld)", id, datalen);
+    Log::info("entity[%d] recv datalen(%ld)", id, datalen);
     std::map<unsigned int, Component*>::iterator it;
     it = msg_map.find(header->id);
     if (it != msg_map.end())
@@ -81,7 +81,7 @@ int Entity::save()
 
 ScriptComponent* Entity::add_script(const char* scriptname)
 {
-    Log::log("entity[%d] add script %s", this->id, scriptname);
+    Log::info("entity[%d] add script %s", this->id, scriptname);
     ScriptComponent* component = new ScriptComponent(scriptname);
     comp_vector.push_back(component);
     comp_map[scriptname] = component;
@@ -91,7 +91,7 @@ ScriptComponent* Entity::add_script(const char* scriptname)
 
 int Entity::add_component(Component* component)
 {
-    Log::log("entity[%d] add component %s", this->id, component->get_type_name());
+    Log::info("entity[%d] add component %s", this->id, component->get_type_name());
     comp_vector.push_back(component);
     comp_map[component->get_type_name()] = component;
     component->set_entity(this);

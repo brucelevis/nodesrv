@@ -9,15 +9,33 @@ extern "C" {
 
 //tolua_begin
 namespace File {
+
+    enum {
+        TYPE_FILE = 1,
+        TYPE_DIR = 2,
+    };
+
     char *getcwd();
-    bool chdir(char* dir);
+
+    bool chdir(const char* dir);
+
     bool mkdirs(char* dir);
+
     bool mkdir(char* dir);
+
     bool exists(char* dir);
+
     bool remove(char* dir);
+
     bool rename(char* src, char* dst);
+
     int basename(lua_State* L);
+
+    const char* dirname(const char* path);
+
     int listdir(lua_State* L);
+
+    bool cdself();
 };
 //tolua_end
 

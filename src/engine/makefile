@@ -23,10 +23,11 @@ SOURCE = $(wildcard \
 		 script/*.cc\
 		 file/*.cc\
 		 type/*.cc\
+		 json/*.cc\
 		 encrypt/*.cc\
 		 $(ROOT_PATH)/3rd/http-parser/http_parser.cc\
 		 interface.cc\
-		 nodesrv.cc\
+		 neox.cc\
 		 ) 
 
 
@@ -34,8 +35,8 @@ OBJ = $(patsubst %.cc,%.o,$(SOURCE))
 
 
 TEST = test
-LIB = libnodesrv.a
-EXE = lnodesrv
+LIB = libneox.a
+EXE = lneox
 
 
 all:$(TEST) $(LIB) $(EXE)
@@ -44,8 +45,8 @@ all:$(TEST) $(LIB) $(EXE)
 %.o:%.cc
 	g++ $(CFLAGS) -c $< -o $@ $(INCLUDE_DIRS)
 
-${EXE}:$(OBJ) lnodesrv.o
-	g++ -o $(EXE) $(OBJ) lnodesrv.o $(LIBS) $(DY_LIBS) $(LIB_DIRS) 
+${EXE}:$(OBJ) lneox.o
+	g++ -o $(EXE) $(OBJ) lneox.o $(LIBS) $(DY_LIBS) $(LIB_DIRS) 
 
 ${TEST}:$(OBJ) test.o
 	g++ -o $(TEST) $(OBJ) test.o $(LIBS) $(DY_LIBS) $(LIB_DIRS) 
@@ -55,7 +56,7 @@ $(LIB):$(OBJ)
 	ranlib $@
 
 tolua:
-	$(ROOT_PATH)/3rd/tolua++/tolua++ -n nodesrv -o interface.cc interface.pkg
+	$(ROOT_PATH)/3rd/tolua++/tolua++ -n neox -o interface.cc interface.pkg
 
 
 clean:

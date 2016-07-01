@@ -6,7 +6,7 @@
 DeployConf = 
 {
     --资源目录
-    asset_dir = '/home/ljw/nodesrv/framework/world2d/debug/asset', 
+    asset_dir = '/home/ljw/neox/framework/world2d/debug/asset', 
 
     --网关列表
     gatesrv_list = 

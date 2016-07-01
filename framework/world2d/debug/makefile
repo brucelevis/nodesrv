@@ -1,9 +1,7 @@
 
 gatesrv:
 	cd ../gatesrv;make tolua;make
-	rm -rf bin/gatesrv
-	ln -s bin/gatesrv ../gatesrv/gatesrv
-	cd gatesrv1;./gatesrv
+	proc/gatesrv1/gatesrv
 
 clean:
 	cd ../gatesrv;make clean
@@ -11,3 +9,6 @@ clean:
 nodesrv:
 	cd ../../../src/engine;make clean;make
 
+install:
+	rm -rf bin/gatesrv
+	ln -s ../../gatesrv/gatesrv bin/gatesrv

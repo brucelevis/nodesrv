@@ -1,0 +1,14 @@
+#!bin/lneox
+require('deploy')
+package.path = string.format('%s;%s/?.lua', package.path, DeployConf.asset_dir)
+package.path = string.format('%s;%s/test/?.lua', package.path, DeployConf.asset_dir)
+
+local root_dir = string.format('%s/test', DeployConf.asset_dir)
+
+local files = File.listdir(root_dir);
+print(Json.encode(files))
+
+require('login.main')
+
+print(arg[1])
+
