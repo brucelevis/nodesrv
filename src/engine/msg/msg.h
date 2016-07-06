@@ -42,6 +42,8 @@ typedef struct tagMsgHeader
 #define MSG_NET_PACKET 6
 //新链接
 #define MSG_NEW_CONNECTION 7
+//断开链接
+#define MSG_CLOSE_CONNECTION 8
 
 #pragma pack(push, 1)
 

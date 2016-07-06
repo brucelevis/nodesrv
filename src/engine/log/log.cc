@@ -76,7 +76,7 @@ void closelevel(int level)
     logger.closelevel(level);
 }
 
-int stdout2file(char *file_path)
+int stdout2file(const char *file_path)
 {
     int fd = open(file_path, O_WRONLY | O_CREAT | O_APPEND, 0600);
     if(fd == -1)

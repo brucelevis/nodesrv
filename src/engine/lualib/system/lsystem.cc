@@ -1,4 +1,10 @@
-#include "stdafx.h"
+#include "system/lsystem.h"
+#include <unistd.h>
+#include <time.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/wait.h>
 
 static int lfork(lua_State *L)
 {

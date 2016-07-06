@@ -1,6 +1,5 @@
 
 #include "component.h"
-#include "entity/entity.h"
 #include "node/node.h"
 #include "node/nodemgr.h"
 

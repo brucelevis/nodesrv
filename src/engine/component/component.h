@@ -4,14 +4,14 @@
 #include <stdlib.h>
 
 #include "msg/msg.h"
-#include "entity/entity.h"
+#include "node/entity.h"
 #include "type/type.h"
 #include "net/ae.h"
 
 extern "C" {
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 }
 
 

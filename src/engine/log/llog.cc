@@ -32,6 +32,17 @@ static int ldebug(lua_State* L)
     return 0;
 }
 
+static int lstdout2file(lua_State* L)
+{
+    if (!lua_isstring(L, 1))
+    {
+        return 0;
+    }
+    const char* file_path = (const char*)lua_tostring(L, 1);
+    Log::stdout2file(file_path);
+    return 0;
+}
+
 static luaL_Reg lua_lib[] = 
 {
     {"fatal", lfatal},
@@ -39,6 +50,7 @@ static luaL_Reg lua_lib[] =
     {"warn", lwarn},
     {"info", linfo},
     {"debug", ldebug},
+    {"stdout2file", lstdout2file},
     {NULL, NULL}
 };
 

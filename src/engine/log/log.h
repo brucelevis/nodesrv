@@ -19,7 +19,7 @@ void openlevel(int level);
 void closelevel(int level);
 void closeall();
 
-int stdout2file(char *file_name, int file_max_linenum, char *file_dir);
+int stdout2file(const char *file_path);
 
 };
 

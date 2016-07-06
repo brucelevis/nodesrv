@@ -16,6 +16,8 @@ class NetComponent : public Component
         int listen(const char* host, unsigned short port);
         int send(int sockfd, const void* data, size_t size);
         int send_str(int sockfd, const char* data);
+        char* alloc_send_buf(int sockfd, size_t size);
+        void flush_send_buf(int sockfd, char* buf, size_t size);
 //tolua_end
     public:
         void ev_accept(int listenfd);

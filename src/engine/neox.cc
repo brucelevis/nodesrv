@@ -1,5 +1,9 @@
 #include "neox.h"
 
+extern "C"{
+    int luaopen_neox(lua_State* tolua_S);
+}
+
 namespace Neox
 {
 
@@ -10,7 +14,6 @@ namespace Neox
         //初始化lua
         return 0;
     }
-
     Node* create_node_remote(int nodeid)
     {
         return NodeMgr::create_node_remote(nodeid);
@@ -50,7 +53,8 @@ namespace Neox
     static void _atexit() 
     {
         LOG_INFO("_atexit\n");
-        File::remove("pid");
+        static const char * pidfile = "pid";
+        File::remove(pidfile);
         //lua_State *L = s_L;
         //if (L != NULL) {
             //lua_getglobal(L, "_atexit");
@@ -83,9 +87,9 @@ namespace Neox
             exit(1);
         }
         //ps, 关了就不要写
-        /*for(i = 0; i <=2; i++){
-          close(i);
-          }*/
+        //for(i = 0; i <=2; i++){
+          //close(i);
+        //}
         //忽略ctrl-c
         signal(SIGHUP, SIG_IGN);
         signal(SIGQUIT, SIG_IGN);
@@ -118,6 +122,24 @@ namespace Neox
             sleep(1);
             NodeMgr::update(time(NULL));
         }
+    }
+
+    void lua_openlibs(lua_State* L)
+    {
+        luaopen_neox(L);
+        luaopen_json(L);
+        luaopen_log(L);
+        luaopen_cstring(L);
+        luaopen_port(L);
+        luaopen_ae(L);
+        luaopen_system(L);
+        luaopen_pblua(L);
+        luaopen_pb_port(L);
+        luaopen_rmi_port(L);
+        luaopen_websock_port(L);
+        luaopen_redis(L);
+        luaopen_mysql(L);
+        luaopen_srvapp(L);
     }
 };
 

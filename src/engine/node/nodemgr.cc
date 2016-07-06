@@ -1,5 +1,5 @@
 #include "node/nodemgr.h"
-#include "entity/entity.h"
+#include "node/entity.h"
 #include "log/log.h"
 
 #include <stdio.h>

@@ -90,7 +90,7 @@ bool exists(char *dir)
 }
 
 //功能：删除文件或者目录
-bool remove(char *filepath)
+bool remove(const char *filepath)
 {
     if(::remove(filepath)) 
     {

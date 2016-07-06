@@ -1,6 +1,6 @@
 #include "netcomponent.h"
 
-#include "entity/entity.h"
+#include "node/entity.h"
 #include "node/node.h"
 #include "net/sendbuf.h"
 #include "net/recvbuf.h"
@@ -94,26 +94,26 @@ int NetComponent::listen(const char* host, unsigned short port)
     }
     this->listenfd_ = sockfd;
     this->create_file_event(this->listenfd_, AE_READABLE | AE_WRITABLE, _ev_accept, this);
-    Log::info("NetComponent listen on host(%s) port(%d)", host, port);
+    LOG_DEBUG("NetComponent listen on host(%s) port(%d)", host, port);
     return 0;
 }
 
 void NetComponent::ev_writable(int sockfd)
 {
-    LOG_INFO("netcomponent ev_writable\n");
+    LOG_DEBUG("netcomponent ev_writable\n");
     //发送数据
     for(;;)
     {
         int datalen = Sendbuf::datalen(sockfd);
         if (datalen <= 0)
         {
-            LOG_INFO("netcomponent  delete write event\n");
+            LOG_DEBUG("netcomponent  delete write event\n");
             this->delete_file_event(sockfd, AE_WRITABLE);
             break;
         }
         char* buf = Sendbuf::get_read_ptr(sockfd);
         int ir = ::send(sockfd, buf, datalen, 0);
-        LOG_INFO("netcomponent real send %d\n", ir);
+        LOG_DEBUG("netcomponent real send %d\n", ir);
         if (ir > 0) 
         {
             Sendbuf::skip_read_ptr(sockfd, ir);
@@ -131,14 +131,14 @@ void NetComponent::ev_writable(int sockfd)
 
 void NetComponent::ev_readable(int sockfd)
 {
-    LOG_INFO("netcomponent ev_readable\n");
+    LOG_DEBUG("netcomponent ev_readable\n");
     //接收数据
     for(;;)
     {
         char* wptr= Recvbuf::getwptr(sockfd);
         int buflen = Recvbuf::bufremain(sockfd);
         int ir = ::recv(sockfd, wptr, buflen, 0);
-        LOG_INFO("netcomponent real recv %d bufremain %d\n", ir, buflen);
+        LOG_DEBUG("netcomponent real recv %d bufremain %d\n", ir, buflen);
         if (ir == 0 || (ir == -1 && errno != EAGAIN))
         {
             real_close(sockfd, "peer close");
@@ -205,7 +205,7 @@ void NetComponent::ev_accept(int listenfd)
     {
         return;
     }
-    LOG_INFO("accept a new socket sockfd(%d)\n", sockfd);
+    LOG_DEBUG("accept a new socket sockfd(%d)\n", sockfd);
 
     this->create_file_event(sockfd, AE_READABLE, _ev_readable, this);
     Sendbuf::create(sockfd);
@@ -225,10 +225,32 @@ void NetComponent::ev_accept(int listenfd)
 
 void NetComponent::real_close(int sockfd, const char* reason)
 {
-   LOG_INFO("real close %d\n", sockfd); 
-   Recvbuf::free(sockfd);
-   Sendbuf::free(sockfd);
-   this->delete_file_event(sockfd, AE_WRITABLE | AE_READABLE);
+    LOG_DEBUG("real close %d\n", sockfd); 
+    Recvbuf::free(sockfd);
+    Sendbuf::free(sockfd);
+    this->delete_file_event(sockfd, AE_WRITABLE | AE_READABLE);
+
+    static Message msg;
+    msg.src_nodeid = 0;
+    msg.src_entityid = 0;
+    msg.dst_entityid = 0;
+    msg.dst_nodeid = 0;
+    msg.id = MSG_CLOSE_CONNECTION;
+
+    msg.sockfd = sockfd;
+    this->entity->recv(&msg);
+}
+
+char* NetComponent::alloc_send_buf(int sockfd, size_t size)
+{
+    char* buf= Sendbuf::alloc(sockfd,  size);
+    return buf;
+}
+
+void NetComponent::flush_send_buf(int sockfd, char* buf, size_t size)
+{
+    Sendbuf::flush(sockfd, buf, size);
+    this->create_file_event(sockfd, AE_WRITABLE, _ev_writable, this);
 }
 
 int NetComponent::send(int sockfd, const void* data, size_t size)
@@ -239,7 +261,7 @@ int NetComponent::send(int sockfd, const void* data, size_t size)
     {
         return 0;
     }
-    LOG_INFO("entity[%d] send %ld to sockfd(%d)\n", this->entity->id, size, sockfd);
+    LOG_DEBUG("entity[%d] send %ld to sockfd(%d)\n", this->entity->id, size, sockfd);
     memcpy(buf, data, size);
     Sendbuf::flush(sockfd, buf, size);
     this->create_file_event(sockfd, AE_WRITABLE, _ev_writable, this);

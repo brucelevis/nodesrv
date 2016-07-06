@@ -2,7 +2,7 @@
 
 ROOT_PATH = ../..
 
-INCLUDE_DIRS =-I. -I$(ROOT_PATH)/3rd/protobuf/src -I$(ROOT_PATH)/3rd/lua/src -I$(ROOT_PATH)/3rd/mysql/include -I$(ROOT_PATH)/3rd/hiredis -I$(ROOT_PATH)/3rd/tolua++ -I$(ROOT_PATH)/3rd/http-parser
+INCLUDE_DIRS =-I. -I$(ROOT_PATH)/3rd/protobuf/src -I$(ROOT_PATH)/3rd/lua/src -I$(ROOT_PATH)/3rd/mysql/include -I$(ROOT_PATH)/3rd/hiredis -I$(ROOT_PATH)/3rd/tolua++ -I$(ROOT_PATH)/3rd/http-parser -Ilualib 
 
 LIB_DIRS =
 
@@ -23,13 +23,20 @@ SOURCE = $(wildcard \
 		 script/*.cc\
 		 file/*.cc\
 		 type/*.cc\
-		 json/*.cc\
 		 encrypt/*.cc\
+		 lualib/redis/*.cc\
+		 lualib/json/*.cc\
+		 lualib/date/*.cc\
+		 lualib/string/*.cc\
+		 lualib/port/*.cc\
+		 lualib/srvapp/*.cc\
+		 lualib/pblua/*.cc\
+		 lualib/system/*.cc\
+		 lualib/mysql/*.cc\
 		 $(ROOT_PATH)/3rd/http-parser/http_parser.cc\
 		 interface.cc\
 		 neox.cc\
 		 ) 
-
 
 OBJ = $(patsubst %.cc,%.o,$(SOURCE))
 

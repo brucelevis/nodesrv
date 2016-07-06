@@ -1,7 +1,13 @@
 #ifndef __LMYSQL_H__
 #define __LMYSQL_H__
+extern "C" {
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+#include <tolua++.h>
+}
 
-#include "mysql.h"
+
 /*
  *  local conn = Mysql.connect(ip, dbname, user, password)
  *  Mysql.command(conn, 'xx')

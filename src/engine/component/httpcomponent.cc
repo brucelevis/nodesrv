@@ -1,6 +1,6 @@
 #include "httpcomponent.h"
 
-#include "entity/entity.h"
+#include "node/entity.h"
 #include "node/node.h"
 #include "net/sendbuf.h"
 #include "net/recvbuf.h"

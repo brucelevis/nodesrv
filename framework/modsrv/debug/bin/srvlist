@@ -1,0 +1,30 @@
+#!bin/lneox
+--[[
+列表当前正在运行的进程
+--]]
+dofile(os.getenv('ENGINE_PATH')..'/bin/luaenv')
+local engine_path = os.getenv('ENGINE_PATH')
+
+local proc_dir = 'proc'
+pidlist = ''
+
+print('----pid list------------------------------------------------------------------------')
+local files = File.listdir(proc_dir)
+for _, file in pairs(files) do
+    if file.type == File.TYPE_DIR then
+        local filepath = string.format('%s/%s/pid', proc_dir, file.name)
+        if File.exists(filepath) then
+            local f = io.open(filepath, 'r')
+            local pid = f:read()
+            print(string.format('%s %d', file.name, pid))
+            pidlist = string.format('%s| %s ', pidlist, pid)
+            f:close()
+        end
+    end
+end
+print('----ps list-------------------------------------------------------------------------')
+if pidlist == '' then
+    os.exit(0)
+end
+pidlist = string.sub(pidlist, 2)
+os.execute(string.format('ps aux | grep -E "%s" | grep bin', pidlist))

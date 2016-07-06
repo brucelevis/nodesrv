@@ -1,0 +1,614 @@
+[2016-07-06 19:30:33 191396][TAG][23526][INFO]running pid(23526)
+[2016-07-06 19:30:33 191481][TAG][23526][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:30:33 191544][TAG][23526][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:30:33 191701][TAG][23526][INFO]
+[2016-07-06 19:30:33 191813][TAG][23526][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:30:33 192146][TAG][23526][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:30:33 192254][TAG][23526][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:30:33 192447][TAG][23526][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:30:33 192554][TAG][23526][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:30:33 192715][TAG][23526][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:30:33 192895][TAG][23526][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:30:33 194882][TAG][23526][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:30:33 194902][TAG][23526][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:30:33 194915][TAG][23526][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:30:33 194927][TAG][23526][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:30:33 194938][TAG][23526][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:30:33 194970][TAG][23526][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:30:33 195011][TAG][23526][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:30:33 195193][TAG][23526][INFO]
+[2016-07-06 19:30:33 195230][TAG][23526][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:30:33 195252][TAG][23526][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:30:33 195260][TAG][23526][INFO]
+[2016-07-06 19:30:33 195279][TAG][23526][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:30:33 195296][TAG][23526][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:30:33 195451][TAG][23526][INFO]
+[2016-07-06 19:30:33 195486][TAG][23526][INFO]import mod_path(centersrv/login) mod_name(Login)
+[2016-07-06 19:30:33 195513][TAG][23526][INFO]scan file(centersrv/login/main.lua)
+[2016-07-06 19:30:33 195675][TAG][23526][INFO]
+[2016-07-06 19:30:33 195692][TAG][23526][INFO][Asyncsrv]create loop
+[2016-07-06 19:30:33 195831][TAG][23526][INFO][Gamesrv]listen on host(127.0.0.1) port(3335)
+[2016-07-06 19:30:33 195871][TAG][23526][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:30:33 195880][TAG][23526][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:30:33 195899][TAG][23526][INFO]llisten on 3335
+[2016-07-06 19:30:33 196127][TAG][23526][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:30:33 196138][TAG][23526][DEBUG]recvbuf create sockfd(5) buf_len(1024)
+[2016-07-06 19:30:33 196164][TAG][23526][INFO][Gamesrv]accept a game sockfd(5)
+[2016-07-06 19:30:33 196178][TAG][23526][DEBUG]net/port.cc:220
+[2016-07-06 19:30:33 196186][TAG][23526][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:30:33 196197][TAG][23526][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:30:33 196205][TAG][23526][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:30:33 196212][TAG][23526][DEBUG]101
+[2016-07-06 19:30:33 196219][TAG][23526][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:30:33 196226][TAG][23526][DEBUG]10 gamesrv101
+[2016-07-06 19:30:33 196242][TAG][23526][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:30:33 196250][TAG][23526][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:54 body_len:36
+[2016-07-06 19:30:37 225518][TAG][23526][DEBUG]net/port.cc:220
+[2016-07-06 19:30:37 225538][TAG][23526][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:30:37 225548][TAG][23526][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:30:37 225558][TAG][23526][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:30:37 225563][TAG][23526][DEBUG]101
+[2016-07-06 19:30:37 225567][TAG][23526][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:30:37 225571][TAG][23526][DEBUG]333
+[2016-07-06 19:30:37 225587][TAG][23526][INFO][Login]player online uid(333)
+[2016-07-06 19:30:37 225603][TAG][23526][INFO]POST Login.PLAYER_PASS TO GameSrv
+[2016-07-06 19:30:37 225615][TAG][23526][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:30:37 225623][TAG][23526][DEBUG]arg1:333
+[2016-07-06 19:30:37 225637][TAG][23526][INFO]POS_ Login.PLAYER_PASS TO GameSrv usec:34 body_len:26
+[2016-07-06 19:30:37 225645][TAG][23526][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:98 body_len:32
+[2016-07-06 19:30:37 225673][TAG][23526][INFO]real_send(30)
+
+[2016-07-06 19:31:19 524538][TAG][23526][DEBUG]net/port.cc:220
+[2016-07-06 19:31:19 524564][TAG][23526][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 19:31:19 524591][TAG][23526][INFO][Gamesrv]ev_close sockfd(5) reason(peer close)
+[2016-07-06 19:31:19 524607][TAG][23526][INFO][Gamesrv]game disconnect srvname(gamesrv101)
+[2016-07-06 19:31:19 538387][TAG][23526][INFO]sig_int
+[2016-07-06 19:31:19 538431][TAG][23526][INFO]atint
+[2016-07-06 19:31:19 538457][TAG][23526][INFO][Asyncsrv]game over!
+[2016-07-06 19:31:19 538466][TAG][23526][INFO]_atexit
+[2016-07-06 19:31:19 538474][TAG][23526][INFO]atexit
+[2016-07-06 19:31:19 538568][TAG][23526][INFO]exit pid(23526)
+[2016-07-06 19:31:24 1392][TAG][23767][INFO]running pid(23767)
+[2016-07-06 19:31:24 1589][TAG][23767][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:31:24 2132][TAG][23767][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:31:24 2631][TAG][23767][INFO]
+[2016-07-06 19:31:24 3163][TAG][23767][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:31:24 4741][TAG][23767][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:31:24 4914][TAG][23767][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:31:24 5950][TAG][23767][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:31:24 6659][TAG][23767][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:31:24 6985][TAG][23767][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:31:24 7842][TAG][23767][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:31:24 10137][TAG][23767][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:31:24 10180][TAG][23767][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:31:24 10195][TAG][23767][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:31:24 10210][TAG][23767][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:31:24 10224][TAG][23767][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:31:24 10268][TAG][23767][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:31:24 10475][TAG][23767][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:31:24 11232][TAG][23767][INFO]
+[2016-07-06 19:31:24 11289][TAG][23767][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:31:24 11326][TAG][23767][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:31:24 11368][TAG][23767][INFO]
+[2016-07-06 19:31:24 11530][TAG][23767][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:31:24 11563][TAG][23767][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:31:24 12348][TAG][23767][INFO]
+[2016-07-06 19:31:24 12387][TAG][23767][INFO]import mod_path(centersrv/login) mod_name(Login)
+[2016-07-06 19:31:24 12506][TAG][23767][INFO]scan file(centersrv/login/main.lua)
+[2016-07-06 19:31:24 13318][TAG][23767][INFO]
+[2016-07-06 19:31:24 13361][TAG][23767][INFO][Asyncsrv]create loop
+[2016-07-06 19:31:24 13687][TAG][23767][INFO][Gamesrv]listen on host(127.0.0.1) port(3335)
+[2016-07-06 19:31:24 13927][TAG][23767][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:31:24 13939][TAG][23767][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:31:24 13965][TAG][23767][INFO]llisten on 3335
+[2016-07-06 19:31:24 14139][TAG][23767][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:31:24 14148][TAG][23767][DEBUG]recvbuf create sockfd(5) buf_len(1024)
+[2016-07-06 19:31:24 14301][TAG][23767][INFO][Gamesrv]accept a game sockfd(5)
+[2016-07-06 19:31:24 14314][TAG][23767][DEBUG]net/port.cc:220
+[2016-07-06 19:31:24 14319][TAG][23767][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:31:24 14339][TAG][23767][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:31:24 14345][TAG][23767][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:31:24 14349][TAG][23767][DEBUG]101
+[2016-07-06 19:31:24 14354][TAG][23767][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:31:24 14359][TAG][23767][DEBUG]10 gamesrv101
+[2016-07-06 19:31:24 14370][TAG][23767][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:31:24 14384][TAG][23767][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:45 body_len:36
+[2016-07-06 19:31:26 98165][TAG][23767][DEBUG]net/port.cc:220
+[2016-07-06 19:31:26 98186][TAG][23767][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:31:26 98196][TAG][23767][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:31:26 98207][TAG][23767][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:31:26 98216][TAG][23767][DEBUG]101
+[2016-07-06 19:31:26 98223][TAG][23767][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:31:26 98230][TAG][23767][DEBUG]333
+[2016-07-06 19:31:26 98250][TAG][23767][INFO][Login]player online uid(333)
+[2016-07-06 19:31:26 98266][TAG][23767][INFO]POST Login.PLAYER_PASS TO GameSrv
+[2016-07-06 19:31:26 98295][TAG][23767][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:31:26 98301][TAG][23767][DEBUG]arg1:333
+[2016-07-06 19:31:26 98306][TAG][23767][INFO]POS_ Login.PLAYER_PASS TO GameSrv usec:40 body_len:26
+[2016-07-06 19:31:26 98312][TAG][23767][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:117 body_len:32
+[2016-07-06 19:31:26 98336][TAG][23767][INFO]real_send(30)
+
+[2016-07-06 19:31:27 995763][TAG][23767][DEBUG]net/port.cc:220
+[2016-07-06 19:31:27 995783][TAG][23767][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:31:27 995796][TAG][23767][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:31:27 995806][TAG][23767][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:31:27 995813][TAG][23767][DEBUG]101
+[2016-07-06 19:31:27 995819][TAG][23767][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:31:27 995826][TAG][23767][DEBUG]333
+[2016-07-06 19:31:27 995846][TAG][23767][INFO][Login]player instead to from game(gamesrv101) to game(gamesrv101)
+[2016-07-06 19:31:27 995854][TAG][23767][INFO]POST Login.PLAYER_INSTEAD TO GameSrv
+[2016-07-06 19:31:27 995859][TAG][23767][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:31:27 995864][TAG][23767][DEBUG]arg1:333
+[2016-07-06 19:31:27 995868][TAG][23767][DEBUG]lualib/port/rmi_port.cc:624
+[2016-07-06 19:31:27 995872][TAG][23767][DEBUG]arg2: gamesrv101(10)
+[2016-07-06 19:31:27 995884][TAG][23767][INFO]POS_ Login.PLAYER_INSTEAD TO GameSrv usec:30 body_len:42
+[2016-07-06 19:31:27 995893][TAG][23767][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:102 body_len:32
+[2016-07-06 19:31:27 995911][TAG][23767][INFO]real_send(46)
+
+[2016-07-06 19:31:28 113283][TAG][23767][DEBUG]net/port.cc:220
+[2016-07-06 19:31:28 113307][TAG][23767][DEBUG]real recv 30 bufremain 1024
+
+[2016-07-06 19:31:28 113316][TAG][23767][INFO][Login]CALL Login.PLAYER_EXIT FROM GameSrv
+[2016-07-06 19:31:28 113325][TAG][23767][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:31:28 113332][TAG][23767][DEBUG]333
+[2016-07-06 19:31:28 113348][TAG][23767][INFO][Login]srvid is not found srvid(333)
+[2016-07-06 19:31:28 113357][TAG][23767][INFO][Login]CAL_ Login.PLAYER_EXIT FROM GameSrv usec:40 body_len:26
+[2016-07-06 19:32:14 942150][TAG][23767][DEBUG]net/port.cc:220
+[2016-07-06 19:32:14 942176][TAG][23767][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 19:32:14 942197][TAG][23767][INFO][Gamesrv]ev_close sockfd(5) reason(peer close)
+[2016-07-06 19:32:14 942220][TAG][23767][INFO][Gamesrv]game disconnect srvname(gamesrv101)
+[2016-07-06 19:32:14 956394][TAG][23767][INFO]sig_int
+[2016-07-06 19:32:14 956427][TAG][23767][INFO]atint
+[2016-07-06 19:32:14 956449][TAG][23767][INFO][Asyncsrv]game over!
+[2016-07-06 19:32:14 956459][TAG][23767][INFO]_atexit
+[2016-07-06 19:32:14 956468][TAG][23767][INFO]atexit
+[2016-07-06 19:32:14 956551][TAG][23767][INFO]exit pid(23767)
+[2016-07-06 19:32:16 321151][TAG][24013][INFO]running pid(24013)
+[2016-07-06 19:32:16 321230][TAG][24013][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:32:16 321282][TAG][24013][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:32:16 321496][TAG][24013][INFO]
+[2016-07-06 19:32:16 321689][TAG][24013][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:32:16 322420][TAG][24013][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:32:16 322503][TAG][24013][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:32:16 322885][TAG][24013][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:32:16 323076][TAG][24013][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:32:16 323321][TAG][24013][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:32:16 323539][TAG][24013][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:32:16 324454][TAG][24013][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:32:16 324470][TAG][24013][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:32:16 324478][TAG][24013][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:32:16 324492][TAG][24013][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:32:16 324505][TAG][24013][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:32:16 324540][TAG][24013][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:32:16 324574][TAG][24013][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:32:16 324887][TAG][24013][INFO]
+[2016-07-06 19:32:16 324955][TAG][24013][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:32:16 325059][TAG][24013][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:32:16 325074][TAG][24013][INFO]
+[2016-07-06 19:32:16 325149][TAG][24013][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:32:16 325182][TAG][24013][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:32:16 325431][TAG][24013][INFO]
+[2016-07-06 19:32:16 325457][TAG][24013][INFO]import mod_path(centersrv/login) mod_name(Login)
+[2016-07-06 19:32:16 325482][TAG][24013][INFO]scan file(centersrv/login/main.lua)
+[2016-07-06 19:32:16 325635][TAG][24013][INFO]
+[2016-07-06 19:32:16 325650][TAG][24013][INFO][Asyncsrv]create loop
+[2016-07-06 19:32:16 325908][TAG][24013][INFO][Gamesrv]listen on host(127.0.0.1) port(3335)
+[2016-07-06 19:32:16 325948][TAG][24013][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:32:16 325988][TAG][24013][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:32:16 326012][TAG][24013][INFO]llisten on 3335
+[2016-07-06 19:32:16 326109][TAG][24013][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:32:16 326120][TAG][24013][DEBUG]recvbuf create sockfd(5) buf_len(1024)
+[2016-07-06 19:32:16 326146][TAG][24013][INFO][Gamesrv]accept a game sockfd(5)
+[2016-07-06 19:32:16 326205][TAG][24013][DEBUG]net/port.cc:220
+[2016-07-06 19:32:16 326216][TAG][24013][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:32:16 326229][TAG][24013][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:32:16 326237][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:32:16 326244][TAG][24013][DEBUG]101
+[2016-07-06 19:32:16 326252][TAG][24013][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:32:16 326259][TAG][24013][DEBUG]10 gamesrv101
+[2016-07-06 19:32:16 326276][TAG][24013][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:32:16 326286][TAG][24013][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:58 body_len:36
+[2016-07-06 19:32:17 506239][TAG][24013][DEBUG]net/port.cc:220
+[2016-07-06 19:32:17 506257][TAG][24013][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:32:17 506263][TAG][24013][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:32:17 506271][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:32:17 506275][TAG][24013][DEBUG]101
+[2016-07-06 19:32:17 506279][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:32:17 506287][TAG][24013][DEBUG]333
+[2016-07-06 19:32:17 506307][TAG][24013][INFO][Login]player online uid(333)
+[2016-07-06 19:32:17 506320][TAG][24013][INFO]POST Login.PLAYER_PASS TO GameSrv
+[2016-07-06 19:32:17 506329][TAG][24013][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:32:17 506334][TAG][24013][DEBUG]arg1:333
+[2016-07-06 19:32:17 506340][TAG][24013][INFO]POS_ Login.PLAYER_PASS TO GameSrv usec:19 body_len:26
+[2016-07-06 19:32:17 506345][TAG][24013][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:82 body_len:32
+[2016-07-06 19:32:17 506371][TAG][24013][INFO]real_send(30)
+
+[2016-07-06 19:32:17 617005][TAG][24013][DEBUG]net/port.cc:220
+[2016-07-06 19:32:17 617024][TAG][24013][DEBUG]real recv 30 bufremain 1024
+
+[2016-07-06 19:32:17 617031][TAG][24013][INFO][Login]CALL Login.PLAYER_EXIT FROM GameSrv
+[2016-07-06 19:32:17 617046][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:32:17 617051][TAG][24013][DEBUG]333
+[2016-07-06 19:32:17 617062][TAG][24013][INFO][Login]srvid is not found srvid(333)
+[2016-07-06 19:32:17 617067][TAG][24013][INFO][Login]CAL_ Login.PLAYER_EXIT FROM GameSrv usec:37 body_len:26
+[2016-07-06 19:33:10 82224][TAG][24013][DEBUG]net/port.cc:220
+[2016-07-06 19:33:10 82245][TAG][24013][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:33:10 82253][TAG][24013][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:33:10 82260][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:10 82268][TAG][24013][DEBUG]101
+[2016-07-06 19:33:10 82276][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:10 82285][TAG][24013][DEBUG]333
+[2016-07-06 19:33:10 82307][TAG][24013][INFO][Login]player instead to from game(gamesrv101) to game(gamesrv101)
+[2016-07-06 19:33:10 82315][TAG][24013][INFO]POST Login.PLAYER_INSTEAD TO GameSrv
+[2016-07-06 19:33:10 82321][TAG][24013][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:33:10 82326][TAG][24013][DEBUG]arg1:333
+[2016-07-06 19:33:10 82330][TAG][24013][DEBUG]lualib/port/rmi_port.cc:624
+[2016-07-06 19:33:10 82335][TAG][24013][DEBUG]arg2: gamesrv101(10)
+[2016-07-06 19:33:10 82344][TAG][24013][INFO]POS_ Login.PLAYER_INSTEAD TO GameSrv usec:28 body_len:42
+[2016-07-06 19:33:10 82352][TAG][24013][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:100 body_len:32
+[2016-07-06 19:33:10 82380][TAG][24013][INFO]real_send(46)
+
+[2016-07-06 19:33:12 161984][TAG][24013][DEBUG]net/port.cc:220
+[2016-07-06 19:33:12 162003][TAG][24013][DEBUG]real recv 35 bufremain 1024
+
+[2016-07-06 19:33:12 162018][TAG][24013][INFO][Login]CALL Login.PLAYER_EXIT FROM GameSrv
+[2016-07-06 19:33:12 162028][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:12 162035][TAG][24013][DEBUG]101
+[2016-07-06 19:33:12 162042][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:12 162049][TAG][24013][DEBUG]333
+[2016-07-06 19:33:12 162068][TAG][24013][INFO][Login]player offline uid(333)
+[2016-07-06 19:33:12 162091][TAG][24013][INFO]POST Login.PLAYER_PASS TO GameSrv
+[2016-07-06 19:33:12 162100][TAG][24013][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:33:12 162107][TAG][24013][DEBUG]arg1:333
+[2016-07-06 19:33:12 162116][TAG][24013][INFO]POS_ Login.PLAYER_PASS TO GameSrv usec:25 body_len:26
+[2016-07-06 19:33:12 162124][TAG][24013][INFO][Login]CAL_ Login.PLAYER_EXIT FROM GameSrv usec:108 body_len:31
+[2016-07-06 19:33:12 162146][TAG][24013][INFO]real_send(30)
+
+[2016-07-06 19:33:12 163926][TAG][24013][DEBUG]net/port.cc:220
+[2016-07-06 19:33:12 163946][TAG][24013][DEBUG]real recv 30 bufremain 1024
+
+[2016-07-06 19:33:12 163955][TAG][24013][INFO][Login]CALL Login.PLAYER_EXIT FROM GameSrv
+[2016-07-06 19:33:12 163964][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:12 163972][TAG][24013][DEBUG]333
+[2016-07-06 19:33:12 163988][TAG][24013][INFO][Login]srvid is not found srvid(333)
+[2016-07-06 19:33:12 163997][TAG][24013][INFO][Login]CAL_ Login.PLAYER_EXIT FROM GameSrv usec:43 body_len:26
+[2016-07-06 19:33:27 977913][TAG][24013][DEBUG]net/port.cc:220
+[2016-07-06 19:33:27 977931][TAG][24013][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:33:27 977940][TAG][24013][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:33:27 977951][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:27 977959][TAG][24013][DEBUG]101
+[2016-07-06 19:33:27 977967][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:27 977974][TAG][24013][DEBUG]333
+[2016-07-06 19:33:27 977993][TAG][24013][INFO][Login]player instead to from game(gamesrv101) to game(gamesrv101)
+[2016-07-06 19:33:27 978004][TAG][24013][ERROR]lualib/port/rmi_port.cc:970
+[2016-07-06 19:33:27 978011][TAG][24013][ERROR]POST arg err
+[2016-07-06 19:33:27 978022][TAG][24013][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:83 body_len:32
+[2016-07-06 19:33:29 897878][TAG][24013][DEBUG]net/port.cc:220
+[2016-07-06 19:33:29 897906][TAG][24013][DEBUG]real recv 35 bufremain 1024
+
+[2016-07-06 19:33:29 897915][TAG][24013][INFO][Login]CALL Login.PLAYER_EXIT FROM GameSrv
+[2016-07-06 19:33:29 897926][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:29 897934][TAG][24013][DEBUG]101
+[2016-07-06 19:33:29 897941][TAG][24013][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:29 897947][TAG][24013][DEBUG]333
+[2016-07-06 19:33:29 897964][TAG][24013][INFO][Login]player offline uid(333)
+[2016-07-06 19:33:29 897980][TAG][24013][INFO]POST Login.PLAYER_PASS TO GameSrv
+[2016-07-06 19:33:29 897990][TAG][24013][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:33:29 897997][TAG][24013][DEBUG]arg1:333
+[2016-07-06 19:33:29 898005][TAG][24013][INFO]POS_ Login.PLAYER_PASS TO GameSrv usec:26 body_len:26
+[2016-07-06 19:33:29 898014][TAG][24013][INFO][Login]CAL_ Login.PLAYER_EXIT FROM GameSrv usec:99 body_len:31
+[2016-07-06 19:33:29 898031][TAG][24013][INFO]real_send(30)
+
+[2016-07-06 19:34:49 940866][TAG][24013][DEBUG]net/port.cc:220
+[2016-07-06 19:34:49 940886][TAG][24013][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 19:34:49 940912][TAG][24013][INFO][Gamesrv]ev_close sockfd(5) reason(peer close)
+[2016-07-06 19:34:49 940925][TAG][24013][INFO][Gamesrv]game disconnect srvname(gamesrv101)
+[2016-07-06 19:34:49 955543][TAG][24013][INFO]sig_int
+[2016-07-06 19:34:49 955586][TAG][24013][INFO]atint
+[2016-07-06 19:34:49 955609][TAG][24013][INFO][Asyncsrv]game over!
+[2016-07-06 19:34:49 955619][TAG][24013][INFO]_atexit
+[2016-07-06 19:34:49 955627][TAG][24013][INFO]atexit
+[2016-07-06 19:34:49 955732][TAG][24013][INFO]exit pid(24013)
+[2016-07-06 19:34:53 285874][TAG][24690][INFO]running pid(24690)
+[2016-07-06 19:34:53 286563][TAG][24690][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:34:53 286629][TAG][24690][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:34:53 287626][TAG][24690][INFO]
+[2016-07-06 19:34:53 287985][TAG][24690][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:34:53 289824][TAG][24690][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:34:53 290164][TAG][24690][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:34:53 290970][TAG][24690][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:34:53 291286][TAG][24690][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:34:53 292042][TAG][24690][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:34:53 293032][TAG][24690][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:34:53 295586][TAG][24690][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:34:53 295610][TAG][24690][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:34:53 295624][TAG][24690][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:34:53 295638][TAG][24690][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:34:53 295652][TAG][24690][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:34:53 296264][TAG][24690][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:34:53 296317][TAG][24690][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:34:53 296687][TAG][24690][INFO]
+[2016-07-06 19:34:53 296726][TAG][24690][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:34:53 296760][TAG][24690][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:34:53 297346][TAG][24690][INFO]
+[2016-07-06 19:34:53 297382][TAG][24690][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:34:53 297417][TAG][24690][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:34:53 298422][TAG][24690][INFO]
+[2016-07-06 19:34:53 298478][TAG][24690][INFO]import mod_path(centersrv/login) mod_name(Login)
+[2016-07-06 19:34:53 298521][TAG][24690][INFO]scan file(centersrv/login/main.lua)
+[2016-07-06 19:34:53 299490][TAG][24690][INFO]ignore file(centersrv/login/.main.lua.swp)!!!!!
+[2016-07-06 19:34:53 299510][TAG][24690][INFO]
+[2016-07-06 19:34:53 299531][TAG][24690][INFO][Asyncsrv]create loop
+[2016-07-06 19:34:53 299903][TAG][24690][INFO][Gamesrv]listen on host(127.0.0.1) port(3335)
+[2016-07-06 19:34:53 299945][TAG][24690][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:34:53 299955][TAG][24690][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:34:53 299985][TAG][24690][INFO]llisten on 3335
+[2016-07-06 19:34:53 300180][TAG][24690][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:34:53 300212][TAG][24690][DEBUG]recvbuf create sockfd(5) buf_len(1024)
+[2016-07-06 19:34:53 300239][TAG][24690][INFO][Gamesrv]accept a game sockfd(5)
+[2016-07-06 19:34:53 300255][TAG][24690][DEBUG]net/port.cc:220
+[2016-07-06 19:34:53 300263][TAG][24690][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:34:53 300273][TAG][24690][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:34:53 300281][TAG][24690][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:34:53 300287][TAG][24690][DEBUG]101
+[2016-07-06 19:34:53 300295][TAG][24690][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:34:53 300301][TAG][24690][DEBUG]10 gamesrv101
+[2016-07-06 19:34:53 300316][TAG][24690][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:34:53 300326][TAG][24690][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:52 body_len:36
+[2016-07-06 19:34:54 482141][TAG][24690][DEBUG]net/port.cc:220
+[2016-07-06 19:34:54 482160][TAG][24690][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:34:54 482168][TAG][24690][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:34:54 482178][TAG][24690][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:34:54 482183][TAG][24690][DEBUG]101
+[2016-07-06 19:34:54 482187][TAG][24690][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:34:54 482191][TAG][24690][DEBUG]333
+[2016-07-06 19:34:54 482205][TAG][24690][INFO][Login]player online uid(333)
+[2016-07-06 19:34:54 482216][TAG][24690][INFO]POST Login.PLAYER_PASS TO GameSrv
+[2016-07-06 19:34:54 482226][TAG][24690][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:34:54 482246][TAG][24690][DEBUG]arg1:333
+[2016-07-06 19:34:54 482253][TAG][24690][INFO]POS_ Login.PLAYER_PASS TO GameSrv usec:37 body_len:26
+[2016-07-06 19:34:54 482262][TAG][24690][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:94 body_len:32
+[2016-07-06 19:34:54 482284][TAG][24690][INFO]real_send(30)
+
+[2016-07-06 19:34:54 574529][TAG][24690][DEBUG]net/port.cc:220
+[2016-07-06 19:34:54 574547][TAG][24690][DEBUG]real recv 30 bufremain 1024
+
+[2016-07-06 19:34:54 574555][TAG][24690][INFO][Login]CALL Login.PLAYER_EXIT FROM GameSrv
+[2016-07-06 19:34:54 574562][TAG][24690][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:34:54 574566][TAG][24690][DEBUG]333
+[2016-07-06 19:34:54 574578][TAG][24690][INFO][Login]srvid is not found srvid(333)
+[2016-07-06 19:34:54 574583][TAG][24690][INFO][Login]CAL_ Login.PLAYER_EXIT FROM GameSrv usec:28 body_len:26
+[2016-07-06 19:35:45 997574][TAG][24690][DEBUG]net/port.cc:220
+[2016-07-06 19:35:45 997596][TAG][24690][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 19:35:45 997618][TAG][24690][INFO][Gamesrv]ev_close sockfd(5) reason(peer close)
+[2016-07-06 19:35:45 997634][TAG][24690][INFO][Gamesrv]game disconnect srvname(gamesrv101)
+[2016-07-06 19:35:46 11657][TAG][24690][INFO]sig_int
+[2016-07-06 19:35:46 11702][TAG][24690][INFO]atint
+[2016-07-06 19:35:46 11722][TAG][24690][INFO][Asyncsrv]game over!
+[2016-07-06 19:35:46 11728][TAG][24690][INFO]_atexit
+[2016-07-06 19:35:46 11746][TAG][24690][INFO]atexit
+[2016-07-06 19:35:46 11826][TAG][24690][INFO]exit pid(24690)
+[2016-07-06 19:35:47 550362][TAG][24938][INFO]running pid(24938)
+[2016-07-06 19:35:47 550547][TAG][24938][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:35:47 550610][TAG][24938][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:35:47 550777][TAG][24938][INFO]
+[2016-07-06 19:35:47 550910][TAG][24938][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:35:47 551247][TAG][24938][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:35:47 551337][TAG][24938][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:35:47 551483][TAG][24938][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:35:47 551646][TAG][24938][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:35:47 551808][TAG][24938][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:35:47 552003][TAG][24938][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:35:47 552750][TAG][24938][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:35:47 552783][TAG][24938][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:35:47 552796][TAG][24938][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:35:47 552808][TAG][24938][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:35:47 552821][TAG][24938][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:35:47 552907][TAG][24938][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:35:47 552949][TAG][24938][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:35:47 553118][TAG][24938][INFO]
+[2016-07-06 19:35:47 553147][TAG][24938][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:35:47 553168][TAG][24938][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:35:47 553178][TAG][24938][INFO]
+[2016-07-06 19:35:47 553202][TAG][24938][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:35:47 553221][TAG][24938][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:35:47 553484][TAG][24938][INFO]
+[2016-07-06 19:35:47 553520][TAG][24938][INFO]import mod_path(centersrv/login) mod_name(Login)
+[2016-07-06 19:35:47 553553][TAG][24938][INFO]scan file(centersrv/login/main.lua)
+[2016-07-06 19:35:47 553735][TAG][24938][INFO]ignore file(centersrv/login/.main.lua.swp)!!!!!
+[2016-07-06 19:35:47 553746][TAG][24938][INFO]
+[2016-07-06 19:35:47 553758][TAG][24938][INFO][Asyncsrv]create loop
+[2016-07-06 19:35:47 553897][TAG][24938][INFO][Gamesrv]listen on host(127.0.0.1) port(3335)
+[2016-07-06 19:35:47 559459][TAG][24938][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:35:47 559486][TAG][24938][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:35:47 559521][TAG][24938][INFO]llisten on 3335
+[2016-07-06 19:35:47 559579][TAG][24938][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:35:47 559590][TAG][24938][DEBUG]recvbuf create sockfd(5) buf_len(1024)
+[2016-07-06 19:35:47 559622][TAG][24938][INFO][Gamesrv]accept a game sockfd(5)
+[2016-07-06 19:35:47 559688][TAG][24938][DEBUG]net/port.cc:220
+[2016-07-06 19:35:47 559698][TAG][24938][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:35:47 559708][TAG][24938][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:35:47 559713][TAG][24938][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:35:47 559718][TAG][24938][DEBUG]101
+[2016-07-06 19:35:47 559722][TAG][24938][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:47 559726][TAG][24938][DEBUG]10 gamesrv101
+[2016-07-06 19:35:47 559739][TAG][24938][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:35:47 559745][TAG][24938][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:38 body_len:36
+[2016-07-06 19:35:51 220364][TAG][24938][DEBUG]net/port.cc:220
+[2016-07-06 19:35:51 220383][TAG][24938][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 19:35:51 220403][TAG][24938][INFO][Gamesrv]ev_close sockfd(5) reason(peer close)
+[2016-07-06 19:35:51 220431][TAG][24938][INFO][Gamesrv]game disconnect srvname(gamesrv101)
+[2016-07-06 19:35:51 234227][TAG][24938][INFO]sig_int
+[2016-07-06 19:35:51 234266][TAG][24938][INFO]atint
+[2016-07-06 19:35:51 234289][TAG][24938][INFO][Asyncsrv]game over!
+[2016-07-06 19:35:51 234305][TAG][24938][INFO]_atexit
+[2016-07-06 19:35:51 234314][TAG][24938][INFO]atexit
+[2016-07-06 19:35:51 234397][TAG][24938][INFO]exit pid(24938)
+[2016-07-06 19:35:54 33733][TAG][24998][INFO]running pid(24998)
+[2016-07-06 19:35:54 33808][TAG][24998][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:35:54 33857][TAG][24998][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:35:54 33983][TAG][24998][INFO]
+[2016-07-06 19:35:54 34078][TAG][24998][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:35:54 34407][TAG][24998][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:35:54 35676][TAG][24998][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:35:54 35862][TAG][24998][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:35:54 35944][TAG][24998][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:35:54 36062][TAG][24998][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:35:54 36208][TAG][24998][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:35:54 37917][TAG][24998][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:35:54 37945][TAG][24998][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:35:54 37954][TAG][24998][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:35:54 37964][TAG][24998][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:35:54 37976][TAG][24998][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:35:54 38019][TAG][24998][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:35:54 38062][TAG][24998][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:35:54 38208][TAG][24998][INFO]
+[2016-07-06 19:35:54 38233][TAG][24998][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:35:54 38252][TAG][24998][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:35:54 38260][TAG][24998][INFO]
+[2016-07-06 19:35:54 38285][TAG][24998][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:35:54 38303][TAG][24998][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:35:54 38442][TAG][24998][INFO]
+[2016-07-06 19:35:54 38476][TAG][24998][INFO]import mod_path(centersrv/login) mod_name(Login)
+[2016-07-06 19:35:54 38512][TAG][24998][INFO]scan file(centersrv/login/main.lua)
+[2016-07-06 19:35:54 38677][TAG][24998][INFO]ignore file(centersrv/login/.main.lua.swp)!!!!!
+[2016-07-06 19:35:54 38688][TAG][24998][INFO]
+[2016-07-06 19:35:54 38699][TAG][24998][INFO][Asyncsrv]create loop
+[2016-07-06 19:35:54 40014][TAG][24998][INFO][Gamesrv]listen on host(127.0.0.1) port(3335)
+[2016-07-06 19:35:54 58677][TAG][24998][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:35:54 58719][TAG][24998][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:35:54 58754][TAG][24998][INFO]llisten on 3335
+[2016-07-06 19:35:54 58832][TAG][24998][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:35:54 58903][TAG][24998][DEBUG]recvbuf create sockfd(5) buf_len(1024)
+[2016-07-06 19:35:54 59082][TAG][24998][INFO][Gamesrv]accept a game sockfd(5)
+[2016-07-06 19:35:54 59099][TAG][24998][DEBUG]net/port.cc:220
+[2016-07-06 19:35:54 59105][TAG][24998][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:35:54 59112][TAG][24998][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:35:54 59117][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:35:54 59121][TAG][24998][DEBUG]101
+[2016-07-06 19:35:54 59125][TAG][24998][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:54 59129][TAG][24998][DEBUG]10 gamesrv101
+[2016-07-06 19:35:54 59140][TAG][24998][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:35:54 59146][TAG][24998][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:34 body_len:36
+[2016-07-06 19:35:55 331390][TAG][24998][DEBUG]net/port.cc:220
+[2016-07-06 19:35:55 331409][TAG][24998][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:35:55 331418][TAG][24998][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:35:55 331430][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:35:55 331437][TAG][24998][DEBUG]101
+[2016-07-06 19:35:55 331444][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:35:55 331449][TAG][24998][DEBUG]333
+[2016-07-06 19:35:55 331463][TAG][24998][INFO][Login]player online uid(333)
+[2016-07-06 19:35:55 331474][TAG][24998][INFO]POST Login.PLAYER_PASS TO GameSrv
+[2016-07-06 19:35:55 331483][TAG][24998][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:35:55 331488][TAG][24998][DEBUG]arg1:333
+[2016-07-06 19:35:55 331494][TAG][24998][INFO]POS_ Login.PLAYER_PASS TO GameSrv usec:20 body_len:26
+[2016-07-06 19:35:55 331499][TAG][24998][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:82 body_len:32
+[2016-07-06 19:35:55 331518][TAG][24998][INFO]real_send(30)
+
+[2016-07-06 19:35:55 433035][TAG][24998][DEBUG]net/port.cc:220
+[2016-07-06 19:35:55 433066][TAG][24998][DEBUG]real recv 35 bufremain 1024
+
+[2016-07-06 19:35:55 433075][TAG][24998][INFO][Login]CALL Login.PLAYER_EXIT FROM GameSrv
+[2016-07-06 19:35:55 433082][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:35:55 433092][TAG][24998][DEBUG]101
+[2016-07-06 19:35:55 433099][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:35:55 433103][TAG][24998][DEBUG]333
+[2016-07-06 19:35:55 433126][TAG][24998][INFO][Login]player offline uid(333)
+[2016-07-06 19:35:55 433133][TAG][24998][INFO][Login]CAL_ Login.PLAYER_EXIT FROM GameSrv usec:58 body_len:31
+[2016-07-06 19:36:05 930363][TAG][24998][DEBUG]net/port.cc:220
+[2016-07-06 19:36:05 930384][TAG][24998][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:36:05 930392][TAG][24998][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:36:05 930399][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:05 930403][TAG][24998][DEBUG]101
+[2016-07-06 19:36:05 930407][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:05 930411][TAG][24998][DEBUG]333
+[2016-07-06 19:36:05 930425][TAG][24998][INFO][Login]player online uid(333)
+[2016-07-06 19:36:05 930434][TAG][24998][INFO]POST Login.PLAYER_PASS TO GameSrv
+[2016-07-06 19:36:05 930439][TAG][24998][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:05 930443][TAG][24998][DEBUG]arg1:333
+[2016-07-06 19:36:05 930448][TAG][24998][INFO]POS_ Login.PLAYER_PASS TO GameSrv usec:15 body_len:26
+[2016-07-06 19:36:05 930454][TAG][24998][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:62 body_len:32
+[2016-07-06 19:36:05 930471][TAG][24998][INFO]real_send(30)
+
+[2016-07-06 19:36:06 13268][TAG][24998][DEBUG]net/port.cc:220
+[2016-07-06 19:36:06 13290][TAG][24998][DEBUG]real recv 35 bufremain 1024
+
+[2016-07-06 19:36:06 13299][TAG][24998][INFO][Login]CALL Login.PLAYER_EXIT FROM GameSrv
+[2016-07-06 19:36:06 13308][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:06 13315][TAG][24998][DEBUG]101
+[2016-07-06 19:36:06 13322][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:06 13328][TAG][24998][DEBUG]333
+[2016-07-06 19:36:06 13343][TAG][24998][INFO][Login]player offline uid(333)
+[2016-07-06 19:36:06 13354][TAG][24998][INFO][Login]CAL_ Login.PLAYER_EXIT FROM GameSrv usec:54 body_len:31
+[2016-07-06 19:36:07 754439][TAG][24998][DEBUG]net/port.cc:220
+[2016-07-06 19:36:07 754470][TAG][24998][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:36:07 754481][TAG][24998][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:36:07 754492][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:07 754511][TAG][24998][DEBUG]101
+[2016-07-06 19:36:07 754519][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:07 754527][TAG][24998][DEBUG]333
+[2016-07-06 19:36:07 754547][TAG][24998][INFO][Login]player online uid(333)
+[2016-07-06 19:36:07 754565][TAG][24998][INFO]POST Login.PLAYER_PASS TO GameSrv
+[2016-07-06 19:36:07 754575][TAG][24998][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:07 754582][TAG][24998][DEBUG]arg1:333
+[2016-07-06 19:36:07 754591][TAG][24998][INFO]POS_ Login.PLAYER_PASS TO GameSrv usec:25 body_len:26
+[2016-07-06 19:36:07 754600][TAG][24998][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:119 body_len:32
+[2016-07-06 19:36:07 754627][TAG][24998][INFO]real_send(30)
+
+[2016-07-06 19:36:07 847798][TAG][24998][DEBUG]net/port.cc:220
+[2016-07-06 19:36:07 847814][TAG][24998][DEBUG]real recv 35 bufremain 1024
+
+[2016-07-06 19:36:07 847820][TAG][24998][INFO][Login]CALL Login.PLAYER_EXIT FROM GameSrv
+[2016-07-06 19:36:07 847826][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:07 847834][TAG][24998][DEBUG]101
+[2016-07-06 19:36:07 847842][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:07 847849][TAG][24998][DEBUG]333
+[2016-07-06 19:36:07 847861][TAG][24998][INFO][Login]player offline uid(333)
+[2016-07-06 19:36:07 847868][TAG][24998][INFO][Login]CAL_ Login.PLAYER_EXIT FROM GameSrv usec:48 body_len:31
+[2016-07-06 19:36:08 619075][TAG][24998][DEBUG]net/port.cc:220
+[2016-07-06 19:36:08 619096][TAG][24998][DEBUG]real recv 36 bufremain 1024
+
+[2016-07-06 19:36:08 619107][TAG][24998][INFO][Login]CALL Login.PLAYER_ENTER FROM GameSrv
+[2016-07-06 19:36:08 619117][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:08 619121][TAG][24998][DEBUG]101
+[2016-07-06 19:36:08 619125][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:08 619129][TAG][24998][DEBUG]333
+[2016-07-06 19:36:08 619143][TAG][24998][INFO][Login]player online uid(333)
+[2016-07-06 19:36:08 619162][TAG][24998][INFO]POST Login.PLAYER_PASS TO GameSrv
+[2016-07-06 19:36:08 619172][TAG][24998][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:08 619179][TAG][24998][DEBUG]arg1:333
+[2016-07-06 19:36:08 619188][TAG][24998][INFO]POS_ Login.PLAYER_PASS TO GameSrv usec:26 body_len:26
+[2016-07-06 19:36:08 619196][TAG][24998][INFO][Login]CAL_ Login.PLAYER_ENTER FROM GameSrv usec:90 body_len:32
+[2016-07-06 19:36:08 619217][TAG][24998][INFO]real_send(30)
+
+[2016-07-06 19:36:08 700109][TAG][24998][DEBUG]net/port.cc:220
+[2016-07-06 19:36:08 700129][TAG][24998][DEBUG]real recv 35 bufremain 1024
+
+[2016-07-06 19:36:08 700139][TAG][24998][INFO][Login]CALL Login.PLAYER_EXIT FROM GameSrv
+[2016-07-06 19:36:08 700149][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:08 700157][TAG][24998][DEBUG]101
+[2016-07-06 19:36:08 700162][TAG][24998][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:08 700166][TAG][24998][DEBUG]333
+[2016-07-06 19:36:08 700176][TAG][24998][INFO][Login]player offline uid(333)
+[2016-07-06 19:36:08 700183][TAG][24998][INFO][Login]CAL_ Login.PLAYER_EXIT FROM GameSrv usec:44 body_len:31

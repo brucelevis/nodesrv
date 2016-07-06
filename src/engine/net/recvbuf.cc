@@ -1,4 +1,5 @@
 #include "recvbuf.h"
+#include "log/log.h"
 #include <memory.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -196,7 +197,7 @@ namespace Recvbuf
             self->buf = (char *)malloc(size);
             if(self->buf == NULL)
             {
-                printf("malloc fail");
+                LOG_ERROR("malloc fail");
                 return 1;
             }
             self->buf_len = size;
@@ -204,7 +205,7 @@ namespace Recvbuf
         }
         self->rptr = 0;
         self->wptr = 0;
-        printf("recvbuf create sockfd(%d) buf_len(%d)\n", sockfd, self->buf_len);
+        LOG_DEBUG("recvbuf create sockfd(%d) buf_len(%d)", sockfd, self->buf_len);
         return 0;
     }
 

@@ -11,10 +11,21 @@ Thu Oct  1 09:08:23 CST 2015
 还是将BUF移进来吧，效率高点, 减少穿越次数
 */
 
-namespace Port {
+extern "C" {
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+#include <tolua++.h>
+}
 
-    typedef void ae_read_func(int sockfd);
+#include "net/ae.h"
+
+namespace Port 
+{
+    #define MAX_SOCK 10240
+    typedef int ae_read_func(int sockfd, const char* buf, int datalen);
     typedef void ae_write_func(int sockfd);
+    typedef int ae_accept_func(int sockfd);
 
     typedef struct Port
     {
@@ -23,6 +34,7 @@ namespace Port {
         void *userdata;
         ae_read_func* on_read;
         ae_write_func* on_write;
+        ae_accept_func* on_accept;
         char lua_on_read[128];
         char lua_on_accept[128];
         char lua_on_close[128];
@@ -42,15 +54,19 @@ namespace Port {
         int recv_seq; 
         int userdata;
         int srvid;
+        int handshake;
     }Sock;
 
     int remove_write_event(int sockfd);
     int add_write_event(int sockfd);
+
     int listen(Port* port, unsigned short listenport);
     const char* getpeerip(int sockfd);;
     int getpeerport(int sockfd);
+
     int syncconnect(Port* port, const char* ip, unsigned short portnum);
     int connect(Port* port, const char* ip, unsigned short portnum);
+
     int free(Port* port);
     int rename(Port* port, const char *name);
     int getsrvid(int sockfd);
@@ -64,9 +80,13 @@ namespace Port {
     int send(int sockfd, char *buf, int buflen);
     int recv(int sockfd, char *buf, int buflen);
     Port* sock2port(int sockfd);
+    Sock* sockfromfd(int sockfd);
+    bool sock_is_close(int sockfd);
+
 
     int set_read_func(Port* port, ae_read_func* func);
     int set_write_func(Port* port, ae_read_func* func);
+    int set_accept_func(Port* port, ae_accept_func* func);
 };
 
 #endif

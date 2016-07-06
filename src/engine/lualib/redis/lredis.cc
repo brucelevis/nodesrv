@@ -1,7 +1,7 @@
-#include "stdafx.h"
-
-#include "hiredis.h"
-#include "async.h"
+#include "redis/lredis.h"
+#include "log/log.h"
+#include <hiredis.h>
+#include <async.h>
 
 static void getCallback_push_reply(lua_State *L, redisReply *reply)
 {

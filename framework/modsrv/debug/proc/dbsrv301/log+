@@ -1,0 +1,1034 @@
+[2016-07-06 19:30:33 156364][TAG][23523][INFO]running pid(23523)
+[2016-07-06 19:30:33 157191][TAG][23523][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:30:33 157699][TAG][23523][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:30:33 158469][TAG][23523][INFO]
+[2016-07-06 19:30:33 159362][TAG][23523][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:30:33 161632][TAG][23523][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:30:33 162373][TAG][23523][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:30:33 163929][TAG][23523][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:30:33 164521][TAG][23523][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:30:33 166910][TAG][23523][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:30:33 167761][TAG][23523][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:30:33 173019][TAG][23523][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:30:33 173045][TAG][23523][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:30:33 173060][TAG][23523][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:30:33 173073][TAG][23523][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:30:33 173088][TAG][23523][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:30:33 173137][TAG][23523][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:30:33 173183][TAG][23523][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:30:33 174976][TAG][23523][INFO]
+[2016-07-06 19:30:33 175144][TAG][23523][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:30:33 175185][TAG][23523][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:30:33 175197][TAG][23523][INFO]
+[2016-07-06 19:30:33 175232][TAG][23523][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:30:33 175261][TAG][23523][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:30:33 177095][TAG][23523][INFO]
+[2016-07-06 19:30:33 177269][TAG][23523][INFO]import mod_path(dbsrv/dbsrv) mod_name(Dbsrv)
+[2016-07-06 19:30:33 177319][TAG][23523][INFO]scan file(dbsrv/dbsrv/mysql_conn.lua)
+[2016-07-06 19:30:33 179713][TAG][23523][INFO]scan file(dbsrv/dbsrv/dbsrv.lua)
+[2016-07-06 19:30:33 181794][TAG][23523][INFO]scan file(dbsrv/dbsrv/redis_conn.lua)
+[2016-07-06 19:30:33 182544][TAG][23523][INFO]
+[2016-07-06 19:30:33 182706][TAG][23523][INFO][Asyncsrv]create loop
+[2016-07-06 19:30:33 183119][TAG][23523][INFO][Gamesrv]listen on host(127.0.0.1) port(3334)
+[2016-07-06 19:30:33 183158][TAG][23523][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:30:33 183217][TAG][23523][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:30:33 183539][TAG][23523][INFO]llisten on 3334
+[2016-07-06 19:30:33 183709][TAG][23523][ERROR]lualib/redis/lredis.cc:80
+[2016-07-06 19:30:33 183768][TAG][23523][ERROR]connect error
+[2016-07-06 19:30:33 183785][TAG][23523][INFO][Dbsrv]fail connect redis index(1) host(127.0.0.1) port(6379) dbname(1)
+[2016-07-06 19:30:33 192318][TAG][23523][INFO][Dbsrv]success connect mysql index(1) host(127.0.0.1) dbname(test) user(root)
+[2016-07-06 19:30:33 192441][TAG][23523][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:30:33 192453][TAG][23523][DEBUG]recvbuf create sockfd(6) buf_len(1024)
+[2016-07-06 19:30:33 192477][TAG][23523][INFO][Gamesrv]accept a game sockfd(6)
+[2016-07-06 19:30:33 192494][TAG][23523][DEBUG]net/port.cc:220
+[2016-07-06 19:30:33 192503][TAG][23523][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:30:33 192514][TAG][23523][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:30:33 192522][TAG][23523][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:30:33 192529][TAG][23523][DEBUG]101
+[2016-07-06 19:30:33 192536][TAG][23523][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:30:33 192615][TAG][23523][DEBUG]10 gamesrv101
+[2016-07-06 19:30:33 192690][TAG][23523][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:30:33 192700][TAG][23523][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:187 body_len:36
+[2016-07-06 19:30:37 225884][TAG][23523][DEBUG]net/port.cc:220
+[2016-07-06 19:30:37 225902][TAG][23523][DEBUG]real recv 80 bufremain 1024
+
+[2016-07-06 19:30:37 225911][TAG][23523][INFO][Dbsrv]CALL Dbsrv.GET FROM GameSrv
+[2016-07-06 19:30:37 225926][TAG][23523][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:30:37 225933][TAG][23523][DEBUG]333
+[2016-07-06 19:30:37 225942][TAG][23523][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:30:37 225949][TAG][23523][DEBUG]31 Login.msg_db_srv_get_playerdata
+[2016-07-06 19:30:37 225957][TAG][23523][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:30:37 225969][TAG][23523][DEBUG]4 user
+[2016-07-06 19:30:37 225976][TAG][23523][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:30:37 225983][TAG][23523][DEBUG]4 task
+[2016-07-06 19:30:37 225990][TAG][23523][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:30:37 225997][TAG][23523][DEBUG]7 achieve
+[2016-07-06 19:30:37 226450][TAG][23523][INFO][Dbsrv]load from mysql 333.task(0)
+[2016-07-06 19:30:37 226635][TAG][23523][INFO][Dbsrv]load from mysql 333.achieve(0)
+[2016-07-06 19:30:37 226654][TAG][23523][INFO][Dbsrv]total_size(0)
+[2016-07-06 19:30:37 226670][TAG][23523][INFO]POST Login.msg_db_srv_get_playerdata TO GameSrv
+[2016-07-06 19:30:37 226684][TAG][23523][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:30:37 226690][TAG][23523][DEBUG]arg1:333
+[2016-07-06 19:30:37 226694][TAG][23523][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:30:37 226700][TAG][23523][DEBUG]arg2:1
+[2016-07-06 19:30:37 226709][TAG][23523][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:30:37 226717][TAG][23523][DEBUG]arg3:dbproto.UserData
+[2016-07-06 19:30:37 226725][TAG][23523][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:30:37 226741][TAG][23523][DEBUG]
+[2016-07-06 19:30:37 226750][TAG][23523][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:30:37 226758][TAG][23523][DEBUG]arg4:dbproto.TaskData
+[2016-07-06 19:30:37 226763][TAG][23523][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:30:37 226768][TAG][23523][DEBUG]
+[2016-07-06 19:30:37 226772][TAG][23523][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:30:37 226777][TAG][23523][DEBUG]arg5:dbproto.AchieveData
+[2016-07-06 19:30:37 226793][TAG][23523][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:30:37 226798][TAG][23523][DEBUG]
+[2016-07-06 19:30:37 226804][TAG][23523][INFO]POS_ Login.msg_db_srv_get_playerdata TO GameSrv usec:134 body_len:117
+[2016-07-06 19:30:37 226809][TAG][23523][INFO][Dbsrv]CAL_ Dbsrv.GET FROM GameSrv usec:899 body_len:76
+[2016-07-06 19:30:37 226832][TAG][23523][INFO]real_send(121)
+
+[2016-07-06 19:31:19 524655][TAG][23523][DEBUG]net/port.cc:220
+[2016-07-06 19:31:19 524678][TAG][23523][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 19:31:19 524700][TAG][23523][INFO][Gamesrv]ev_close sockfd(6) reason(peer close)
+[2016-07-06 19:31:19 524718][TAG][23523][INFO][Gamesrv]game disconnect srvname(gamesrv101)
+[2016-07-06 19:31:19 531209][TAG][23523][INFO]sig_int
+[2016-07-06 19:31:19 531244][TAG][23523][INFO]atint
+[2016-07-06 19:31:19 531273][TAG][23523][INFO][Asyncsrv]game over!
+[2016-07-06 19:31:19 531287][TAG][23523][INFO]_atexit
+[2016-07-06 19:31:19 531295][TAG][23523][INFO]atexit
+[2016-07-06 19:31:19 531397][TAG][23523][INFO]exit pid(23523)
+[2016-07-06 19:31:23 989690][TAG][23764][INFO]running pid(23764)
+[2016-07-06 19:31:23 989788][TAG][23764][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:31:23 989853][TAG][23764][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:31:23 990023][TAG][23764][INFO]
+[2016-07-06 19:31:23 990176][TAG][23764][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:31:23 990659][TAG][23764][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:31:23 990786][TAG][23764][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:31:23 990990][TAG][23764][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:31:23 991071][TAG][23764][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:31:23 991217][TAG][23764][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:31:23 991388][TAG][23764][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:31:23 992160][TAG][23764][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:31:23 992184][TAG][23764][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:31:23 992198][TAG][23764][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:31:23 992211][TAG][23764][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:31:23 992249][TAG][23764][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:31:23 992279][TAG][23764][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:31:23 992309][TAG][23764][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:31:23 992457][TAG][23764][INFO]
+[2016-07-06 19:31:23 992488][TAG][23764][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:31:23 992509][TAG][23764][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:31:23 992520][TAG][23764][INFO]
+[2016-07-06 19:31:23 992546][TAG][23764][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:31:23 992564][TAG][23764][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:31:23 992724][TAG][23764][INFO]
+[2016-07-06 19:31:23 992937][TAG][23764][INFO]import mod_path(dbsrv/dbsrv) mod_name(Dbsrv)
+[2016-07-06 19:31:23 992984][TAG][23764][INFO]scan file(dbsrv/dbsrv/mysql_conn.lua)
+[2016-07-06 19:31:23 993181][TAG][23764][INFO]scan file(dbsrv/dbsrv/dbsrv.lua)
+[2016-07-06 19:31:23 993747][TAG][23764][INFO]scan file(dbsrv/dbsrv/redis_conn.lua)
+[2016-07-06 19:31:23 994160][TAG][23764][INFO]
+[2016-07-06 19:31:23 994226][TAG][23764][INFO][Asyncsrv]create loop
+[2016-07-06 19:31:23 994440][TAG][23764][INFO][Gamesrv]listen on host(127.0.0.1) port(3334)
+[2016-07-06 19:31:23 994616][TAG][23764][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:31:23 994637][TAG][23764][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:31:23 994669][TAG][23764][INFO]llisten on 3334
+[2016-07-06 19:31:23 994829][TAG][23764][ERROR]lualib/redis/lredis.cc:80
+[2016-07-06 19:31:23 994841][TAG][23764][ERROR]connect error
+[2016-07-06 19:31:23 994856][TAG][23764][INFO][Dbsrv]fail connect redis index(1) host(127.0.0.1) port(6379) dbname(1)
+[2016-07-06 19:31:23 996612][TAG][23764][INFO][Dbsrv]success connect mysql index(1) host(127.0.0.1) dbname(test) user(root)
+[2016-07-06 19:31:24 1750][TAG][23764][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:31:24 1770][TAG][23764][DEBUG]recvbuf create sockfd(6) buf_len(1024)
+[2016-07-06 19:31:24 1807][TAG][23764][INFO][Gamesrv]accept a game sockfd(6)
+[2016-07-06 19:31:24 2422][TAG][23764][DEBUG]net/port.cc:220
+[2016-07-06 19:31:24 2435][TAG][23764][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:31:24 2443][TAG][23764][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:31:24 2450][TAG][23764][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:31:24 2454][TAG][23764][DEBUG]101
+[2016-07-06 19:31:24 2458][TAG][23764][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:31:24 2462][TAG][23764][DEBUG]10 gamesrv101
+[2016-07-06 19:31:24 2486][TAG][23764][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:31:24 2493][TAG][23764][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:51 body_len:36
+[2016-07-06 19:31:26 98466][TAG][23764][DEBUG]net/port.cc:220
+[2016-07-06 19:31:26 98486][TAG][23764][DEBUG]real recv 80 bufremain 1024
+
+[2016-07-06 19:31:26 98496][TAG][23764][INFO][Dbsrv]CALL Dbsrv.GET FROM GameSrv
+[2016-07-06 19:31:26 98506][TAG][23764][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:31:26 98513][TAG][23764][DEBUG]333
+[2016-07-06 19:31:26 98521][TAG][23764][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:31:26 98528][TAG][23764][DEBUG]31 Login.msg_db_srv_get_playerdata
+[2016-07-06 19:31:26 98535][TAG][23764][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:31:26 98542][TAG][23764][DEBUG]4 user
+[2016-07-06 19:31:26 98547][TAG][23764][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:31:26 98551][TAG][23764][DEBUG]4 task
+[2016-07-06 19:31:26 98557][TAG][23764][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:31:26 98564][TAG][23764][DEBUG]7 achieve
+[2016-07-06 19:31:26 99210][TAG][23764][INFO][Dbsrv]load from mysql 333.task(0)
+[2016-07-06 19:31:26 99389][TAG][23764][INFO][Dbsrv]load from mysql 333.achieve(0)
+[2016-07-06 19:31:26 99405][TAG][23764][INFO][Dbsrv]total_size(0)
+[2016-07-06 19:31:26 99417][TAG][23764][INFO]POST Login.msg_db_srv_get_playerdata TO GameSrv
+[2016-07-06 19:31:26 99427][TAG][23764][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:31:26 99432][TAG][23764][DEBUG]arg1:333
+[2016-07-06 19:31:26 99443][TAG][23764][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:31:26 99447][TAG][23764][DEBUG]arg2:1
+[2016-07-06 19:31:26 99453][TAG][23764][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:31:26 99457][TAG][23764][DEBUG]arg3:dbproto.UserData
+[2016-07-06 19:31:26 99462][TAG][23764][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:31:26 99474][TAG][23764][DEBUG]
+[2016-07-06 19:31:26 99484][TAG][23764][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:31:26 99492][TAG][23764][DEBUG]arg4:dbproto.TaskData
+[2016-07-06 19:31:26 99499][TAG][23764][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:31:26 99507][TAG][23764][DEBUG]
+[2016-07-06 19:31:26 99516][TAG][23764][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:31:26 99524][TAG][23764][DEBUG]arg5:dbproto.AchieveData
+[2016-07-06 19:31:26 99531][TAG][23764][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:31:26 99539][TAG][23764][DEBUG]
+[2016-07-06 19:31:26 99548][TAG][23764][INFO]POS_ Login.msg_db_srv_get_playerdata TO GameSrv usec:131 body_len:117
+[2016-07-06 19:31:26 99557][TAG][23764][INFO][Dbsrv]CAL_ Dbsrv.GET FROM GameSrv usec:1061 body_len:76
+[2016-07-06 19:31:26 99584][TAG][23764][INFO]real_send(121)
+
+[2016-07-06 19:31:27 996343][TAG][23764][DEBUG]net/port.cc:220
+[2016-07-06 19:31:27 996362][TAG][23764][DEBUG]real recv 152 bufremain 1024
+
+[2016-07-06 19:31:27 996368][TAG][23764][INFO][Dbsrv]CALL Dbsrv.SET FROM GameSrv
+[2016-07-06 19:31:27 996376][TAG][23764][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:31:27 996383][TAG][23764][DEBUG]333
+[2016-07-06 19:31:27 996391][TAG][23764][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:31:27 996397][TAG][23764][DEBUG]31 Login.msg_db_srv_set_playerdata
+[2016-07-06 19:31:27 996401][TAG][23764][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:31:27 996405][TAG][23764][DEBUG]7 achieve
+[2016-07-06 19:31:27 996421][TAG][23764][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:31:27 996429][TAG][23764][DEBUG]
+[2016-07-06 19:31:27 996438][TAG][23764][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:31:27 996444][TAG][23764][DEBUG]4 task
+[2016-07-06 19:31:27 996457][TAG][23764][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:31:27 996466][TAG][23764][DEBUG]
+[2016-07-06 19:31:27 996479][TAG][23764][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:31:27 996486][TAG][23764][DEBUG]4 user
+[2016-07-06 19:31:27 996498][TAG][23764][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:31:27 996508][TAG][23764][DEBUG]
+[2016-07-06 19:31:27 996550][TAG][23764][ERROR]lualib/redis/lredis.cc:355
+[2016-07-06 19:31:27 996560][TAG][23764][ERROR]userdata is null
+[2016-07-06 19:31:27 996574][TAG][23764][INFO][Dbsrv]cache 333 fail
+[2016-07-06 19:31:27 996590][TAG][23764][INFO][Dbsrv]set_to_mysql uid(333).achieve
+[2016-07-06 19:31:27 996601][TAG][23764][INFO][Dbsrv]replace into achieve (uid, bin, updatetime) VALUES (333, '', 1467804687)
+[2016-07-06 19:31:28 50181][TAG][23764][INFO][Dbsrv]save 333.achieve(0) success
+[2016-07-06 19:31:28 50222][TAG][23764][INFO][Dbsrv]set_to_mysql uid(333).task
+[2016-07-06 19:31:28 50249][TAG][23764][INFO][Dbsrv]replace into task (uid, bin, updatetime) VALUES (333, '', 1467804687)
+[2016-07-06 19:31:28 87520][TAG][23764][INFO][Dbsrv]save 333.task(0) success
+[2016-07-06 19:31:28 87554][TAG][23764][INFO][Dbsrv]set_to_mysql uid(333).user
+[2016-07-06 19:31:28 87606][TAG][23764][INFO][Dbsrv]replace into user (lastlogintime,uid,coin,uname, updatetime) values (0,0,0,'',1467804687)
+[2016-07-06 19:31:28 112991][TAG][23764][INFO][Dbsrv]save 333.user(0) success
+[2016-07-06 19:31:28 113021][TAG][23764][INFO]POST Login.msg_db_srv_set_playerdata TO GameSrv
+[2016-07-06 19:31:28 113027][TAG][23764][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:31:28 113032][TAG][23764][DEBUG]arg1:333
+[2016-07-06 19:31:28 113036][TAG][23764][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:31:28 113040][TAG][23764][DEBUG]arg2:1
+[2016-07-06 19:31:28 113046][TAG][23764][INFO]POS_ Login.msg_db_srv_set_playerdata TO GameSrv usec:25 body_len:45
+[2016-07-06 19:31:28 113051][TAG][23764][INFO][Dbsrv]CAL_ dbproto.UserData FROM GameSrv usec:116683 body_len:148
+[2016-07-06 19:31:28 113075][TAG][23764][INFO]real_send(49)
+
+[2016-07-06 19:32:14 941987][TAG][23764][DEBUG]net/port.cc:220
+[2016-07-06 19:32:14 942021][TAG][23764][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 19:32:14 942048][TAG][23764][INFO][Gamesrv]ev_close sockfd(6) reason(peer close)
+[2016-07-06 19:32:14 942063][TAG][23764][INFO][Gamesrv]game disconnect srvname(gamesrv101)
+[2016-07-06 19:32:14 947852][TAG][23764][INFO]sig_int
+[2016-07-06 19:32:14 947887][TAG][23764][INFO]atint
+[2016-07-06 19:32:14 947909][TAG][23764][INFO][Asyncsrv]game over!
+[2016-07-06 19:32:14 947919][TAG][23764][INFO]_atexit
+[2016-07-06 19:32:14 947927][TAG][23764][INFO]atexit
+[2016-07-06 19:32:14 948018][TAG][23764][INFO]exit pid(23764)
+[2016-07-06 19:32:16 302313][TAG][24010][INFO]running pid(24010)
+[2016-07-06 19:32:16 302409][TAG][24010][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:32:16 302468][TAG][24010][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:32:16 302800][TAG][24010][INFO]
+[2016-07-06 19:32:16 302986][TAG][24010][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:32:16 303313][TAG][24010][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:32:16 303396][TAG][24010][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:32:16 303573][TAG][24010][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:32:16 303889][TAG][24010][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:32:16 304084][TAG][24010][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:32:16 304338][TAG][24010][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:32:16 305134][TAG][24010][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:32:16 305159][TAG][24010][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:32:16 305173][TAG][24010][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:32:16 305187][TAG][24010][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:32:16 305247][TAG][24010][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:32:16 305292][TAG][24010][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:32:16 305335][TAG][24010][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:32:16 305502][TAG][24010][INFO]
+[2016-07-06 19:32:16 305542][TAG][24010][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:32:16 305575][TAG][24010][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:32:16 305589][TAG][24010][INFO]
+[2016-07-06 19:32:16 305618][TAG][24010][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:32:16 305645][TAG][24010][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:32:16 305852][TAG][24010][INFO]
+[2016-07-06 19:32:16 305914][TAG][24010][INFO]import mod_path(dbsrv/dbsrv) mod_name(Dbsrv)
+[2016-07-06 19:32:16 305941][TAG][24010][INFO]scan file(dbsrv/dbsrv/mysql_conn.lua)
+[2016-07-06 19:32:16 306273][TAG][24010][INFO]scan file(dbsrv/dbsrv/dbsrv.lua)
+[2016-07-06 19:32:16 306854][TAG][24010][INFO]scan file(dbsrv/dbsrv/redis_conn.lua)
+[2016-07-06 19:32:16 307120][TAG][24010][INFO]
+[2016-07-06 19:32:16 307183][TAG][24010][INFO][Asyncsrv]create loop
+[2016-07-06 19:32:16 307545][TAG][24010][INFO][Gamesrv]listen on host(127.0.0.1) port(3334)
+[2016-07-06 19:32:16 307583][TAG][24010][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:32:16 307591][TAG][24010][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:32:16 307609][TAG][24010][INFO]llisten on 3334
+[2016-07-06 19:32:16 307712][TAG][24010][ERROR]lualib/redis/lredis.cc:80
+[2016-07-06 19:32:16 307722][TAG][24010][ERROR]connect error
+[2016-07-06 19:32:16 307736][TAG][24010][INFO][Dbsrv]fail connect redis index(1) host(127.0.0.1) port(6379) dbname(1)
+[2016-07-06 19:32:16 308960][TAG][24010][INFO][Dbsrv]success connect mysql index(1) host(127.0.0.1) dbname(test) user(root)
+[2016-07-06 19:32:16 309801][TAG][24010][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:32:16 309821][TAG][24010][DEBUG]recvbuf create sockfd(6) buf_len(1024)
+[2016-07-06 19:32:16 309898][TAG][24010][INFO][Gamesrv]accept a game sockfd(6)
+[2016-07-06 19:32:16 310059][TAG][24010][DEBUG]net/port.cc:220
+[2016-07-06 19:32:16 310069][TAG][24010][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:32:16 310131][TAG][24010][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:32:16 310141][TAG][24010][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:32:16 310148][TAG][24010][DEBUG]101
+[2016-07-06 19:32:16 310189][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:32:16 310197][TAG][24010][DEBUG]10 gamesrv101
+[2016-07-06 19:32:16 310242][TAG][24010][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:32:16 310254][TAG][24010][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:123 body_len:36
+[2016-07-06 19:32:17 506573][TAG][24010][DEBUG]net/port.cc:220
+[2016-07-06 19:32:17 506587][TAG][24010][DEBUG]real recv 80 bufremain 1024
+
+[2016-07-06 19:32:17 506592][TAG][24010][INFO][Dbsrv]CALL Dbsrv.GET FROM GameSrv
+[2016-07-06 19:32:17 506598][TAG][24010][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:32:17 506602][TAG][24010][DEBUG]333
+[2016-07-06 19:32:17 506607][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:32:17 506611][TAG][24010][DEBUG]31 Login.msg_db_srv_get_playerdata
+[2016-07-06 19:32:17 506615][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:32:17 506619][TAG][24010][DEBUG]4 user
+[2016-07-06 19:32:17 506624][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:32:17 506627][TAG][24010][DEBUG]4 task
+[2016-07-06 19:32:17 506632][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:32:17 506636][TAG][24010][DEBUG]7 achieve
+[2016-07-06 19:32:17 507107][TAG][24010][INFO][Dbsrv]load from mysql 333.task(0)
+[2016-07-06 19:32:17 507315][TAG][24010][INFO][Dbsrv]load from mysql 333.achieve(0)
+[2016-07-06 19:32:17 507330][TAG][24010][INFO][Dbsrv]total_size(0)
+[2016-07-06 19:32:17 507341][TAG][24010][INFO]POST Login.msg_db_srv_get_playerdata TO GameSrv
+[2016-07-06 19:32:17 507351][TAG][24010][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:32:17 507355][TAG][24010][DEBUG]arg1:333
+[2016-07-06 19:32:17 507360][TAG][24010][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:32:17 507367][TAG][24010][DEBUG]arg2:1
+[2016-07-06 19:32:17 507375][TAG][24010][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:32:17 507383][TAG][24010][DEBUG]arg3:dbproto.UserData
+[2016-07-06 19:32:17 507387][TAG][24010][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:32:17 507399][TAG][24010][DEBUG]
+[2016-07-06 19:32:17 507404][TAG][24010][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:32:17 507408][TAG][24010][DEBUG]arg4:dbproto.TaskData
+[2016-07-06 19:32:17 507426][TAG][24010][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:32:17 507435][TAG][24010][DEBUG]
+[2016-07-06 19:32:17 507441][TAG][24010][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:32:17 507445][TAG][24010][DEBUG]arg5:dbproto.AchieveData
+[2016-07-06 19:32:17 507450][TAG][24010][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:32:17 507454][TAG][24010][DEBUG]
+[2016-07-06 19:32:17 507460][TAG][24010][INFO]POS_ Login.msg_db_srv_get_playerdata TO GameSrv usec:119 body_len:117
+[2016-07-06 19:32:17 507473][TAG][24010][INFO][Dbsrv]CAL_ Dbsrv.GET FROM GameSrv usec:881 body_len:76
+[2016-07-06 19:32:17 507496][TAG][24010][INFO]real_send(121)
+
+[2016-07-06 19:32:17 508856][TAG][24010][DEBUG]net/port.cc:220
+[2016-07-06 19:32:17 508873][TAG][24010][DEBUG]real recv 152 bufremain 1024
+
+[2016-07-06 19:32:17 508882][TAG][24010][INFO][Dbsrv]CALL Dbsrv.SET FROM GameSrv
+[2016-07-06 19:32:17 508892][TAG][24010][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:32:17 508899][TAG][24010][DEBUG]333
+[2016-07-06 19:32:17 508907][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:32:17 508914][TAG][24010][DEBUG]31 Login.msg_db_srv_set_playerdata
+[2016-07-06 19:32:17 508922][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:32:17 508929][TAG][24010][DEBUG]7 achieve
+[2016-07-06 19:32:17 508949][TAG][24010][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:32:17 508959][TAG][24010][DEBUG]
+[2016-07-06 19:32:17 508967][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:32:17 508974][TAG][24010][DEBUG]4 task
+[2016-07-06 19:32:17 508986][TAG][24010][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:32:17 509000][TAG][24010][DEBUG]
+[2016-07-06 19:32:17 509008][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:32:17 509012][TAG][24010][DEBUG]4 user
+[2016-07-06 19:32:17 509029][TAG][24010][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:32:17 509036][TAG][24010][DEBUG]
+[2016-07-06 19:32:17 509066][TAG][24010][ERROR]lualib/redis/lredis.cc:355
+[2016-07-06 19:32:17 509076][TAG][24010][ERROR]userdata is null
+[2016-07-06 19:32:17 509096][TAG][24010][INFO][Dbsrv]cache 333 fail
+[2016-07-06 19:32:17 509111][TAG][24010][INFO][Dbsrv]set_to_mysql uid(333).achieve
+[2016-07-06 19:32:17 509122][TAG][24010][INFO][Dbsrv]replace into achieve (uid, bin, updatetime) VALUES (333, '', 1467804737)
+[2016-07-06 19:32:17 567192][TAG][24010][INFO][Dbsrv]save 333.achieve(0) success
+[2016-07-06 19:32:17 567221][TAG][24010][INFO][Dbsrv]set_to_mysql uid(333).task
+[2016-07-06 19:32:17 567254][TAG][24010][INFO][Dbsrv]replace into task (uid, bin, updatetime) VALUES (333, '', 1467804737)
+[2016-07-06 19:32:17 591303][TAG][24010][INFO][Dbsrv]save 333.task(0) success
+[2016-07-06 19:32:17 591332][TAG][24010][INFO][Dbsrv]set_to_mysql uid(333).user
+[2016-07-06 19:32:17 591394][TAG][24010][INFO][Dbsrv]replace into user (lastlogintime,uid,coin,uname, updatetime) values (0,0,0,'',1467804737)
+[2016-07-06 19:32:17 616733][TAG][24010][INFO][Dbsrv]save 333.user(0) success
+[2016-07-06 19:32:17 616759][TAG][24010][INFO]POST Login.msg_db_srv_set_playerdata TO GameSrv
+[2016-07-06 19:32:17 616765][TAG][24010][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:32:17 616769][TAG][24010][DEBUG]arg1:333
+[2016-07-06 19:32:17 616773][TAG][24010][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:32:17 616778][TAG][24010][DEBUG]arg2:1
+[2016-07-06 19:32:17 616786][TAG][24010][INFO]POS_ Login.msg_db_srv_set_playerdata TO GameSrv usec:27 body_len:45
+[2016-07-06 19:32:17 616795][TAG][24010][INFO][Dbsrv]CAL_ dbproto.UserData FROM GameSrv usec:107914 body_len:148
+[2016-07-06 19:32:17 616825][TAG][24010][INFO]real_send(49)
+
+[2016-07-06 19:33:12 162431][TAG][24010][DEBUG]net/port.cc:220
+[2016-07-06 19:33:12 162454][TAG][24010][DEBUG]real recv 80 bufremain 1024
+
+[2016-07-06 19:33:12 162464][TAG][24010][INFO][Dbsrv]CALL Dbsrv.GET FROM GameSrv
+[2016-07-06 19:33:12 162475][TAG][24010][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:12 162483][TAG][24010][DEBUG]333
+[2016-07-06 19:33:12 162491][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:33:12 162499][TAG][24010][DEBUG]31 Login.msg_db_srv_get_playerdata
+[2016-07-06 19:33:12 162506][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:33:12 162510][TAG][24010][DEBUG]4 user
+[2016-07-06 19:33:12 162515][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:33:12 162519][TAG][24010][DEBUG]4 task
+[2016-07-06 19:33:12 162524][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:33:12 162528][TAG][24010][DEBUG]7 achieve
+[2016-07-06 19:33:12 163001][TAG][24010][INFO][Dbsrv]load from mysql 333.task(0)
+[2016-07-06 19:33:12 163304][TAG][24010][INFO][Dbsrv]load from mysql 333.achieve(0)
+[2016-07-06 19:33:12 163321][TAG][24010][INFO][Dbsrv]total_size(0)
+[2016-07-06 19:33:12 163343][TAG][24010][INFO]POST Login.msg_db_srv_get_playerdata TO GameSrv
+[2016-07-06 19:33:12 163352][TAG][24010][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:33:12 163357][TAG][24010][DEBUG]arg1:333
+[2016-07-06 19:33:12 163364][TAG][24010][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:33:12 163372][TAG][24010][DEBUG]arg2:1
+[2016-07-06 19:33:12 163389][TAG][24010][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:33:12 163395][TAG][24010][DEBUG]arg3:dbproto.UserData
+[2016-07-06 19:33:12 163400][TAG][24010][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:33:12 163406][TAG][24010][DEBUG]
+[2016-07-06 19:33:12 163412][TAG][24010][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:33:12 163416][TAG][24010][DEBUG]arg4:dbproto.TaskData
+[2016-07-06 19:33:12 163421][TAG][24010][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:33:12 163426][TAG][24010][DEBUG]
+[2016-07-06 19:33:12 163434][TAG][24010][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:33:12 163453][TAG][24010][DEBUG]arg5:dbproto.AchieveData
+[2016-07-06 19:33:12 163460][TAG][24010][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:33:12 163468][TAG][24010][DEBUG]
+[2016-07-06 19:33:12 163478][TAG][24010][INFO]POS_ Login.msg_db_srv_get_playerdata TO GameSrv usec:135 body_len:117
+[2016-07-06 19:33:12 163487][TAG][24010][INFO][Dbsrv]CAL_ Dbsrv.GET FROM GameSrv usec:1023 body_len:76
+[2016-07-06 19:33:12 163511][TAG][24010][INFO]real_send(121)
+
+[2016-07-06 19:33:29 898208][TAG][24010][DEBUG]net/port.cc:220
+[2016-07-06 19:33:29 898227][TAG][24010][DEBUG]real recv 80 bufremain 1024
+
+[2016-07-06 19:33:29 898234][TAG][24010][INFO][Dbsrv]CALL Dbsrv.GET FROM GameSrv
+[2016-07-06 19:33:29 898241][TAG][24010][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:33:29 898245][TAG][24010][DEBUG]333
+[2016-07-06 19:33:29 898250][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:33:29 898255][TAG][24010][DEBUG]31 Login.msg_db_srv_get_playerdata
+[2016-07-06 19:33:29 898259][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:33:29 898264][TAG][24010][DEBUG]4 user
+[2016-07-06 19:33:29 898281][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:33:29 898285][TAG][24010][DEBUG]4 task
+[2016-07-06 19:33:29 898290][TAG][24010][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:33:29 898294][TAG][24010][DEBUG]7 achieve
+[2016-07-06 19:33:29 911822][TAG][24010][INFO][Dbsrv]load from mysql 333.task(0)
+[2016-07-06 19:33:29 912034][TAG][24010][INFO][Dbsrv]load from mysql 333.achieve(0)
+[2016-07-06 19:33:29 912054][TAG][24010][INFO][Dbsrv]total_size(0)
+[2016-07-06 19:33:29 912066][TAG][24010][INFO]POST Login.msg_db_srv_get_playerdata TO GameSrv
+[2016-07-06 19:33:29 912074][TAG][24010][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:33:29 912078][TAG][24010][DEBUG]arg1:333
+[2016-07-06 19:33:29 912094][TAG][24010][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:33:29 912102][TAG][24010][DEBUG]arg2:1
+[2016-07-06 19:33:29 912109][TAG][24010][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:33:29 912114][TAG][24010][DEBUG]arg3:dbproto.UserData
+[2016-07-06 19:33:29 912118][TAG][24010][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:33:29 912125][TAG][24010][DEBUG]
+[2016-07-06 19:33:29 912131][TAG][24010][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:33:29 912135][TAG][24010][DEBUG]arg4:dbproto.TaskData
+[2016-07-06 19:33:29 912140][TAG][24010][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:33:29 912148][TAG][24010][DEBUG]
+[2016-07-06 19:33:29 912157][TAG][24010][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:33:29 912165][TAG][24010][DEBUG]arg5:dbproto.AchieveData
+[2016-07-06 19:33:29 912173][TAG][24010][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:33:29 912181][TAG][24010][DEBUG]
+[2016-07-06 19:33:29 912191][TAG][24010][INFO]POS_ Login.msg_db_srv_get_playerdata TO GameSrv usec:125 body_len:117
+[2016-07-06 19:33:29 912200][TAG][24010][INFO][Dbsrv]CAL_ Dbsrv.GET FROM GameSrv usec:13966 body_len:76
+[2016-07-06 19:33:29 912232][TAG][24010][INFO]real_send(121)
+
+[2016-07-06 19:34:49 940749][TAG][24010][DEBUG]net/port.cc:220
+[2016-07-06 19:34:49 940773][TAG][24010][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 19:34:49 940801][TAG][24010][INFO][Gamesrv]ev_close sockfd(6) reason(peer close)
+[2016-07-06 19:34:49 940816][TAG][24010][INFO][Gamesrv]game disconnect srvname(gamesrv101)
+[2016-07-06 19:34:49 948515][TAG][24010][INFO]sig_int
+[2016-07-06 19:34:49 948549][TAG][24010][INFO]atint
+[2016-07-06 19:34:49 948567][TAG][24010][INFO][Asyncsrv]game over!
+[2016-07-06 19:34:49 948573][TAG][24010][INFO]_atexit
+[2016-07-06 19:34:49 948578][TAG][24010][INFO]atexit
+[2016-07-06 19:34:49 948668][TAG][24010][INFO]exit pid(24010)
+[2016-07-06 19:34:53 283347][TAG][24687][INFO]running pid(24687)
+[2016-07-06 19:34:53 283457][TAG][24687][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:34:53 283525][TAG][24687][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:34:53 283687][TAG][24687][INFO]
+[2016-07-06 19:34:53 283861][TAG][24687][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:34:53 284165][TAG][24687][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:34:53 284362][TAG][24687][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:34:53 284561][TAG][24687][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:34:53 284663][TAG][24687][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:34:53 284833][TAG][24687][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:34:53 284991][TAG][24687][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:34:53 285632][TAG][24687][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:34:53 285655][TAG][24687][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:34:53 285669][TAG][24687][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:34:53 285683][TAG][24687][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:34:53 285696][TAG][24687][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:34:53 285741][TAG][24687][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:34:53 285781][TAG][24687][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:34:53 285937][TAG][24687][INFO]
+[2016-07-06 19:34:53 285972][TAG][24687][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:34:53 286003][TAG][24687][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:34:53 286016][TAG][24687][INFO]
+[2016-07-06 19:34:53 286043][TAG][24687][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:34:53 286069][TAG][24687][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:34:53 286224][TAG][24687][INFO]
+[2016-07-06 19:34:53 286247][TAG][24687][INFO]import mod_path(dbsrv/dbsrv) mod_name(Dbsrv)
+[2016-07-06 19:34:53 286274][TAG][24687][INFO]scan file(dbsrv/dbsrv/mysql_conn.lua)
+[2016-07-06 19:34:53 286461][TAG][24687][INFO]scan file(dbsrv/dbsrv/dbsrv.lua)
+[2016-07-06 19:34:53 287003][TAG][24687][INFO]scan file(dbsrv/dbsrv/redis_conn.lua)
+[2016-07-06 19:34:53 287230][TAG][24687][INFO]
+[2016-07-06 19:34:53 287286][TAG][24687][INFO][Asyncsrv]create loop
+[2016-07-06 19:34:53 287426][TAG][24687][INFO][Gamesrv]listen on host(127.0.0.1) port(3334)
+[2016-07-06 19:34:53 287498][TAG][24687][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:34:53 287507][TAG][24687][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:34:53 287523][TAG][24687][INFO]llisten on 3334
+[2016-07-06 19:34:53 287616][TAG][24687][ERROR]lualib/redis/lredis.cc:80
+[2016-07-06 19:34:53 287623][TAG][24687][ERROR]connect error
+[2016-07-06 19:34:53 287631][TAG][24687][INFO][Dbsrv]fail connect redis index(1) host(127.0.0.1) port(6379) dbname(1)
+[2016-07-06 19:34:53 288644][TAG][24687][INFO][Dbsrv]success connect mysql index(1) host(127.0.0.1) dbname(test) user(root)
+[2016-07-06 19:34:53 288674][TAG][24687][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:34:53 288680][TAG][24687][DEBUG]recvbuf create sockfd(6) buf_len(1024)
+[2016-07-06 19:34:53 288699][TAG][24687][INFO][Gamesrv]accept a game sockfd(6)
+[2016-07-06 19:34:53 288715][TAG][24687][DEBUG]net/port.cc:220
+[2016-07-06 19:34:53 288724][TAG][24687][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:34:53 288733][TAG][24687][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:34:53 288739][TAG][24687][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:34:53 288743][TAG][24687][DEBUG]101
+[2016-07-06 19:34:53 288747][TAG][24687][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:34:53 288751][TAG][24687][DEBUG]10 gamesrv101
+[2016-07-06 19:34:53 288763][TAG][24687][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:34:53 288769][TAG][24687][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:37 body_len:36
+[2016-07-06 19:34:54 482461][TAG][24687][DEBUG]net/port.cc:220
+[2016-07-06 19:34:54 482481][TAG][24687][DEBUG]real recv 80 bufremain 1024
+
+[2016-07-06 19:34:54 482491][TAG][24687][INFO][Dbsrv]CALL Dbsrv.GET FROM GameSrv
+[2016-07-06 19:34:54 482501][TAG][24687][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:34:54 482509][TAG][24687][DEBUG]333
+[2016-07-06 19:34:54 482517][TAG][24687][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:34:54 482525][TAG][24687][DEBUG]31 Login.msg_db_srv_get_playerdata
+[2016-07-06 19:34:54 482532][TAG][24687][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:34:54 482545][TAG][24687][DEBUG]4 user
+[2016-07-06 19:34:54 482553][TAG][24687][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:34:54 482561][TAG][24687][DEBUG]4 task
+[2016-07-06 19:34:54 482569][TAG][24687][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:34:54 482576][TAG][24687][DEBUG]7 achieve
+[2016-07-06 19:34:54 483060][TAG][24687][INFO][Dbsrv]load from mysql 333.task(0)
+[2016-07-06 19:34:54 483280][TAG][24687][INFO][Dbsrv]load from mysql 333.achieve(0)
+[2016-07-06 19:34:54 483299][TAG][24687][INFO][Dbsrv]total_size(0)
+[2016-07-06 19:34:54 483312][TAG][24687][INFO]POST Login.msg_db_srv_get_playerdata TO GameSrv
+[2016-07-06 19:34:54 483323][TAG][24687][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:34:54 483327][TAG][24687][DEBUG]arg1:333
+[2016-07-06 19:34:54 483332][TAG][24687][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:34:54 483336][TAG][24687][DEBUG]arg2:1
+[2016-07-06 19:34:54 483341][TAG][24687][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:34:54 483346][TAG][24687][DEBUG]arg3:dbproto.UserData
+[2016-07-06 19:34:54 483353][TAG][24687][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:34:54 483369][TAG][24687][DEBUG]
+[2016-07-06 19:34:54 483379][TAG][24687][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:34:54 483387][TAG][24687][DEBUG]arg4:dbproto.TaskData
+[2016-07-06 19:34:54 483396][TAG][24687][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:34:54 483405][TAG][24687][DEBUG]
+[2016-07-06 19:34:54 483414][TAG][24687][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:34:54 483422][TAG][24687][DEBUG]arg5:dbproto.AchieveData
+[2016-07-06 19:34:54 483429][TAG][24687][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:34:54 483437][TAG][24687][DEBUG]
+[2016-07-06 19:34:54 483446][TAG][24687][INFO]POS_ Login.msg_db_srv_get_playerdata TO GameSrv usec:134 body_len:117
+[2016-07-06 19:34:54 483452][TAG][24687][INFO][Dbsrv]CAL_ Dbsrv.GET FROM GameSrv usec:962 body_len:76
+[2016-07-06 19:34:54 483472][TAG][24687][INFO]real_send(121)
+
+[2016-07-06 19:34:54 484793][TAG][24687][DEBUG]net/port.cc:220
+[2016-07-06 19:34:54 484812][TAG][24687][DEBUG]real recv 152 bufremain 1024
+
+[2016-07-06 19:34:54 484821][TAG][24687][INFO][Dbsrv]CALL Dbsrv.SET FROM GameSrv
+[2016-07-06 19:34:54 484831][TAG][24687][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:34:54 484838][TAG][24687][DEBUG]333
+[2016-07-06 19:34:54 484849][TAG][24687][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:34:54 484857][TAG][24687][DEBUG]31 Login.msg_db_srv_set_playerdata
+[2016-07-06 19:34:54 484864][TAG][24687][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:34:54 484872][TAG][24687][DEBUG]7 achieve
+[2016-07-06 19:34:54 484892][TAG][24687][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:34:54 484903][TAG][24687][DEBUG]
+[2016-07-06 19:34:54 484911][TAG][24687][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:34:54 484918][TAG][24687][DEBUG]4 task
+[2016-07-06 19:34:54 484929][TAG][24687][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:34:54 484938][TAG][24687][DEBUG]
+[2016-07-06 19:34:54 484950][TAG][24687][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:34:54 484957][TAG][24687][DEBUG]4 user
+[2016-07-06 19:34:54 484977][TAG][24687][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:34:54 484984][TAG][24687][DEBUG]
+[2016-07-06 19:34:54 485021][TAG][24687][ERROR]lualib/redis/lredis.cc:355
+[2016-07-06 19:34:54 485035][TAG][24687][ERROR]userdata is null
+[2016-07-06 19:34:54 485048][TAG][24687][INFO][Dbsrv]cache 333 fail
+[2016-07-06 19:34:54 485067][TAG][24687][INFO][Dbsrv]set_to_mysql uid(333).achieve
+[2016-07-06 19:34:54 485087][TAG][24687][INFO][Dbsrv]replace into achieve (uid, bin, updatetime) VALUES (333, '', 1467804894)
+[2016-07-06 19:34:54 523506][TAG][24687][INFO][Dbsrv]save 333.achieve(0) success
+[2016-07-06 19:34:54 523543][TAG][24687][INFO][Dbsrv]set_to_mysql uid(333).task
+[2016-07-06 19:34:54 523580][TAG][24687][INFO][Dbsrv]replace into task (uid, bin, updatetime) VALUES (333, '', 1467804894)
+[2016-07-06 19:34:54 548231][TAG][24687][INFO][Dbsrv]save 333.task(0) success
+[2016-07-06 19:34:54 548268][TAG][24687][INFO][Dbsrv]set_to_mysql uid(333).user
+[2016-07-06 19:34:54 548352][TAG][24687][INFO][Dbsrv]replace into user (lastlogintime,uid,coin,uname, updatetime) values (0,0,0,'',1467804894)
+[2016-07-06 19:34:54 574281][TAG][24687][INFO][Dbsrv]save 333.user(0) success
+[2016-07-06 19:34:54 574319][TAG][24687][INFO]POST Login.msg_db_srv_set_playerdata TO GameSrv
+[2016-07-06 19:34:54 574327][TAG][24687][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:34:54 574332][TAG][24687][DEBUG]arg1:333
+[2016-07-06 19:34:54 574336][TAG][24687][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:34:54 574341][TAG][24687][DEBUG]arg2:1
+[2016-07-06 19:34:54 574347][TAG][24687][INFO]POS_ Login.msg_db_srv_set_playerdata TO GameSrv usec:29 body_len:45
+[2016-07-06 19:34:54 574353][TAG][24687][INFO][Dbsrv]CAL_ dbproto.UserData FROM GameSrv usec:89533 body_len:148
+[2016-07-06 19:34:54 574373][TAG][24687][INFO]real_send(49)
+
+[2016-07-06 19:35:45 997546][TAG][24687][DEBUG]net/port.cc:220
+[2016-07-06 19:35:45 997578][TAG][24687][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 19:35:45 997606][TAG][24687][INFO][Gamesrv]ev_close sockfd(6) reason(peer close)
+[2016-07-06 19:35:45 997628][TAG][24687][INFO][Gamesrv]game disconnect srvname(gamesrv101)
+[2016-07-06 19:35:46 4659][TAG][24687][INFO]sig_int
+[2016-07-06 19:35:46 4693][TAG][24687][INFO]atint
+[2016-07-06 19:35:46 4720][TAG][24687][INFO][Asyncsrv]game over!
+[2016-07-06 19:35:46 4730][TAG][24687][INFO]_atexit
+[2016-07-06 19:35:46 4739][TAG][24687][INFO]atexit
+[2016-07-06 19:35:46 4843][TAG][24687][INFO]exit pid(24687)
+[2016-07-06 19:35:47 466515][TAG][24934][INFO]running pid(24934)
+[2016-07-06 19:35:47 467086][TAG][24934][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:35:47 467486][TAG][24934][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:35:47 467684][TAG][24934][INFO]
+[2016-07-06 19:35:47 468803][TAG][24934][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:35:47 470477][TAG][24934][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:35:47 471460][TAG][24934][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:35:47 472027][TAG][24934][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:35:47 473057][TAG][24934][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:35:47 473611][TAG][24934][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:35:47 474714][TAG][24934][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:35:47 478679][TAG][24934][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:35:47 478709][TAG][24934][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:35:47 478725][TAG][24934][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:35:47 478739][TAG][24934][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:35:47 478753][TAG][24934][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:35:47 479164][TAG][24934][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:35:47 479235][TAG][24934][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:35:47 480235][TAG][24934][INFO]
+[2016-07-06 19:35:47 480290][TAG][24934][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:35:47 480344][TAG][24934][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:35:47 480360][TAG][24934][INFO]
+[2016-07-06 19:35:47 480394][TAG][24934][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:35:47 480425][TAG][24934][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:35:47 481528][TAG][24934][INFO]
+[2016-07-06 19:35:47 481880][TAG][24934][INFO]import mod_path(dbsrv/dbsrv) mod_name(Dbsrv)
+[2016-07-06 19:35:47 481934][TAG][24934][INFO]scan file(dbsrv/dbsrv/mysql_conn.lua)
+[2016-07-06 19:35:47 483023][TAG][24934][INFO]scan file(dbsrv/dbsrv/dbsrv.lua)
+[2016-07-06 19:35:47 485661][TAG][24934][INFO]scan file(dbsrv/dbsrv/redis_conn.lua)
+[2016-07-06 19:35:47 486884][TAG][24934][INFO]
+[2016-07-06 19:35:47 487275][TAG][24934][INFO][Asyncsrv]create loop
+[2016-07-06 19:35:47 487522][TAG][24934][INFO][Gamesrv]listen on host(127.0.0.1) port(3334)
+[2016-07-06 19:35:47 527346][TAG][24934][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:35:47 527376][TAG][24934][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:35:47 527428][TAG][24934][INFO]llisten on 3334
+[2016-07-06 19:35:47 527665][TAG][24934][ERROR]lualib/redis/lredis.cc:80
+[2016-07-06 19:35:47 527675][TAG][24934][ERROR]connect error
+[2016-07-06 19:35:47 527687][TAG][24934][INFO][Dbsrv]fail connect redis index(1) host(127.0.0.1) port(6379) dbname(1)
+[2016-07-06 19:35:47 528806][TAG][24934][INFO][Dbsrv]success connect mysql index(1) host(127.0.0.1) dbname(test) user(root)
+[2016-07-06 19:35:47 528840][TAG][24934][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:35:47 528848][TAG][24934][DEBUG]recvbuf create sockfd(6) buf_len(1024)
+[2016-07-06 19:35:47 528867][TAG][24934][INFO][Gamesrv]accept a game sockfd(6)
+[2016-07-06 19:35:47 528878][TAG][24934][DEBUG]net/port.cc:220
+[2016-07-06 19:35:47 528883][TAG][24934][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:35:47 528890][TAG][24934][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:35:47 528895][TAG][24934][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:35:47 528899][TAG][24934][DEBUG]101
+[2016-07-06 19:35:47 528903][TAG][24934][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:47 528907][TAG][24934][DEBUG]10 gamesrv101
+[2016-07-06 19:35:47 528934][TAG][24934][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:35:47 528942][TAG][24934][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:52 body_len:36
+[2016-07-06 19:35:51 220340][TAG][24934][DEBUG]net/port.cc:220
+[2016-07-06 19:35:51 220366][TAG][24934][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 19:35:51 220394][TAG][24934][INFO][Gamesrv]ev_close sockfd(6) reason(peer close)
+[2016-07-06 19:35:51 220409][TAG][24934][INFO][Gamesrv]game disconnect srvname(gamesrv101)
+[2016-07-06 19:35:51 226715][TAG][24934][INFO]sig_int
+[2016-07-06 19:35:51 226753][TAG][24934][INFO]atint
+[2016-07-06 19:35:51 226775][TAG][24934][INFO][Asyncsrv]game over!
+[2016-07-06 19:35:51 226785][TAG][24934][INFO]_atexit
+[2016-07-06 19:35:51 226793][TAG][24934][INFO]atexit
+[2016-07-06 19:35:51 226891][TAG][24934][INFO]exit pid(24934)
+[2016-07-06 19:35:54 15357][TAG][24996][INFO]running pid(24996)
+[2016-07-06 19:35:54 15459][TAG][24996][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:35:54 15560][TAG][24996][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:35:54 15783][TAG][24996][INFO]
+[2016-07-06 19:35:54 15914][TAG][24996][INFO][Pblua]load proto(account.proto)
+[2016-07-06 19:35:54 16815][TAG][24996][INFO][Pblua]load proto(sys.proto)
+[2016-07-06 19:35:54 16972][TAG][24996][INFO][Pblua]load proto(login.proto)
+[2016-07-06 19:35:54 17533][TAG][24996][INFO][Pblua]load proto(regist.proto)
+[2016-07-06 19:35:54 21339][TAG][24996][INFO][Pblua]load proto(sdk91.proto)
+[2016-07-06 19:35:54 21898][TAG][24996][INFO][Pblua]load proto(mail.proto)
+[2016-07-06 19:35:54 22257][TAG][24996][INFO][Pblua]load proto(player.proto)
+[2016-07-06 19:35:54 23867][TAG][24996][INFO][Pblua]load proto(item.proto)
+[2016-07-06 19:35:54 23893][TAG][24996][INFO][Pblua]load proto(achieve.proto)
+[2016-07-06 19:35:54 23941][TAG][24996][INFO][Pblua]load proto(user.proto)
+[2016-07-06 19:35:54 23957][TAG][24996][INFO][Pblua]load proto(friend.proto)
+[2016-07-06 19:35:54 23970][TAG][24996][INFO][Pblua]load proto(task.proto)
+[2016-07-06 19:35:54 24144][TAG][24996][INFO]import mod_path(asyncsrv) mod_name(Asyncsrv)
+[2016-07-06 19:35:54 24277][TAG][24996][INFO]scan file(asyncsrv/asyncsrv.lua)
+[2016-07-06 19:35:54 24808][TAG][24996][INFO]
+[2016-07-06 19:35:54 24946][TAG][24996][INFO]import mod_path(pblua) mod_name(Pblua)
+[2016-07-06 19:35:54 25079][TAG][24996][INFO]scan file(pblua/pblua.lua)
+[2016-07-06 19:35:54 25095][TAG][24996][INFO]
+[2016-07-06 19:35:54 25128][TAG][24996][INFO]import mod_path(globalsrv/gamesrv) mod_name(Gamesrv)
+[2016-07-06 19:35:54 25233][TAG][24996][INFO]scan file(globalsrv/gamesrv/gamesrv.lua)
+[2016-07-06 19:35:54 25557][TAG][24996][INFO]
+[2016-07-06 19:35:54 25591][TAG][24996][INFO]import mod_path(dbsrv/dbsrv) mod_name(Dbsrv)
+[2016-07-06 19:35:54 25765][TAG][24996][INFO]scan file(dbsrv/dbsrv/mysql_conn.lua)
+[2016-07-06 19:35:54 26185][TAG][24996][INFO]scan file(dbsrv/dbsrv/dbsrv.lua)
+[2016-07-06 19:35:54 27296][TAG][24996][INFO]scan file(dbsrv/dbsrv/redis_conn.lua)
+[2016-07-06 19:35:54 27681][TAG][24996][INFO]
+[2016-07-06 19:35:54 27895][TAG][24996][INFO][Asyncsrv]create loop
+[2016-07-06 19:35:54 28258][TAG][24996][INFO][Gamesrv]listen on host(127.0.0.1) port(3334)
+[2016-07-06 19:35:54 28702][TAG][24996][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:35:54 28721][TAG][24996][DEBUG]recvbuf create sockfd(4) buf_len(1024)
+[2016-07-06 19:35:54 28752][TAG][24996][INFO]llisten on 3334
+[2016-07-06 19:35:54 29268][TAG][24996][ERROR]lualib/redis/lredis.cc:80
+[2016-07-06 19:35:54 29281][TAG][24996][ERROR]connect error
+[2016-07-06 19:35:54 29299][TAG][24996][INFO][Dbsrv]fail connect redis index(1) host(127.0.0.1) port(6379) dbname(1)
+[2016-07-06 19:35:54 31128][TAG][24996][INFO][Dbsrv]success connect mysql index(1) host(127.0.0.1) dbname(test) user(root)
+[2016-07-06 19:35:54 31212][TAG][24996][DEBUG]net/recvbuf.cc:208
+[2016-07-06 19:35:54 31224][TAG][24996][DEBUG]recvbuf create sockfd(6) buf_len(1024)
+[2016-07-06 19:35:54 31353][TAG][24996][INFO][Gamesrv]accept a game sockfd(6)
+[2016-07-06 19:35:54 31374][TAG][24996][DEBUG]net/port.cc:220
+[2016-07-06 19:35:54 31382][TAG][24996][DEBUG]real recv 40 bufremain 1024
+
+[2016-07-06 19:35:54 31393][TAG][24996][INFO][Gamesrv]CALL Gamesrv.REGIST FROM GameSrv
+[2016-07-06 19:35:54 31403][TAG][24996][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:35:54 31410][TAG][24996][DEBUG]101
+[2016-07-06 19:35:54 31417][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:54 31424][TAG][24996][DEBUG]10 gamesrv101
+[2016-07-06 19:35:54 31444][TAG][24996][INFO][Gamesrv]a game regist srvname(gamesrv101)
+[2016-07-06 19:35:54 31453][TAG][24996][INFO][Gamesrv]CAL_ Gamesrv.REGIST FROM GameSrv usec:60 body_len:36
+[2016-07-06 19:35:55 331695][TAG][24996][DEBUG]net/port.cc:220
+[2016-07-06 19:35:55 331717][TAG][24996][DEBUG]real recv 80 bufremain 1024
+
+[2016-07-06 19:35:55 331726][TAG][24996][INFO][Dbsrv]CALL Dbsrv.GET FROM GameSrv
+[2016-07-06 19:35:55 331736][TAG][24996][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:35:55 331744][TAG][24996][DEBUG]333
+[2016-07-06 19:35:55 331753][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:55 331761][TAG][24996][DEBUG]31 Login.msg_db_srv_get_playerdata
+[2016-07-06 19:35:55 331769][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:55 331777][TAG][24996][DEBUG]4 user
+[2016-07-06 19:35:55 331783][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:55 331791][TAG][24996][DEBUG]4 task
+[2016-07-06 19:35:55 331799][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:55 331805][TAG][24996][DEBUG]7 achieve
+[2016-07-06 19:35:55 332312][TAG][24996][INFO][Dbsrv]load from mysql 333.task(0)
+[2016-07-06 19:35:55 332464][TAG][24996][INFO][Dbsrv]load from mysql 333.achieve(0)
+[2016-07-06 19:35:55 332478][TAG][24996][INFO][Dbsrv]total_size(0)
+[2016-07-06 19:35:55 332494][TAG][24996][INFO]POST Login.msg_db_srv_get_playerdata TO GameSrv
+[2016-07-06 19:35:55 332508][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:35:55 332513][TAG][24996][DEBUG]arg1:333
+[2016-07-06 19:35:55 332518][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:35:55 332522][TAG][24996][DEBUG]arg2:1
+[2016-07-06 19:35:55 332528][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:35:55 332533][TAG][24996][DEBUG]arg3:dbproto.UserData
+[2016-07-06 19:35:55 332541][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:35:55 332559][TAG][24996][DEBUG]
+[2016-07-06 19:35:55 332565][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:35:55 332570][TAG][24996][DEBUG]arg4:dbproto.TaskData
+[2016-07-06 19:35:55 332575][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:35:55 332579][TAG][24996][DEBUG]
+[2016-07-06 19:35:55 332584][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:35:55 332589][TAG][24996][DEBUG]arg5:dbproto.AchieveData
+[2016-07-06 19:35:55 332594][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:35:55 332598][TAG][24996][DEBUG]
+[2016-07-06 19:35:55 332605][TAG][24996][INFO]POS_ Login.msg_db_srv_get_playerdata TO GameSrv usec:112 body_len:117
+[2016-07-06 19:35:55 332617][TAG][24996][INFO][Dbsrv]CAL_ Dbsrv.GET FROM GameSrv usec:892 body_len:76
+[2016-07-06 19:35:55 332638][TAG][24996][INFO]real_send(121)
+
+[2016-07-06 19:35:55 333997][TAG][24996][DEBUG]net/port.cc:220
+[2016-07-06 19:35:55 334024][TAG][24996][DEBUG]real recv 152 bufremain 1024
+
+[2016-07-06 19:35:55 334031][TAG][24996][INFO][Dbsrv]CALL Dbsrv.SET FROM GameSrv
+[2016-07-06 19:35:55 334039][TAG][24996][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:35:55 334043][TAG][24996][DEBUG]333
+[2016-07-06 19:35:55 334049][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:55 334056][TAG][24996][DEBUG]31 Login.msg_db_srv_set_playerdata
+[2016-07-06 19:35:55 334063][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:55 334071][TAG][24996][DEBUG]7 achieve
+[2016-07-06 19:35:55 334117][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:35:55 334130][TAG][24996][DEBUG]
+[2016-07-06 19:35:55 334139][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:55 334146][TAG][24996][DEBUG]4 task
+[2016-07-06 19:35:55 334169][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:35:55 334178][TAG][24996][DEBUG]
+[2016-07-06 19:35:55 334188][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:35:55 334195][TAG][24996][DEBUG]4 user
+[2016-07-06 19:35:55 334206][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:35:55 334215][TAG][24996][DEBUG]
+[2016-07-06 19:35:55 334254][TAG][24996][ERROR]lualib/redis/lredis.cc:355
+[2016-07-06 19:35:55 334264][TAG][24996][ERROR]userdata is null
+[2016-07-06 19:35:55 334277][TAG][24996][INFO][Dbsrv]cache 333 fail
+[2016-07-06 19:35:55 334295][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).achieve
+[2016-07-06 19:35:55 334308][TAG][24996][INFO][Dbsrv]replace into achieve (uid, bin, updatetime) VALUES (333, '', 1467804955)
+[2016-07-06 19:35:55 380681][TAG][24996][INFO][Dbsrv]save 333.achieve(0) success
+[2016-07-06 19:35:55 380709][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).task
+[2016-07-06 19:35:55 380730][TAG][24996][INFO][Dbsrv]replace into task (uid, bin, updatetime) VALUES (333, '', 1467804955)
+[2016-07-06 19:35:55 406722][TAG][24996][INFO][Dbsrv]save 333.task(0) success
+[2016-07-06 19:35:55 406752][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).user
+[2016-07-06 19:35:55 406810][TAG][24996][INFO][Dbsrv]replace into user (lastlogintime,uid,coin,uname, updatetime) values (0,0,0,'',1467804955)
+[2016-07-06 19:35:55 432783][TAG][24996][INFO][Dbsrv]save 333.user(0) success
+[2016-07-06 19:35:55 432813][TAG][24996][INFO]POST Login.msg_db_srv_set_playerdata TO GameSrv
+[2016-07-06 19:35:55 432820][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:35:55 432826][TAG][24996][DEBUG]arg1:333
+[2016-07-06 19:35:55 432834][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:35:55 432840][TAG][24996][DEBUG]arg2:1
+[2016-07-06 19:35:55 432848][TAG][24996][INFO]POS_ Login.msg_db_srv_set_playerdata TO GameSrv usec:35 body_len:45
+[2016-07-06 19:35:55 432854][TAG][24996][INFO][Dbsrv]CAL_ dbproto.UserData FROM GameSrv usec:98823 body_len:148
+[2016-07-06 19:35:55 432868][TAG][24996][INFO]real_send(49)
+
+[2016-07-06 19:36:05 930603][TAG][24996][DEBUG]net/port.cc:220
+[2016-07-06 19:36:05 930622][TAG][24996][DEBUG]real recv 80 bufremain 1024
+
+[2016-07-06 19:36:05 930631][TAG][24996][INFO][Dbsrv]CALL Dbsrv.GET FROM GameSrv
+[2016-07-06 19:36:05 930638][TAG][24996][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:05 930643][TAG][24996][DEBUG]333
+[2016-07-06 19:36:05 930647][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:05 930651][TAG][24996][DEBUG]31 Login.msg_db_srv_get_playerdata
+[2016-07-06 19:36:05 930655][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:05 930660][TAG][24996][DEBUG]4 user
+[2016-07-06 19:36:05 930664][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:05 930668][TAG][24996][DEBUG]4 task
+[2016-07-06 19:36:05 930672][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:05 930688][TAG][24996][DEBUG]7 achieve
+[2016-07-06 19:36:05 931414][TAG][24996][INFO][Dbsrv]load from mysql 333.task(0)
+[2016-07-06 19:36:05 931602][TAG][24996][INFO][Dbsrv]load from mysql 333.achieve(0)
+[2016-07-06 19:36:05 931615][TAG][24996][INFO][Dbsrv]total_size(0)
+[2016-07-06 19:36:05 931625][TAG][24996][INFO]POST Login.msg_db_srv_get_playerdata TO GameSrv
+[2016-07-06 19:36:05 931632][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:05 931637][TAG][24996][DEBUG]arg1:333
+[2016-07-06 19:36:05 931641][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:05 931645][TAG][24996][DEBUG]arg2:1
+[2016-07-06 19:36:05 931651][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:36:05 931655][TAG][24996][DEBUG]arg3:dbproto.UserData
+[2016-07-06 19:36:05 931662][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:36:05 931672][TAG][24996][DEBUG]
+[2016-07-06 19:36:05 931681][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:36:05 931689][TAG][24996][DEBUG]arg4:dbproto.TaskData
+[2016-07-06 19:36:05 931704][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:36:05 931709][TAG][24996][DEBUG]
+[2016-07-06 19:36:05 931719][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:36:05 931724][TAG][24996][DEBUG]arg5:dbproto.AchieveData
+[2016-07-06 19:36:05 931728][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:36:05 931736][TAG][24996][DEBUG]
+[2016-07-06 19:36:05 931746][TAG][24996][INFO]POS_ Login.msg_db_srv_get_playerdata TO GameSrv usec:120 body_len:117
+[2016-07-06 19:36:05 931754][TAG][24996][INFO][Dbsrv]CAL_ Dbsrv.GET FROM GameSrv usec:1124 body_len:76
+[2016-07-06 19:36:05 931770][TAG][24996][INFO]real_send(121)
+
+[2016-07-06 19:36:05 933398][TAG][24996][DEBUG]net/port.cc:220
+[2016-07-06 19:36:05 933414][TAG][24996][DEBUG]real recv 152 bufremain 1024
+
+[2016-07-06 19:36:05 933430][TAG][24996][INFO][Dbsrv]CALL Dbsrv.SET FROM GameSrv
+[2016-07-06 19:36:05 933441][TAG][24996][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:05 933449][TAG][24996][DEBUG]333
+[2016-07-06 19:36:05 933456][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:05 933463][TAG][24996][DEBUG]31 Login.msg_db_srv_set_playerdata
+[2016-07-06 19:36:05 933470][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:05 933477][TAG][24996][DEBUG]7 achieve
+[2016-07-06 19:36:05 933500][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:36:05 933511][TAG][24996][DEBUG]
+[2016-07-06 19:36:05 933519][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:05 933526][TAG][24996][DEBUG]4 task
+[2016-07-06 19:36:05 933537][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:36:05 933546][TAG][24996][DEBUG]
+[2016-07-06 19:36:05 933553][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:05 933560][TAG][24996][DEBUG]4 user
+[2016-07-06 19:36:05 933584][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:36:05 933594][TAG][24996][DEBUG]
+[2016-07-06 19:36:05 933631][TAG][24996][ERROR]lualib/redis/lredis.cc:355
+[2016-07-06 19:36:05 933637][TAG][24996][ERROR]userdata is null
+[2016-07-06 19:36:05 933646][TAG][24996][INFO][Dbsrv]cache 333 fail
+[2016-07-06 19:36:05 933656][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).achieve
+[2016-07-06 19:36:05 933667][TAG][24996][INFO][Dbsrv]replace into achieve (uid, bin, updatetime) VALUES (333, '', 1467804965)
+[2016-07-06 19:36:05 960885][TAG][24996][INFO][Dbsrv]save 333.achieve(0) success
+[2016-07-06 19:36:05 960916][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).task
+[2016-07-06 19:36:05 960940][TAG][24996][INFO][Dbsrv]replace into task (uid, bin, updatetime) VALUES (333, '', 1467804965)
+[2016-07-06 19:36:05 986957][TAG][24996][INFO][Dbsrv]save 333.task(0) success
+[2016-07-06 19:36:05 986992][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).user
+[2016-07-06 19:36:05 987057][TAG][24996][INFO][Dbsrv]replace into user (lastlogintime,uid,coin,uname, updatetime) values (0,0,0,'',1467804965)
+[2016-07-06 19:36:06 13002][TAG][24996][INFO][Dbsrv]save 333.user(0) success
+[2016-07-06 19:36:06 13035][TAG][24996][INFO]POST Login.msg_db_srv_set_playerdata TO GameSrv
+[2016-07-06 19:36:06 13050][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:06 13055][TAG][24996][DEBUG]arg1:333
+[2016-07-06 19:36:06 13059][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:06 13063][TAG][24996][DEBUG]arg2:1
+[2016-07-06 19:36:06 13070][TAG][24996][INFO]POS_ Login.msg_db_srv_set_playerdata TO GameSrv usec:35 body_len:45
+[2016-07-06 19:36:06 13075][TAG][24996][INFO][Dbsrv]CAL_ dbproto.UserData FROM GameSrv usec:79645 body_len:148
+[2016-07-06 19:36:06 13094][TAG][24996][INFO]real_send(49)
+
+[2016-07-06 19:36:07 754769][TAG][24996][DEBUG]net/port.cc:220
+[2016-07-06 19:36:07 754790][TAG][24996][DEBUG]real recv 80 bufremain 1024
+
+[2016-07-06 19:36:07 754799][TAG][24996][INFO][Dbsrv]CALL Dbsrv.GET FROM GameSrv
+[2016-07-06 19:36:07 754809][TAG][24996][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:07 754816][TAG][24996][DEBUG]333
+[2016-07-06 19:36:07 754824][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:07 754831][TAG][24996][DEBUG]31 Login.msg_db_srv_get_playerdata
+[2016-07-06 19:36:07 754839][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:07 754846][TAG][24996][DEBUG]4 user
+[2016-07-06 19:36:07 754853][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:07 754860][TAG][24996][DEBUG]4 task
+[2016-07-06 19:36:07 754867][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:07 754873][TAG][24996][DEBUG]7 achieve
+[2016-07-06 19:36:07 755310][TAG][24996][INFO][Dbsrv]load from mysql 333.task(0)
+[2016-07-06 19:36:07 755458][TAG][24996][INFO][Dbsrv]load from mysql 333.achieve(0)
+[2016-07-06 19:36:07 755472][TAG][24996][INFO][Dbsrv]total_size(0)
+[2016-07-06 19:36:07 755481][TAG][24996][INFO]POST Login.msg_db_srv_get_playerdata TO GameSrv
+[2016-07-06 19:36:07 755489][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:07 755493][TAG][24996][DEBUG]arg1:333
+[2016-07-06 19:36:07 755505][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:07 755512][TAG][24996][DEBUG]arg2:1
+[2016-07-06 19:36:07 755522][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:36:07 755530][TAG][24996][DEBUG]arg3:dbproto.UserData
+[2016-07-06 19:36:07 755538][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:36:07 755548][TAG][24996][DEBUG]
+[2016-07-06 19:36:07 755557][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:36:07 755576][TAG][24996][DEBUG]arg4:dbproto.TaskData
+[2016-07-06 19:36:07 755584][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:36:07 755592][TAG][24996][DEBUG]
+[2016-07-06 19:36:07 755599][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:36:07 755607][TAG][24996][DEBUG]arg5:dbproto.AchieveData
+[2016-07-06 19:36:07 755616][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:36:07 755625][TAG][24996][DEBUG]
+[2016-07-06 19:36:07 755634][TAG][24996][INFO]POS_ Login.msg_db_srv_get_playerdata TO GameSrv usec:153 body_len:117
+[2016-07-06 19:36:07 755640][TAG][24996][INFO][Dbsrv]CAL_ Dbsrv.GET FROM GameSrv usec:841 body_len:76
+[2016-07-06 19:36:07 755656][TAG][24996][INFO]real_send(121)
+
+[2016-07-06 19:36:07 757138][TAG][24996][DEBUG]net/port.cc:220
+[2016-07-06 19:36:07 757156][TAG][24996][DEBUG]real recv 152 bufremain 1024
+
+[2016-07-06 19:36:07 757177][TAG][24996][INFO][Dbsrv]CALL Dbsrv.SET FROM GameSrv
+[2016-07-06 19:36:07 757188][TAG][24996][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:07 757196][TAG][24996][DEBUG]333
+[2016-07-06 19:36:07 757203][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:07 757210][TAG][24996][DEBUG]31 Login.msg_db_srv_set_playerdata
+[2016-07-06 19:36:07 757217][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:07 757224][TAG][24996][DEBUG]7 achieve
+[2016-07-06 19:36:07 757245][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:36:07 757257][TAG][24996][DEBUG]
+[2016-07-06 19:36:07 757269][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:07 757277][TAG][24996][DEBUG]4 task
+[2016-07-06 19:36:07 757293][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:36:07 757308][TAG][24996][DEBUG]
+[2016-07-06 19:36:07 757317][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:07 757324][TAG][24996][DEBUG]4 user
+[2016-07-06 19:36:07 757337][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:36:07 757347][TAG][24996][DEBUG]
+[2016-07-06 19:36:07 757390][TAG][24996][ERROR]lualib/redis/lredis.cc:355
+[2016-07-06 19:36:07 757400][TAG][24996][ERROR]userdata is null
+[2016-07-06 19:36:07 757413][TAG][24996][INFO][Dbsrv]cache 333 fail
+[2016-07-06 19:36:07 757429][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).achieve
+[2016-07-06 19:36:07 757447][TAG][24996][INFO][Dbsrv]replace into achieve (uid, bin, updatetime) VALUES (333, '', 1467804967)
+[2016-07-06 19:36:07 787130][TAG][24996][INFO][Dbsrv]save 333.achieve(0) success
+[2016-07-06 19:36:07 787162][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).task
+[2016-07-06 19:36:07 787184][TAG][24996][INFO][Dbsrv]replace into task (uid, bin, updatetime) VALUES (333, '', 1467804967)
+[2016-07-06 19:36:07 813226][TAG][24996][INFO][Dbsrv]save 333.task(0) success
+[2016-07-06 19:36:07 813259][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).user
+[2016-07-06 19:36:07 813319][TAG][24996][INFO][Dbsrv]replace into user (lastlogintime,uid,coin,uname, updatetime) values (0,0,0,'',1467804967)
+[2016-07-06 19:36:07 847546][TAG][24996][INFO][Dbsrv]save 333.user(0) success
+[2016-07-06 19:36:07 847576][TAG][24996][INFO]POST Login.msg_db_srv_set_playerdata TO GameSrv
+[2016-07-06 19:36:07 847586][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:07 847594][TAG][24996][DEBUG]arg1:333
+[2016-07-06 19:36:07 847600][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:07 847604][TAG][24996][DEBUG]arg2:1
+[2016-07-06 19:36:07 847610][TAG][24996][INFO]POS_ Login.msg_db_srv_set_playerdata TO GameSrv usec:36 body_len:45
+[2016-07-06 19:36:07 847616][TAG][24996][INFO][Dbsrv]CAL_ dbproto.UserData FROM GameSrv usec:90439 body_len:148
+[2016-07-06 19:36:07 847631][TAG][24996][INFO]real_send(49)
+
+[2016-07-06 19:36:08 619392][TAG][24996][DEBUG]net/port.cc:220
+[2016-07-06 19:36:08 619409][TAG][24996][DEBUG]real recv 80 bufremain 1024
+
+[2016-07-06 19:36:08 619417][TAG][24996][INFO][Dbsrv]CALL Dbsrv.GET FROM GameSrv
+[2016-07-06 19:36:08 619427][TAG][24996][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:08 619434][TAG][24996][DEBUG]333
+[2016-07-06 19:36:08 619442][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:08 619448][TAG][24996][DEBUG]31 Login.msg_db_srv_get_playerdata
+[2016-07-06 19:36:08 619453][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:08 619458][TAG][24996][DEBUG]4 user
+[2016-07-06 19:36:08 619473][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:08 619478][TAG][24996][DEBUG]4 task
+[2016-07-06 19:36:08 619483][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:08 619487][TAG][24996][DEBUG]7 achieve
+[2016-07-06 19:36:08 619924][TAG][24996][INFO][Dbsrv]load from mysql 333.task(0)
+[2016-07-06 19:36:08 620090][TAG][24996][INFO][Dbsrv]load from mysql 333.achieve(0)
+[2016-07-06 19:36:08 620109][TAG][24996][INFO][Dbsrv]total_size(0)
+[2016-07-06 19:36:08 620124][TAG][24996][INFO]POST Login.msg_db_srv_get_playerdata TO GameSrv
+[2016-07-06 19:36:08 620136][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:08 620144][TAG][24996][DEBUG]arg1:333
+[2016-07-06 19:36:08 620152][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:08 620159][TAG][24996][DEBUG]arg2:1
+[2016-07-06 19:36:08 620173][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:36:08 620182][TAG][24996][DEBUG]arg3:dbproto.UserData
+[2016-07-06 19:36:08 620190][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:36:08 620200][TAG][24996][DEBUG]
+[2016-07-06 19:36:08 620209][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:36:08 620217][TAG][24996][DEBUG]arg4:dbproto.TaskData
+[2016-07-06 19:36:08 620225][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:36:08 620233][TAG][24996][DEBUG]
+[2016-07-06 19:36:08 620239][TAG][24996][DEBUG]lualib/port/rmi_port.cc:672
+[2016-07-06 19:36:08 620254][TAG][24996][DEBUG]arg5:dbproto.AchieveData
+[2016-07-06 19:36:08 620262][TAG][24996][DEBUG]lualib/port/rmi_port.cc:674
+[2016-07-06 19:36:08 620270][TAG][24996][DEBUG]
+[2016-07-06 19:36:08 620279][TAG][24996][INFO]POS_ Login.msg_db_srv_get_playerdata TO GameSrv usec:155 body_len:117
+[2016-07-06 19:36:08 620287][TAG][24996][INFO][Dbsrv]CAL_ Dbsrv.GET FROM GameSrv usec:870 body_len:76
+[2016-07-06 19:36:08 620308][TAG][24996][INFO]real_send(121)
+
+[2016-07-06 19:36:08 621648][TAG][24996][DEBUG]net/port.cc:220
+[2016-07-06 19:36:08 621665][TAG][24996][DEBUG]real recv 152 bufremain 1024
+
+[2016-07-06 19:36:08 621674][TAG][24996][INFO][Dbsrv]CALL Dbsrv.SET FROM GameSrv
+[2016-07-06 19:36:08 621684][TAG][24996][DEBUG]lualib/port/rmi_port.cc:388
+[2016-07-06 19:36:08 621699][TAG][24996][DEBUG]333
+[2016-07-06 19:36:08 621707][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:08 621714][TAG][24996][DEBUG]31 Login.msg_db_srv_set_playerdata
+[2016-07-06 19:36:08 621721][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:08 621728][TAG][24996][DEBUG]7 achieve
+[2016-07-06 19:36:08 621747][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:36:08 621770][TAG][24996][DEBUG]
+[2016-07-06 19:36:08 621779][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:08 621786][TAG][24996][DEBUG]4 task
+[2016-07-06 19:36:08 621798][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:36:08 621808][TAG][24996][DEBUG]
+[2016-07-06 19:36:08 621815][TAG][24996][DEBUG]lualib/port/rmi_port.cc:372
+[2016-07-06 19:36:08 621822][TAG][24996][DEBUG]4 user
+[2016-07-06 19:36:08 621834][TAG][24996][DEBUG]lualib/port/rmi_port.cc:447
+[2016-07-06 19:36:08 621843][TAG][24996][DEBUG]
+[2016-07-06 19:36:08 621882][TAG][24996][ERROR]lualib/redis/lredis.cc:355
+[2016-07-06 19:36:08 621889][TAG][24996][ERROR]userdata is null
+[2016-07-06 19:36:08 621898][TAG][24996][INFO][Dbsrv]cache 333 fail
+[2016-07-06 19:36:08 621910][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).achieve
+[2016-07-06 19:36:08 621938][TAG][24996][INFO][Dbsrv]replace into achieve (uid, bin, updatetime) VALUES (333, '', 1467804968)
+[2016-07-06 19:36:08 647737][TAG][24996][INFO][Dbsrv]save 333.achieve(0) success
+[2016-07-06 19:36:08 647766][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).task
+[2016-07-06 19:36:08 647797][TAG][24996][INFO][Dbsrv]replace into task (uid, bin, updatetime) VALUES (333, '', 1467804968)
+[2016-07-06 19:36:08 673773][TAG][24996][INFO][Dbsrv]save 333.task(0) success
+[2016-07-06 19:36:08 673801][TAG][24996][INFO][Dbsrv]set_to_mysql uid(333).user
+[2016-07-06 19:36:08 673853][TAG][24996][INFO][Dbsrv]replace into user (lastlogintime,uid,coin,uname, updatetime) values (0,0,0,'',1467804968)
+[2016-07-06 19:36:08 699828][TAG][24996][INFO][Dbsrv]save 333.user(0) success
+[2016-07-06 19:36:08 699860][TAG][24996][INFO]POST Login.msg_db_srv_set_playerdata TO GameSrv
+[2016-07-06 19:36:08 699868][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:08 699872][TAG][24996][DEBUG]arg1:333
+[2016-07-06 19:36:08 699877][TAG][24996][DEBUG]lualib/port/rmi_port.cc:611
+[2016-07-06 19:36:08 699881][TAG][24996][DEBUG]arg2:1
+[2016-07-06 19:36:08 699892][TAG][24996][INFO]POS_ Login.msg_db_srv_set_playerdata TO GameSrv usec:32 body_len:45
+[2016-07-06 19:36:08 699901][TAG][24996][INFO][Dbsrv]CAL_ dbproto.UserData FROM GameSrv usec:78227 body_len:148
+[2016-07-06 19:36:08 699921][TAG][24996][INFO]real_send(49)
+

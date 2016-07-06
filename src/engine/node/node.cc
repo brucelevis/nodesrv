@@ -1,14 +1,13 @@
 #include "node.h"
 
 #include "msg/msg.h"
-#include "entity/entity.h"
-#include "entity/entityroute.h"
+#include "node/entity.h"
+#include "node/entityroute.h"
 #include "net/sendbuf.h"
 #include "net/recvbuf.h"
 #include "node/nodemgr.h"
 #include "log/log.h"
 #include "script/script.h"
-#include "json/ljson.h"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -59,7 +58,6 @@ void Node::on_create()
 {
     L = lua_open();
     luaL_openlibs(L);
-    luaopen_json(L);
     luaopen_neox(L);
 }
 
@@ -531,7 +529,7 @@ int Node::get_id()
 
 int Node::add_entity(Entity* entity)
 {
-    Log::info("node[%d] add entity(%d)", this->id, entity->id);
+    LOG_DEBUG("node[%d] add entity(%d)", this->id, entity->id);
     entity_map_[entity->id] = entity; 
     entity_vector_.push_back(entity);
     entity->node = this;
@@ -630,7 +628,7 @@ void Node::delete_file_event(int fd, int mask)
 
 Entity* Node::create_entity_local(const char* filepath)
 {
-    Log::info("node[%d] create entity local %s", this->id, filepath);
+    LOG_DEBUG("node[%d] create entity local %s", this->id, filepath);
     Entity* entity = NULL;
     if (filepath == NULL)
     {

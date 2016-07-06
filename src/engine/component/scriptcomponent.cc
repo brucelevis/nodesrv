@@ -1,6 +1,6 @@
 
 #include "component/scriptcomponent.h"
-#include "entity/entity.h"
+#include "node/entity.h"
 #include "node/node.h"
 
 #include <string.h>

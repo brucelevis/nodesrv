@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Fri Jul  1 18:51:23 2016.
+** Generated automatically by tolua++-1.0.92 on Tue Jul  5 14:47:50 2016.
 */
 
 #ifndef __cplusplus
@@ -15,14 +15,14 @@ TOLUA_API int  tolua_neox_open (lua_State* tolua_S);
 
 #include "neox.h"
 #include "type/type.h"
-#include "entity/entity.h"
+#include "node/entity.h"
+#include "node/node.h"
+#include "node/nodemgr.h"
 #include "component/component.h"
 #include "component/testcomponent.h"
 #include "component/scriptcomponent.h"
 #include "component/netcomponent.h"
 #include "component/httpcomponent.h"
-#include "node/node.h"
-#include "node/nodemgr.h"
 #include "msg/msg.h"
 #include "container/buffer.h"
 #include "msg/rpc.h"
@@ -31,9 +31,9 @@ TOLUA_API int  tolua_neox_open (lua_State* tolua_S);
 /* function to release collected object via destructor */
 #ifdef __cplusplus
 
-static int tolua_collect_Type (lua_State* tolua_S)
+static int tolua_collect_TestComponent (lua_State* tolua_S)
 {
- Type* self = (Type*) tolua_tousertype(tolua_S,1,0);
+ TestComponent* self = (TestComponent*) tolua_tousertype(tolua_S,1,0);
 	delete self;
 	return 0;
 }
@@ -73,9 +73,9 @@ static int tolua_collect_Entity (lua_State* tolua_S)
 	return 0;
 }
 
-static int tolua_collect_TestComponent (lua_State* tolua_S)
+static int tolua_collect_Type (lua_State* tolua_S)
 {
- TestComponent* self = (TestComponent*) tolua_tousertype(tolua_S,1,0);
+ Type* self = (Type*) tolua_tousertype(tolua_S,1,0);
 	delete self;
 	return 0;
 }
@@ -99,7 +99,7 @@ static int tolua_collect_HttpComponent (lua_State* tolua_S)
 /* function to register type */
 static void tolua_reg_types (lua_State* tolua_S)
 {
- tolua_usertype(tolua_S,"TestComponent");
+ tolua_usertype(tolua_S,"Type");
  tolua_usertype(tolua_S,"CreateEntityMsg");
  tolua_usertype(tolua_S,"Buffer");
  tolua_usertype(tolua_S,"ScriptComponent");
@@ -108,12 +108,12 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"Message");
  tolua_usertype(tolua_S,"Component");
  tolua_usertype(tolua_S,"NetComponent");
- tolua_usertype(tolua_S,"::google::protobuf::Message");
- tolua_usertype(tolua_S,"Node");
- tolua_usertype(tolua_S,"Entity");
- tolua_usertype(tolua_S,"Type");
- tolua_usertype(tolua_S,"aeFileProc");
  tolua_usertype(tolua_S,"HttpComponent");
+ tolua_usertype(tolua_S,"::google::protobuf::Message");
+ tolua_usertype(tolua_S,"Entity");
+ tolua_usertype(tolua_S,"TestComponent");
+ tolua_usertype(tolua_S,"Node");
+ tolua_usertype(tolua_S,"aeFileProc");
 }
 
 /* function: Neox::init */
@@ -1364,6 +1364,1266 @@ static int tolua_set_Entity_name(lua_State* tolua_S)
 #endif
  strncpy(self->name,tolua_tostring(tolua_S,2,0),64-1);
  return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_new00
+static int tolua_neox_Node_new00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  int nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  {
+   Node* tolua_ret = (Node*)  new Node(nodeid);
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_new00_local
+static int tolua_neox_Node_new00_local(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  int nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  {
+   Node* tolua_ret = (Node*)  new Node(nodeid);
+   tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"Node");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: delete of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_delete00
+static int tolua_neox_Node_delete00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'",NULL);
+#endif
+  delete self;
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: main of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_main00
+static int tolua_neox_Node_main00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  const char* mainfile = ((const char*)  tolua_tostring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'main'",NULL);
+#endif
+  {
+   self->main(mainfile);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'main'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: update of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_update00
+static int tolua_neox_Node_update00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  long long cur_tick = ((long long)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'update'",NULL);
+#endif
+  {
+   self->update(cur_tick);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'update'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: connect of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_connect00
+static int tolua_neox_Node_connect00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  const char* host = ((const char*)  tolua_tostring(tolua_S,2,0));
+  unsigned short port = ((unsigned short)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'connect'",NULL);
+#endif
+  {
+   int tolua_ret = (int)  self->connect(host,port);
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'connect'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: listen of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_listen00
+static int tolua_neox_Node_listen00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  const char* host = ((const char*)  tolua_tostring(tolua_S,2,0));
+  unsigned short port = ((unsigned short)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'listen'",NULL);
+#endif
+  {
+   int tolua_ret = (int)  self->listen(host,port);
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'listen'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: send of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_send00
+static int tolua_neox_Node_send00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  const char* data = ((const char*)  tolua_tostring(tolua_S,2,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send'",NULL);
+#endif
+  {
+   int tolua_ret = (int)  self->send(data,size);
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'send'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: find_entity of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_find_entity00
+static int tolua_neox_Node_find_entity00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  int entityid = ((int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'find_entity'",NULL);
+#endif
+  {
+   Entity* tolua_ret = (Entity*)  self->find_entity(entityid);
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Entity");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'find_entity'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: add_entity of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_add_entity00
+static int tolua_neox_Node_add_entity00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  Entity* entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'add_entity'",NULL);
+#endif
+  {
+   int tolua_ret = (int)  self->add_entity(entity);
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'add_entity'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: get_id of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_get_id00
+static int tolua_neox_Node_get_id00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'get_id'",NULL);
+#endif
+  {
+   int tolua_ret = (int)  self->get_id();
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'get_id'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: is_local of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_is_local00
+static int tolua_neox_Node_is_local00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'is_local'",NULL);
+#endif
+  {
+   bool tolua_ret = (bool)  self->is_local();
+   tolua_pushboolean(tolua_S,(bool)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'is_local'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: set_local of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_set_local00
+static int tolua_neox_Node_set_local00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  bool v = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'set_local'",NULL);
+#endif
+  {
+   self->set_local(v);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'set_local'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: is_disconnect of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_is_disconnect00
+static int tolua_neox_Node_is_disconnect00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'is_disconnect'",NULL);
+#endif
+  {
+   bool tolua_ret = (bool)  self->is_disconnect();
+   tolua_pushboolean(tolua_S,(bool)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'is_disconnect'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: create_entity_local of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_create_entity_local00
+static int tolua_neox_Node_create_entity_local00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,2,1,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  const char* filepath = ((const char*)  tolua_tostring(tolua_S,2,NULL));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create_entity_local'",NULL);
+#endif
+  {
+   Entity* tolua_ret = (Entity*)  self->create_entity_local(filepath);
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Entity");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'create_entity_local'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: create_entity_remote of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_create_entity_remote00
+static int tolua_neox_Node_create_entity_remote00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
+  const char* filepath = ((const char*)  tolua_tostring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create_entity_remote'",NULL);
+#endif
+  {
+   self->create_entity_remote(src_entity,filepath);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'create_entity_remote'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: recv of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_recv00
+static int tolua_neox_Node_recv00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
+  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv'",NULL);
+#endif
+  {
+   self->recv(header,data,size);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'recv'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: recv_entity_msg of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_recv_entity_msg00
+static int tolua_neox_Node_recv_entity_msg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
+  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv_entity_msg'",NULL);
+#endif
+  {
+   self->recv_entity_msg(header,data,size);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'recv_entity_msg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: recv_node_reg of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_recv_node_reg00
+static int tolua_neox_Node_recv_node_reg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
+  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv_node_reg'",NULL);
+#endif
+  {
+   self->recv_node_reg(header,data,size);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'recv_node_reg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: recv_create_entity of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_recv_create_entity00
+static int tolua_neox_Node_recv_create_entity00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
+  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv_create_entity'",NULL);
+#endif
+  {
+   self->recv_create_entity(header,data,size);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'recv_create_entity'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: send_entity_msg of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_send_entity_msg00
+static int tolua_neox_Node_send_entity_msg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,7,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
+  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
+  const char* data = ((const char*)  tolua_tostring(tolua_S,5,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,6,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_entity_msg'",NULL);
+#endif
+  {
+   self->send_entity_msg(src_entity,dst_entityid,msgid,data,size);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'send_entity_msg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: send_entity_msg of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_send_entity_msg01
+static int tolua_neox_Node_send_entity_msg01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,5,"Buffer",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,6,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
+  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
+  Buffer* buffer = ((Buffer*)  tolua_tousertype(tolua_S,5,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_entity_msg'",NULL);
+#endif
+  {
+   self->send_entity_msg(src_entity,dst_entityid,msgid,buffer);
+  }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_neox_Node_send_entity_msg00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: send_entity_msg of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_send_entity_msg02
+static int tolua_neox_Node_send_entity_msg02(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,5,"::google::protobuf::Message",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,6,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
+  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
+ ::google::protobuf::Message* msg = ((::google::protobuf::Message*)  tolua_tousertype(tolua_S,5,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_entity_msg'",NULL);
+#endif
+  {
+   self->send_entity_msg(src_entity,dst_entityid,msgid,msg);
+  }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_neox_Node_send_entity_msg01(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: forward_entity_msg of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_forward_entity_msg00
+static int tolua_neox_Node_forward_entity_msg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,7,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
+  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
+  const char* data = ((const char*)  tolua_tostring(tolua_S,5,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,6,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'forward_entity_msg'",NULL);
+#endif
+  {
+   self->forward_entity_msg(src_entity,dst_entityid,msgid,data,size);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'forward_entity_msg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: forward_entity_msg of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_forward_entity_msg01
+static int tolua_neox_Node_forward_entity_msg01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
+  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'forward_entity_msg'",NULL);
+#endif
+  {
+   self->forward_entity_msg(header,data,size);
+  }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_neox_Node_forward_entity_msg00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: id of class  Node */
+#ifndef TOLUA_DISABLE_tolua_get_Node_id
+static int tolua_get_Node_id(lua_State* tolua_S)
+{
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->id);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: id of class  Node */
+#ifndef TOLUA_DISABLE_tolua_set_Node_id
+static int tolua_set_Node_id(lua_State* tolua_S)
+{
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->id = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: name of class  Node */
+#ifndef TOLUA_DISABLE_tolua_get_Node_name
+static int tolua_get_Node_name(lua_State* tolua_S)
+{
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'name'",NULL);
+#endif
+  tolua_pushstring(tolua_S,(const char*)self->name);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: name of class  Node */
+#ifndef TOLUA_DISABLE_tolua_set_Node_name
+static int tolua_set_Node_name(lua_State* tolua_S)
+{
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'name'",NULL);
+  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+ strncpy(self->name,tolua_tostring(tolua_S,2,0),64-1);
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::update */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_update00
+static int tolua_neox_NodeMgr_update00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isnumber(tolua_S,1,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  long long cur_tick = ((long long)  tolua_tonumber(tolua_S,1,0));
+  {
+   NodeMgr::update(cur_tick);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'update'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::find_node */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_find_node00
+static int tolua_neox_NodeMgr_find_node00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isnumber(tolua_S,1,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  int nodeid = ((int)  tolua_tonumber(tolua_S,1,0));
+  {
+   Node* tolua_ret = (Node*)  NodeMgr::find_node(nodeid);
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'find_node'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::create_temp_node */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_create_temp_node00
+static int tolua_neox_NodeMgr_create_temp_node00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isnoobj(tolua_S,1,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   Node* tolua_ret = (Node*)  NodeMgr::create_temp_node();
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'create_temp_node'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::create_node_local */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_create_node_local00
+static int tolua_neox_NodeMgr_create_node_local00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isnumber(tolua_S,1,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  int nodeid = ((int)  tolua_tonumber(tolua_S,1,0));
+  {
+   Node* tolua_ret = (Node*)  NodeMgr::create_node_local(nodeid);
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'create_node_local'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::create_node_remote */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_create_node_remote00
+static int tolua_neox_NodeMgr_create_node_remote00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isnumber(tolua_S,1,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  int nodeid = ((int)  tolua_tonumber(tolua_S,1,0));
+  {
+   Node* tolua_ret = (Node*)  NodeMgr::create_node_remote(nodeid);
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'create_node_remote'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::transfer_entity */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_transfer_entity00
+static int tolua_neox_NodeMgr_transfer_entity00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
+  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  {
+   NodeMgr::transfer_entity(src_entity,dst_nodeid);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'transfer_entity'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::send_entity_msg */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_send_entity_msg00
+static int tolua_neox_NodeMgr_send_entity_msg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,5,"::google::protobuf::Message",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,6,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
+  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
+ ::google::protobuf::Message* msg = ((::google::protobuf::Message*)  tolua_tousertype(tolua_S,5,0));
+  {
+   NodeMgr::send_entity_msg(src_entity,dst_nodeid,dst_entityid,msgid,msg);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'send_entity_msg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::send_entity_msg */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_send_entity_msg01
+static int tolua_neox_NodeMgr_send_entity_msg01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,5,"Buffer",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,6,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
+  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
+  Buffer* buffer = ((Buffer*)  tolua_tousertype(tolua_S,5,0));
+  {
+   NodeMgr::send_entity_msg(src_entity,dst_nodeid,dst_entityid,msgid,buffer);
+  }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_neox_NodeMgr_send_entity_msg00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::send_entity_msg */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_send_entity_msg02
+static int tolua_neox_NodeMgr_send_entity_msg02(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,7,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
+  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
+  const char* data = ((const char*)  tolua_tostring(tolua_S,5,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,6,0));
+  {
+   NodeMgr::send_entity_msg(src_entity,dst_nodeid,dst_entityid,msgid,data,size);
+  }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_neox_NodeMgr_send_entity_msg01(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::forward_entity_msg */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_forward_entity_msg00
+static int tolua_neox_NodeMgr_forward_entity_msg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,7,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
+  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
+  const char* data = ((const char*)  tolua_tostring(tolua_S,5,0));
+  size_t len = ((size_t)  tolua_tonumber(tolua_S,6,0));
+  {
+   NodeMgr::forward_entity_msg(src_entity,dst_nodeid,dst_entityid,msgid,data,len);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'forward_entity_msg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* function: NodeMgr::create_entity_remote */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_create_entity_remote00
+static int tolua_neox_NodeMgr_create_entity_remote00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
+  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  const char* filepath = ((const char*)  tolua_tostring(tolua_S,3,0));
+  {
+   NodeMgr::create_entity_remote(src_entity,dst_nodeid,filepath);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'create_entity_remote'.",&tolua_err);
+ return 0;
+#endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -2758,6 +4018,79 @@ static int tolua_neox_NetComponent_send_str00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: alloc_send_buf of class  NetComponent */
+#ifndef TOLUA_DISABLE_tolua_neox_NetComponent_alloc_send_buf00
+static int tolua_neox_NetComponent_alloc_send_buf00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"NetComponent",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  NetComponent* self = (NetComponent*)  tolua_tousertype(tolua_S,1,0);
+  int sockfd = ((int)  tolua_tonumber(tolua_S,2,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'alloc_send_buf'",NULL);
+#endif
+  {
+   char* tolua_ret = (char*)  self->alloc_send_buf(sockfd,size);
+   tolua_pushstring(tolua_S,(const char*)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'alloc_send_buf'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: flush_send_buf of class  NetComponent */
+#ifndef TOLUA_DISABLE_tolua_neox_NetComponent_flush_send_buf00
+static int tolua_neox_NetComponent_flush_send_buf00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"NetComponent",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  NetComponent* self = (NetComponent*)  tolua_tousertype(tolua_S,1,0);
+  int sockfd = ((int)  tolua_tonumber(tolua_S,2,0));
+  char* buf = ((char*)  tolua_tostring(tolua_S,3,0));
+  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'flush_send_buf'",NULL);
+#endif
+  {
+   self->flush_send_buf(sockfd,buf,size);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'flush_send_buf'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: new of class  HttpComponent */
 #ifndef TOLUA_DISABLE_tolua_neox_HttpComponent_new00
 static int tolua_neox_HttpComponent_new00(lua_State* tolua_S)
@@ -2977,1266 +4310,6 @@ static int tolua_neox_HttpComponent_send_string_frame00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'send_string_frame'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: new of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_new00
-static int tolua_neox_Node_new00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertable(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  int nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
-  {
-   Node* tolua_ret = (Node*)  new Node(nodeid);
-   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: new_local of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_new00_local
-static int tolua_neox_Node_new00_local(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertable(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  int nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
-  {
-   Node* tolua_ret = (Node*)  new Node(nodeid);
-   tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"Node");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: delete of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_delete00
-static int tolua_neox_Node_delete00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'",NULL);
-#endif
-  delete self;
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: main of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_main00
-static int tolua_neox_Node_main00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  const char* mainfile = ((const char*)  tolua_tostring(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'main'",NULL);
-#endif
-  {
-   self->main(mainfile);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'main'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: update of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_update00
-static int tolua_neox_Node_update00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  long long cur_tick = ((long long)  tolua_tonumber(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'update'",NULL);
-#endif
-  {
-   self->update(cur_tick);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'update'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: connect of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_connect00
-static int tolua_neox_Node_connect00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,4,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  const char* host = ((const char*)  tolua_tostring(tolua_S,2,0));
-  unsigned short port = ((unsigned short)  tolua_tonumber(tolua_S,3,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'connect'",NULL);
-#endif
-  {
-   int tolua_ret = (int)  self->connect(host,port);
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'connect'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: listen of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_listen00
-static int tolua_neox_Node_listen00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,4,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  const char* host = ((const char*)  tolua_tostring(tolua_S,2,0));
-  unsigned short port = ((unsigned short)  tolua_tonumber(tolua_S,3,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'listen'",NULL);
-#endif
-  {
-   int tolua_ret = (int)  self->listen(host,port);
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'listen'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: send of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_send00
-static int tolua_neox_Node_send00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,4,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  const char* data = ((const char*)  tolua_tostring(tolua_S,2,0));
-  size_t size = ((size_t)  tolua_tonumber(tolua_S,3,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send'",NULL);
-#endif
-  {
-   int tolua_ret = (int)  self->send(data,size);
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'send'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: find_entity of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_find_entity00
-static int tolua_neox_Node_find_entity00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  int entityid = ((int)  tolua_tonumber(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'find_entity'",NULL);
-#endif
-  {
-   Entity* tolua_ret = (Entity*)  self->find_entity(entityid);
-   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Entity");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'find_entity'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: add_entity of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_add_entity00
-static int tolua_neox_Node_add_entity00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  Entity* entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'add_entity'",NULL);
-#endif
-  {
-   int tolua_ret = (int)  self->add_entity(entity);
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'add_entity'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: get_id of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_get_id00
-static int tolua_neox_Node_get_id00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'get_id'",NULL);
-#endif
-  {
-   int tolua_ret = (int)  self->get_id();
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'get_id'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: is_local of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_is_local00
-static int tolua_neox_Node_is_local00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'is_local'",NULL);
-#endif
-  {
-   bool tolua_ret = (bool)  self->is_local();
-   tolua_pushboolean(tolua_S,(bool)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'is_local'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: set_local of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_set_local00
-static int tolua_neox_Node_set_local00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  bool v = ((bool)  tolua_toboolean(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'set_local'",NULL);
-#endif
-  {
-   self->set_local(v);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'set_local'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: is_disconnect of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_is_disconnect00
-static int tolua_neox_Node_is_disconnect00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'is_disconnect'",NULL);
-#endif
-  {
-   bool tolua_ret = (bool)  self->is_disconnect();
-   tolua_pushboolean(tolua_S,(bool)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'is_disconnect'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: create_entity_local of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_create_entity_local00
-static int tolua_neox_Node_create_entity_local00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,2,1,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  const char* filepath = ((const char*)  tolua_tostring(tolua_S,2,NULL));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create_entity_local'",NULL);
-#endif
-  {
-   Entity* tolua_ret = (Entity*)  self->create_entity_local(filepath);
-   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Entity");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'create_entity_local'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: create_entity_remote of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_create_entity_remote00
-static int tolua_neox_Node_create_entity_remote00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,4,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
-  const char* filepath = ((const char*)  tolua_tostring(tolua_S,3,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create_entity_remote'",NULL);
-#endif
-  {
-   self->create_entity_remote(src_entity,filepath);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'create_entity_remote'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: recv of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_recv00
-static int tolua_neox_Node_recv00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,5,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
-  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv'",NULL);
-#endif
-  {
-   self->recv(header,data,size);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'recv'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: recv_entity_msg of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_recv_entity_msg00
-static int tolua_neox_Node_recv_entity_msg00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,5,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
-  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv_entity_msg'",NULL);
-#endif
-  {
-   self->recv_entity_msg(header,data,size);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'recv_entity_msg'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: recv_node_reg of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_recv_node_reg00
-static int tolua_neox_Node_recv_node_reg00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,5,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
-  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv_node_reg'",NULL);
-#endif
-  {
-   self->recv_node_reg(header,data,size);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'recv_node_reg'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: recv_create_entity of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_recv_create_entity00
-static int tolua_neox_Node_recv_create_entity00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,5,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
-  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'recv_create_entity'",NULL);
-#endif
-  {
-   self->recv_create_entity(header,data,size);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'recv_create_entity'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: send_entity_msg of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_send_entity_msg00
-static int tolua_neox_Node_send_entity_msg00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isstring(tolua_S,5,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,7,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
-  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,5,0));
-  size_t size = ((size_t)  tolua_tonumber(tolua_S,6,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_entity_msg'",NULL);
-#endif
-  {
-   self->send_entity_msg(src_entity,dst_entityid,msgid,data,size);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'send_entity_msg'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: send_entity_msg of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_send_entity_msg01
-static int tolua_neox_Node_send_entity_msg01(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,5,"Buffer",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,6,&tolua_err)
- )
-  goto tolua_lerror;
- else
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
-  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
-  Buffer* buffer = ((Buffer*)  tolua_tousertype(tolua_S,5,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_entity_msg'",NULL);
-#endif
-  {
-   self->send_entity_msg(src_entity,dst_entityid,msgid,buffer);
-  }
- }
- return 0;
-tolua_lerror:
- return tolua_neox_Node_send_entity_msg00(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: send_entity_msg of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_send_entity_msg02
-static int tolua_neox_Node_send_entity_msg02(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,5,"::google::protobuf::Message",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,6,&tolua_err)
- )
-  goto tolua_lerror;
- else
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
-  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
- ::google::protobuf::Message* msg = ((::google::protobuf::Message*)  tolua_tousertype(tolua_S,5,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_entity_msg'",NULL);
-#endif
-  {
-   self->send_entity_msg(src_entity,dst_entityid,msgid,msg);
-  }
- }
- return 0;
-tolua_lerror:
- return tolua_neox_Node_send_entity_msg01(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: forward_entity_msg of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_forward_entity_msg00
-static int tolua_neox_Node_forward_entity_msg00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"Entity",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isstring(tolua_S,5,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,7,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
-  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,5,0));
-  size_t size = ((size_t)  tolua_tonumber(tolua_S,6,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'forward_entity_msg'",NULL);
-#endif
-  {
-   self->forward_entity_msg(src_entity,dst_entityid,msgid,data,size);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'forward_entity_msg'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: forward_entity_msg of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_forward_entity_msg01
-static int tolua_neox_Node_forward_entity_msg01(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"MsgHeader",0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,5,&tolua_err)
- )
-  goto tolua_lerror;
- else
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  MsgHeader* header = ((MsgHeader*)  tolua_tousertype(tolua_S,2,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,3,0));
-  size_t size = ((size_t)  tolua_tonumber(tolua_S,4,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'forward_entity_msg'",NULL);
-#endif
-  {
-   self->forward_entity_msg(header,data,size);
-  }
- }
- return 0;
-tolua_lerror:
- return tolua_neox_Node_forward_entity_msg00(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: id of class  Node */
-#ifndef TOLUA_DISABLE_tolua_get_Node_id
-static int tolua_get_Node_id(lua_State* tolua_S)
-{
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
-#endif
-  tolua_pushnumber(tolua_S,(lua_Number)self->id);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: id of class  Node */
-#ifndef TOLUA_DISABLE_tolua_set_Node_id
-static int tolua_set_Node_id(lua_State* tolua_S)
-{
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'id'",NULL);
-  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->id = ((int)  tolua_tonumber(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: name of class  Node */
-#ifndef TOLUA_DISABLE_tolua_get_Node_name
-static int tolua_get_Node_name(lua_State* tolua_S)
-{
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'name'",NULL);
-#endif
-  tolua_pushstring(tolua_S,(const char*)self->name);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: name of class  Node */
-#ifndef TOLUA_DISABLE_tolua_set_Node_name
-static int tolua_set_Node_name(lua_State* tolua_S)
-{
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'name'",NULL);
-  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
-   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
- strncpy(self->name,tolua_tostring(tolua_S,2,0),64-1);
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::update */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_update00
-static int tolua_neox_NodeMgr_update00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isnumber(tolua_S,1,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  long long cur_tick = ((long long)  tolua_tonumber(tolua_S,1,0));
-  {
-   NodeMgr::update(cur_tick);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'update'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::find_node */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_find_node00
-static int tolua_neox_NodeMgr_find_node00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isnumber(tolua_S,1,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  int nodeid = ((int)  tolua_tonumber(tolua_S,1,0));
-  {
-   Node* tolua_ret = (Node*)  NodeMgr::find_node(nodeid);
-   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'find_node'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::create_temp_node */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_create_temp_node00
-static int tolua_neox_NodeMgr_create_temp_node00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isnoobj(tolua_S,1,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  {
-   Node* tolua_ret = (Node*)  NodeMgr::create_temp_node();
-   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'create_temp_node'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::create_node_local */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_create_node_local00
-static int tolua_neox_NodeMgr_create_node_local00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isnumber(tolua_S,1,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  int nodeid = ((int)  tolua_tonumber(tolua_S,1,0));
-  {
-   Node* tolua_ret = (Node*)  NodeMgr::create_node_local(nodeid);
-   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'create_node_local'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::create_node_remote */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_create_node_remote00
-static int tolua_neox_NodeMgr_create_node_remote00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isnumber(tolua_S,1,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  int nodeid = ((int)  tolua_tonumber(tolua_S,1,0));
-  {
-   Node* tolua_ret = (Node*)  NodeMgr::create_node_remote(nodeid);
-   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'create_node_remote'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::transfer_entity */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_transfer_entity00
-static int tolua_neox_NodeMgr_transfer_entity00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
-  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
-  {
-   NodeMgr::transfer_entity(src_entity,dst_nodeid);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'transfer_entity'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::send_entity_msg */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_send_entity_msg00
-static int tolua_neox_NodeMgr_send_entity_msg00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,5,"::google::protobuf::Message",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,6,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
-  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
-  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
- ::google::protobuf::Message* msg = ((::google::protobuf::Message*)  tolua_tousertype(tolua_S,5,0));
-  {
-   NodeMgr::send_entity_msg(src_entity,dst_nodeid,dst_entityid,msgid,msg);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'send_entity_msg'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::send_entity_msg */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_send_entity_msg01
-static int tolua_neox_NodeMgr_send_entity_msg01(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,5,"Buffer",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,6,&tolua_err)
- )
-  goto tolua_lerror;
- else
- {
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
-  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
-  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
-  Buffer* buffer = ((Buffer*)  tolua_tousertype(tolua_S,5,0));
-  {
-   NodeMgr::send_entity_msg(src_entity,dst_nodeid,dst_entityid,msgid,buffer);
-  }
- }
- return 0;
-tolua_lerror:
- return tolua_neox_NodeMgr_send_entity_msg00(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::send_entity_msg */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_send_entity_msg02
-static int tolua_neox_NodeMgr_send_entity_msg02(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isstring(tolua_S,5,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,7,&tolua_err)
- )
-  goto tolua_lerror;
- else
- {
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
-  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
-  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,5,0));
-  size_t size = ((size_t)  tolua_tonumber(tolua_S,6,0));
-  {
-   NodeMgr::send_entity_msg(src_entity,dst_nodeid,dst_entityid,msgid,data,size);
-  }
- }
- return 0;
-tolua_lerror:
- return tolua_neox_NodeMgr_send_entity_msg01(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::forward_entity_msg */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_forward_entity_msg00
-static int tolua_neox_NodeMgr_forward_entity_msg00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isstring(tolua_S,5,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,7,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
-  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
-  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
-  const char* data = ((const char*)  tolua_tostring(tolua_S,5,0));
-  size_t len = ((size_t)  tolua_tonumber(tolua_S,6,0));
-  {
-   NodeMgr::forward_entity_msg(src_entity,dst_nodeid,dst_entityid,msgid,data,len);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'forward_entity_msg'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: NodeMgr::create_entity_remote */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_create_entity_remote00
-static int tolua_neox_NodeMgr_create_entity_remote00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Entity",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
-     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,4,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,1,0));
-  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
-  const char* filepath = ((const char*)  tolua_tostring(tolua_S,3,0));
-  {
-   NodeMgr::create_entity_remote(src_entity,dst_nodeid,filepath);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'create_entity_remote'.",&tolua_err);
  return 0;
 #endif
 }
@@ -5585,7 +5658,7 @@ static int tolua_neox_File_remove00(lua_State* tolua_S)
  else
 #endif
  {
-  char* dir = ((char*)  tolua_tostring(tolua_S,1,0));
+  const char* dir = ((const char*)  tolua_tostring(tolua_S,1,0));
   {
    bool tolua_ret = (bool)  File::remove(dir);
    tolua_pushboolean(tolua_S,(bool)tolua_ret);
@@ -5808,6 +5881,55 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"name",tolua_get_Entity_name,tolua_set_Entity_name);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
+  tolua_cclass(tolua_S,"Node","Node","",tolua_collect_Node);
+  #else
+  tolua_cclass(tolua_S,"Node","Node","",NULL);
+  #endif
+  tolua_beginmodule(tolua_S,"Node");
+   tolua_function(tolua_S,"new",tolua_neox_Node_new00);
+   tolua_function(tolua_S,"new_local",tolua_neox_Node_new00_local);
+   tolua_function(tolua_S,".call",tolua_neox_Node_new00_local);
+   tolua_function(tolua_S,"delete",tolua_neox_Node_delete00);
+   tolua_function(tolua_S,"main",tolua_neox_Node_main00);
+   tolua_function(tolua_S,"update",tolua_neox_Node_update00);
+   tolua_function(tolua_S,"connect",tolua_neox_Node_connect00);
+   tolua_function(tolua_S,"listen",tolua_neox_Node_listen00);
+   tolua_function(tolua_S,"send",tolua_neox_Node_send00);
+   tolua_function(tolua_S,"find_entity",tolua_neox_Node_find_entity00);
+   tolua_function(tolua_S,"add_entity",tolua_neox_Node_add_entity00);
+   tolua_function(tolua_S,"get_id",tolua_neox_Node_get_id00);
+   tolua_function(tolua_S,"is_local",tolua_neox_Node_is_local00);
+   tolua_function(tolua_S,"set_local",tolua_neox_Node_set_local00);
+   tolua_function(tolua_S,"is_disconnect",tolua_neox_Node_is_disconnect00);
+   tolua_function(tolua_S,"create_entity_local",tolua_neox_Node_create_entity_local00);
+   tolua_function(tolua_S,"create_entity_remote",tolua_neox_Node_create_entity_remote00);
+   tolua_function(tolua_S,"recv",tolua_neox_Node_recv00);
+   tolua_function(tolua_S,"recv_entity_msg",tolua_neox_Node_recv_entity_msg00);
+   tolua_function(tolua_S,"recv_node_reg",tolua_neox_Node_recv_node_reg00);
+   tolua_function(tolua_S,"recv_create_entity",tolua_neox_Node_recv_create_entity00);
+   tolua_function(tolua_S,"send_entity_msg",tolua_neox_Node_send_entity_msg00);
+   tolua_function(tolua_S,"send_entity_msg",tolua_neox_Node_send_entity_msg01);
+   tolua_function(tolua_S,"send_entity_msg",tolua_neox_Node_send_entity_msg02);
+   tolua_function(tolua_S,"forward_entity_msg",tolua_neox_Node_forward_entity_msg00);
+   tolua_function(tolua_S,"forward_entity_msg",tolua_neox_Node_forward_entity_msg01);
+   tolua_variable(tolua_S,"id",tolua_get_Node_id,tolua_set_Node_id);
+   tolua_variable(tolua_S,"name",tolua_get_Node_name,tolua_set_Node_name);
+  tolua_endmodule(tolua_S);
+  tolua_module(tolua_S,"NodeMgr",0);
+  tolua_beginmodule(tolua_S,"NodeMgr");
+   tolua_function(tolua_S,"update",tolua_neox_NodeMgr_update00);
+   tolua_function(tolua_S,"find_node",tolua_neox_NodeMgr_find_node00);
+   tolua_function(tolua_S,"create_temp_node",tolua_neox_NodeMgr_create_temp_node00);
+   tolua_function(tolua_S,"create_node_local",tolua_neox_NodeMgr_create_node_local00);
+   tolua_function(tolua_S,"create_node_remote",tolua_neox_NodeMgr_create_node_remote00);
+   tolua_function(tolua_S,"transfer_entity",tolua_neox_NodeMgr_transfer_entity00);
+   tolua_function(tolua_S,"send_entity_msg",tolua_neox_NodeMgr_send_entity_msg00);
+   tolua_function(tolua_S,"send_entity_msg",tolua_neox_NodeMgr_send_entity_msg01);
+   tolua_function(tolua_S,"send_entity_msg",tolua_neox_NodeMgr_send_entity_msg02);
+   tolua_function(tolua_S,"forward_entity_msg",tolua_neox_NodeMgr_forward_entity_msg00);
+   tolua_function(tolua_S,"create_entity_remote",tolua_neox_NodeMgr_create_entity_remote00);
+  tolua_endmodule(tolua_S);
+  #ifdef __cplusplus
   tolua_cclass(tolua_S,"Component","Component","",tolua_collect_Component);
   #else
   tolua_cclass(tolua_S,"Component","Component","",NULL);
@@ -5881,6 +6003,8 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"listen",tolua_neox_NetComponent_listen00);
    tolua_function(tolua_S,"send",tolua_neox_NetComponent_send00);
    tolua_function(tolua_S,"send_str",tolua_neox_NetComponent_send_str00);
+   tolua_function(tolua_S,"alloc_send_buf",tolua_neox_NetComponent_alloc_send_buf00);
+   tolua_function(tolua_S,"flush_send_buf",tolua_neox_NetComponent_flush_send_buf00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"HttpComponent","HttpComponent","Component",tolua_collect_HttpComponent);
@@ -5896,55 +6020,6 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"awake",tolua_neox_HttpComponent_awake00);
    tolua_function(tolua_S,"send_binary_frame",tolua_neox_HttpComponent_send_binary_frame00);
    tolua_function(tolua_S,"send_string_frame",tolua_neox_HttpComponent_send_string_frame00);
-  tolua_endmodule(tolua_S);
-  #ifdef __cplusplus
-  tolua_cclass(tolua_S,"Node","Node","",tolua_collect_Node);
-  #else
-  tolua_cclass(tolua_S,"Node","Node","",NULL);
-  #endif
-  tolua_beginmodule(tolua_S,"Node");
-   tolua_function(tolua_S,"new",tolua_neox_Node_new00);
-   tolua_function(tolua_S,"new_local",tolua_neox_Node_new00_local);
-   tolua_function(tolua_S,".call",tolua_neox_Node_new00_local);
-   tolua_function(tolua_S,"delete",tolua_neox_Node_delete00);
-   tolua_function(tolua_S,"main",tolua_neox_Node_main00);
-   tolua_function(tolua_S,"update",tolua_neox_Node_update00);
-   tolua_function(tolua_S,"connect",tolua_neox_Node_connect00);
-   tolua_function(tolua_S,"listen",tolua_neox_Node_listen00);
-   tolua_function(tolua_S,"send",tolua_neox_Node_send00);
-   tolua_function(tolua_S,"find_entity",tolua_neox_Node_find_entity00);
-   tolua_function(tolua_S,"add_entity",tolua_neox_Node_add_entity00);
-   tolua_function(tolua_S,"get_id",tolua_neox_Node_get_id00);
-   tolua_function(tolua_S,"is_local",tolua_neox_Node_is_local00);
-   tolua_function(tolua_S,"set_local",tolua_neox_Node_set_local00);
-   tolua_function(tolua_S,"is_disconnect",tolua_neox_Node_is_disconnect00);
-   tolua_function(tolua_S,"create_entity_local",tolua_neox_Node_create_entity_local00);
-   tolua_function(tolua_S,"create_entity_remote",tolua_neox_Node_create_entity_remote00);
-   tolua_function(tolua_S,"recv",tolua_neox_Node_recv00);
-   tolua_function(tolua_S,"recv_entity_msg",tolua_neox_Node_recv_entity_msg00);
-   tolua_function(tolua_S,"recv_node_reg",tolua_neox_Node_recv_node_reg00);
-   tolua_function(tolua_S,"recv_create_entity",tolua_neox_Node_recv_create_entity00);
-   tolua_function(tolua_S,"send_entity_msg",tolua_neox_Node_send_entity_msg00);
-   tolua_function(tolua_S,"send_entity_msg",tolua_neox_Node_send_entity_msg01);
-   tolua_function(tolua_S,"send_entity_msg",tolua_neox_Node_send_entity_msg02);
-   tolua_function(tolua_S,"forward_entity_msg",tolua_neox_Node_forward_entity_msg00);
-   tolua_function(tolua_S,"forward_entity_msg",tolua_neox_Node_forward_entity_msg01);
-   tolua_variable(tolua_S,"id",tolua_get_Node_id,tolua_set_Node_id);
-   tolua_variable(tolua_S,"name",tolua_get_Node_name,tolua_set_Node_name);
-  tolua_endmodule(tolua_S);
-  tolua_module(tolua_S,"NodeMgr",0);
-  tolua_beginmodule(tolua_S,"NodeMgr");
-   tolua_function(tolua_S,"update",tolua_neox_NodeMgr_update00);
-   tolua_function(tolua_S,"find_node",tolua_neox_NodeMgr_find_node00);
-   tolua_function(tolua_S,"create_temp_node",tolua_neox_NodeMgr_create_temp_node00);
-   tolua_function(tolua_S,"create_node_local",tolua_neox_NodeMgr_create_node_local00);
-   tolua_function(tolua_S,"create_node_remote",tolua_neox_NodeMgr_create_node_remote00);
-   tolua_function(tolua_S,"transfer_entity",tolua_neox_NodeMgr_transfer_entity00);
-   tolua_function(tolua_S,"send_entity_msg",tolua_neox_NodeMgr_send_entity_msg00);
-   tolua_function(tolua_S,"send_entity_msg",tolua_neox_NodeMgr_send_entity_msg01);
-   tolua_function(tolua_S,"send_entity_msg",tolua_neox_NodeMgr_send_entity_msg02);
-   tolua_function(tolua_S,"forward_entity_msg",tolua_neox_NodeMgr_forward_entity_msg00);
-   tolua_function(tolua_S,"create_entity_remote",tolua_neox_NodeMgr_create_entity_remote00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Message","Message","",NULL);
   tolua_beginmodule(tolua_S,"Message");
@@ -5973,6 +6048,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
   tolua_constant(tolua_S,"MSG_NET_RAW_DATA",MSG_NET_RAW_DATA);
   tolua_constant(tolua_S,"MSG_NET_PACKET",MSG_NET_PACKET);
   tolua_constant(tolua_S,"MSG_NEW_CONNECTION",MSG_NEW_CONNECTION);
+  tolua_constant(tolua_S,"MSG_CLOSE_CONNECTION",MSG_CLOSE_CONNECTION);
   tolua_cclass(tolua_S,"CreateEntityMsg","CreateEntityMsg","",NULL);
   tolua_beginmodule(tolua_S,"CreateEntityMsg");
    tolua_variable(tolua_S,"len",tolua_get_CreateEntityMsg_len,tolua_set_CreateEntityMsg_len);

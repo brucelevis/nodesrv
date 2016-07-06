@@ -1,7 +1,11 @@
-#include "stdafx.h"
+#include "mysql/lmysql.h"
+#include "log/log.h"
 
-static int lconnect(lua_State *L){
-    if(lua_gettop(L) == 4 && lua_isstring(L, 1) && lua_isstring(L, 2) && lua_isstring(L, 3) && lua_isstring(L, 4)){
+#include <mysql.h>
+static int lconnect(lua_State *L)
+{
+    if(lua_gettop(L) == 4 && lua_isstring(L, 1) && lua_isstring(L, 2) && lua_isstring(L, 3) && lua_isstring(L, 4))
+    {
         const char *host = lua_tostring(L, 1);
         const char *dbname = lua_tostring(L, 2);
         const char *user = lua_tostring(L, 3);
@@ -10,7 +14,8 @@ static int lconnect(lua_State *L){
         MYSQL *conn = mysql_init(NULL);
         mysql_options(conn, MYSQL_OPT_RECONNECT, &b);
         conn = mysql_real_connect(conn, host, user, passwd, dbname, 0, NULL, MYSQL_OPT_RECONNECT);
-        if(conn == NULL){
+        if(conn == NULL)
+        {
             LOG_ERROR("connect fail %s\n", mysql_error(conn));
             return 0;
         }
@@ -22,17 +27,21 @@ static int lconnect(lua_State *L){
     return 0;
 }
 
-static int lcommand(lua_State *L){
-    if(lua_gettop(L) == 2 && lua_isstring(L, 2)){
+static int lcommand(lua_State *L)
+{
+    if(lua_gettop(L) == 2 && lua_isstring(L, 2))
+    {
         MYSQL *conn = (MYSQL *)lua_touserdata(L, 1);
-        if(conn == NULL){
+        if(conn == NULL)
+        {
             LOG_ERROR("checkuserdata fail");
             lua_pushboolean(L, 0);
             return 1;
         }
         mysql_query(conn, "set names utf8");
         const char *command = lua_tostring(L, 2);
-        if(mysql_query(conn, command) != 0){
+        if(mysql_query(conn, command) != 0)
+        {
             LOG_ERROR("%s\n", mysql_error(conn));
             lua_pushboolean(L, 0);
             lua_pushstring(L, mysql_error(conn));
@@ -45,8 +54,10 @@ static int lcommand(lua_State *L){
     return 1;
 }
 
-static int laffectedrows(lua_State *L){
-    if(lua_gettop(L) == 1){
+static int laffectedrows(lua_State *L)
+{
+    if(lua_gettop(L) == 1)
+    {
         MYSQL *conn = (MYSQL *)lua_touserdata(L, 1);
         lua_pushnumber(L, mysql_affected_rows(conn));
         return 1;
@@ -55,15 +66,18 @@ static int laffectedrows(lua_State *L){
     return 1;
 }
 
-static int lselect(lua_State *L){
+static int lselect(lua_State *L)
+{
     int i;
-    if(lua_gettop(L) == 2 && lua_isstring(L, 2)){
+    if(lua_gettop(L) == 2 && lua_isstring(L, 2))
+    {
         MYSQL_RES *result;
         MYSQL_ROW row;
         MYSQL_FIELD *fields;
         int index = 1;
         MYSQL *conn = (MYSQL *)lua_touserdata(L, 1);
-        if(conn == NULL){
+        if(conn == NULL)
+        {
             LOG_ERROR("disconnect");
             return 0;
         }
@@ -71,25 +85,30 @@ static int lselect(lua_State *L){
         mysql_query(conn, "set names utf8");
         mysql_query(conn, command);
         result = mysql_store_result(conn);
-        if(result == NULL){
+        if(result == NULL)
+        {
             LOG_ERROR("select fail %d %s command %s", mysql_errno(conn), mysql_error(conn), command);
             return 0;
         }
         lua_newtable(L);
-        while(result != NULL){
+        while(result != NULL)
+        {
             int num_fields = mysql_num_fields(result);
             fields = mysql_fetch_fields(result);
-            if(fields == NULL){
+            if(fields == NULL)
+            {
                 mysql_free_result(result);
                 LOG_ERROR("select fail fetch_fields command:%s", command);
                 break;
             }
-            while ((row = mysql_fetch_row(result))){
+            while ((row = mysql_fetch_row(result)))
+            {
                 unsigned long *lengths = mysql_fetch_lengths(result);
                 lua_pushnumber(L, index);
                 lua_newtable(L);
                 index++;
-                for(i = 0; i < num_fields; i++){
+                for(i = 0; i < num_fields; i++)
+                {
                     lua_pushstring(L, fields[i].name);
                     if(row[i] != NULL){
                         if(fields[i].type == FIELD_TYPE_STRING

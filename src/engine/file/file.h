@@ -25,7 +25,7 @@ namespace File {
 
     bool exists(char* dir);
 
-    bool remove(char* dir);
+    bool remove(const char* dir);
 
     bool rename(char* src, char* dst);
 
