@@ -21,10 +21,14 @@
 #include <stdio.h>
 #include <errno.h>
 
-extern "C"{
-    int luaopen_neox(lua_State* tolua_S);
-}
 
+static uint32_t MAGIC_CODE = 19860801;
+
+static int time_diff(struct timeval *t1, struct timeval *t2)
+{
+    int usec = (t2->tv_sec - t1->tv_sec) * 1000000 + t2->tv_usec - t1->tv_usec;
+    return usec;
+}
 
 static void _ev_accept(struct aeEventLoop *eventLoop, int sockfd, void *clientData, int mask)
 {
@@ -52,26 +56,21 @@ Node::Node(int nodeid)
     ip_[0] = 0;
     port_ = 0;
     name[0] = 0;
+    this->is_connect_ = false;
 }
 
-void Node::on_create()
+void Node::main()
 {
-    L = lua_open();
-    luaL_openlibs(L);
-    luaopen_neox(L);
-}
-
-void Node::main(const char* mainfile)
-{
+    lua_State* L = NodeMgr::L;
     //将自己注册到lua
     tolua_pushusertype(L, (void*)this, "Node");
     lua_setglobal(L, "mynode");
     //创建事件
-    loop_ = aeCreateEventLoop(10240);
-    if (mainfile[0] != 0)
-    {
-        lua_dofile(mainfile);
-    }
+    //loop_ = aeCreateEventLoop(10240);
+    //if (mainfile[0] != 0)
+    //{
+        //lua_dofile(mainfile);
+    //}
 }
 
 Node::~Node()
@@ -95,24 +94,25 @@ void Node::ev_accept(int listenfd)
     {
         return;
     }
-    printf("accept a new socket\n");
-    Sendbuf::create(sockfd);
+    LOG_DEBUG("accept a new socket");
+    //Sendbuf::create(sockfd);
     Recvbuf::create(sockfd, 1024);
     create_file_event(sockfd, AE_READABLE, _ev_readable, this);
 }
 
 void Node::ev_readable(int sockfd)
 {
-    printf("node[%d] ev_readable\n", this->id);
+    LOG_DEBUG("node[%d] ev_readable", this->id);
     //接收数据
     for(;;)
     {
         char* wptr= Recvbuf::getwptr(sockfd);
         int buflen = Recvbuf::bufremain(sockfd);
         int ir = ::recv(sockfd, wptr, buflen, 0);
-        printf("node[%d] real recv %d\n", this->id, ir);
+        LOG_DEBUG("node[%d] real recv %d", this->id, ir);
         if (ir == 0 || (ir == -1 && errno != EAGAIN))
         {
+            real_close(sockfd, "peer close");
             break;
         }
         if (ir == -1 && errno == EAGAIN)
@@ -120,44 +120,53 @@ void Node::ev_readable(int sockfd)
             break;
         }
         Recvbuf::wskip(sockfd, ir);
-        char* rptr = Recvbuf::getrptr(sockfd);
-        int datalen = Recvbuf::datalen(sockfd);
 
-        int packetlen = dispatch(rptr, datalen);
-        if (packetlen > 0)
+        for (;;)
         {
-            Recvbuf::rskip(sockfd, packetlen);
-            Recvbuf::buf2line(sockfd);
+            char* rptr = Recvbuf::getrptr(sockfd);
+            int datalen = Recvbuf::datalen(sockfd);
+            int packetlen = dispatch(rptr, datalen);
+            if (packetlen > 0)
+            {
+                Recvbuf::rskip(sockfd, packetlen);
+                Recvbuf::buf2line(sockfd);
+            } else 
+            {
+                break;
+            }
         }
-        break;
     }
 }
 
 void Node::ev_writable(int sockfd)
 {
-    printf("node[%d] ev_writable\n", this->id);
+    LOG_DEBUG("node[%d] ev_writable", this->id);
     //发送数据
     for(;;)
     {
-        int datalen = Sendbuf::datalen(sockfd_);
+        //int datalen = Sendbuf::datalen(sockfd_);
+        int datalen = send_buf.size();
         if (datalen <= 0)
         {
-            printf("node[%d] delete write event\n", this->id);
+            LOG_DEBUG("node[%d] delete write event", this->id);
             delete_file_event(this->sockfd_, AE_WRITABLE);
             break;
         }
-        char* buf = Sendbuf::get_read_ptr(sockfd_);
+        //char* buf = Sendbuf::get_read_ptr(sockfd_);
+        char* buf = (char *)send_buf.get_buffer();
         int ir = ::send(sockfd_, buf, datalen, 0);
-        printf("node[%d] real send %d\n", this->id, ir);
+        LOG_DEBUG("node[%d] real send %d", this->id, ir);
         if (ir > 0) 
         {
-            Sendbuf::skip_read_ptr(sockfd_, ir);
+            //Sendbuf::skip_read_ptr(sockfd_, ir);
+            send_buf.read_buf(NULL, ir);
         } else if (ir == -1 && errno == EAGAIN) 
         {
+            send_buf.buf2line();
             break;
         } else if(ir == -1) 
         {
-            real_close("peer close");
+            real_close(sockfd, "peer close");
             break;
         }
     }
@@ -167,20 +176,20 @@ int Node::listen(const char* host, unsigned short port)
 {
     if (this->listenfd_ != -1)
     {
-        printf("node[%d] is listening\n", this->id);
+        LOG_DEBUG("node[%d] is listening", this->id);
         return 1;
     }
     int error;
     int sockfd = ::socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd == -1)
     {
-        printf("node[%d] socket error\n", this->id);
+        LOG_DEBUG("node[%d] socket error", this->id);
         return 1;
     }
     error = fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFD, 0) | O_NONBLOCK);
     if (error < 0)
     {
-        printf("node[%d] fcntl error\n", this->id);
+        LOG_DEBUG("node[%d] fcntl error", this->id);
         ::close(sockfd);
         return 2;
     }
@@ -194,18 +203,18 @@ int Node::listen(const char* host, unsigned short port)
 	error = ::bind(sockfd,(struct sockaddr *)&addr,sizeof(addr));
 	if(error < 0){		
         ::close(sockfd);
-        printf("node[%d] bind error\n", this->id);
+        LOG_ERROR("node[%d] bind error %d", this->id, port);
 		return 3;	
     }
 	error = ::listen(sockfd, 5);	
     if(error < 0){
         ::close(sockfd);
-        printf("node[%d] listen error\n", this->id);
+        LOG_ERROR("node[%d] listen error", this->id);
         return 4;
     }
     this->listenfd_ = sockfd;
     create_file_event(sockfd, AE_READABLE | AE_WRITABLE, _ev_accept, this);
-    printf("node[%d] listen success\n", this->id);
+    LOG_DEBUG("node[%d] listen(%d) success", this->id, port);
     return 0;
 }
 
@@ -218,6 +227,7 @@ int Node::connect(const char* host, unsigned short port)
 
 int Node::real_connect()
 {
+    LOG_DEBUG("real_connect");
     int error;
     int sockfd;
     if (this->is_connect_)
@@ -229,13 +239,13 @@ int Node::real_connect()
         sockfd = ::socket(AF_INET, SOCK_STREAM, 0);
         if (sockfd < 0)
         {
-            printf("node[%d] connect socket error\n", this->id);
+            LOG_DEBUG("node[%d] connect socket error", this->id);
             return 1;
         }
         error = ::fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFD, 0) | O_NONBLOCK);
         if (error < 0)
         {
-            printf("node[%d] connect fcntl error\n", this->id);
+            LOG_DEBUG("node[%d] connect fcntl error", this->id);
             ::close(sockfd);
             return 1;
         }
@@ -263,15 +273,15 @@ int Node::real_connect()
         error = ::connect(this->sockfd_, (struct sockaddr *)&addr, sizeof(addr));
         if ((error == 0) || (error < 0 && errno == EISCONN))
         {
-            printf("node[%d] reconnect success\n", this->id);
+            LOG_DEBUG("node[%d] reconnect success", this->id);
             this->is_connect_ = true;
-            Sendbuf::create(this->sockfd_);
-            Recvbuf::create(this->sockfd_, 1024);
+            //Sendbuf::create(this->sockfd_);
+            //Recvbuf::create(this->sockfd_, 1024);
             create_file_event(this->sockfd_, AE_READABLE, _ev_readable, this);
             send_node_reg();
         } else
         {
-            printf("node[%d] reconnect error(%d) errno(%d)\n", this->id, error, errno);
+            LOG_DEBUG("node[%d] reconnect error(%d) errno(%d)", this->id, error, errno);
         }
     }
     return 0;
@@ -279,7 +289,6 @@ int Node::real_connect()
 
 void Node::update(long long cur_tick)
 {
-    aeOnce(loop_);
     
     if (!this->is_connect_ && this->ip_[0])
     {
@@ -297,6 +306,8 @@ void Node::update(long long cur_tick)
 
 void Node::recv(MsgHeader* header, const char* data, size_t size)
 {
+    struct timeval t1;
+    gettimeofday(&t1, NULL);
     //不可靠的消息传输
     switch(header->id)
     {
@@ -316,23 +327,37 @@ void Node::recv(MsgHeader* header, const char* data, size_t size)
             }
             break;
     }
+    struct timeval t2;
+    gettimeofday(&t2, NULL);
+    LOG_INFO("node[%d] recv msgid(%d) from node(%d) entity(%d) len(%d) usec(%d)", this->id, header->id, header->src_nodeid, header->src_entityid, header->len, time_diff(&t1, &t2));
 }
 
 int Node::dispatch(char* data, size_t datalen)
 {
-    MsgHeader *header = (MsgHeader*)data;
-    if (datalen < sizeof(header->len))
+    uint32_t magic_code = 0;
+    uint32_t magic_code2 = 0;
+    if (datalen < sizeof(magic_code) + sizeof(MsgHeader) + sizeof(magic_code2))
     {
         return 0;
     }
-    if (datalen < header->len)
+    magic_code = *(int *)(data);
+    MsgHeader *header = (MsgHeader*)(data + sizeof(magic_code));
+    magic_code2 = *(int *)(data + sizeof(magic_code) + sizeof(MsgHeader));
+    if (magic_code2 - header->len != magic_code)
+    {
+        LOG_ERROR("magic code error");
+        return sizeof(magic_code);
+    }
+    if (datalen < sizeof(magic_code) + header->len + sizeof(magic_code))
     {
         return 0;
     }
-    char *body = data + sizeof(MsgHeader);
+    char *body = data + sizeof(magic_code) + sizeof(MsgHeader) + sizeof(magic_code2);
     int bodylen = header->len - sizeof(MsgHeader);
     recv(header, body, bodylen);
-    return header->len;
+
+
+    return sizeof(magic_code) + header->len + sizeof(magic_code2);
 }
 
 void Node::forward_entity_msg(MsgHeader* header, const char* data, size_t size)
@@ -347,8 +372,11 @@ void Node::forward_entity_msg(MsgHeader* header, const char* data, size_t size)
     {
         return;
     }
-    send((char *)&header, sizeof(header));
-    send(data, size);
+    real_send(&MAGIC_CODE, sizeof(uint32_t));
+    MAGIC_CODE += header->len;
+    real_send((char *)&header, sizeof(header));
+    real_send(&MAGIC_CODE, sizeof(uint32_t));
+    real_send(data, size);
 }
 
 void Node::forward_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const char* data, size_t size)
@@ -377,8 +405,11 @@ void Node::forward_entity_msg(Entity* src_entity, int dst_entityid, int msgid, c
         return;
     }
     //发给关联节点
-    send((char *)&header, sizeof(header));
-    send(data, size);
+    real_send(&MAGIC_CODE, sizeof(uint32_t));
+    MAGIC_CODE += header.len;
+    real_send((char *)&header, sizeof(header));
+    real_send(&MAGIC_CODE, sizeof(uint32_t));
+    real_send(data, size);
 }
 
 void Node::recv_entity_msg(MsgHeader* header, const char* data, size_t size)
@@ -415,7 +446,7 @@ void Node::recv_entity_msg(MsgHeader* header, const char* data, size_t size)
 void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, ::google::protobuf::Message* msg)
 {
     /*  
-    printf("node[%d] send entity msg\n", id);
+    LOG_DEBUG("node[%d] send entity msg", id);
     Node* src_node = src_entity->node;
     if (!src_node)
     {
@@ -438,7 +469,7 @@ void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, ::go
     } 
     if (is_disconnect())
     {
-        printf("node[%d] is disconnect\n", get_id());
+        LOG_DEBUG("node[%d] is disconnect", get_id());
      //   src_entity->unreach(&header, data, size);
         return;
     }
@@ -448,7 +479,7 @@ void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, ::go
     {
         return;
     }
-    printf("node[%d] send %ld to sockfd(%d)\n", id, header.len, this->sockfd_);
+    LOG_DEBUG("node[%d] send %ld to sockfd(%d)", id, header.len, this->sockfd_);
     memcpy(buf, &header, sizeof(header));
     msg->SerializeToArray(buf + sizeof(header), msg_size);
     Sendbuf::flush(this->sockfd_, buf, header.len);
@@ -464,7 +495,7 @@ void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, Buff
 
 void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const char* data, size_t size)
 {
-    printf("node[%d] send entity msg\n", id);
+    LOG_DEBUG("node[%d] send entity msg", id);
     Node* src_node = src_entity->node;
     if (!src_node)
     {
@@ -486,26 +517,30 @@ void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, cons
     } 
     if (is_disconnect())
     {
-        printf("node[%d] is disconnect\n", get_id());
+        LOG_DEBUG("node[%d] is disconnect", get_id());
         src_entity->unreach(&header, data, size);
         return;
     }
     //发送给自己的关联节点
-    send((char *)&header, sizeof(header));
-    send(data, size);
+    real_send(&MAGIC_CODE, sizeof(uint32_t));
+    MAGIC_CODE += header.len;
+    real_send((char *)&header, sizeof(header));
+    real_send(&MAGIC_CODE, sizeof(uint32_t));
+    real_send(data, size);
 }
 
-int Node::send(const char *data, size_t size)
+int Node::real_send(const void* data, size_t size)
 {
+    LOG_DEBUG("node[%d] send %ld to sockfd(%d)", id, size, this->sockfd_);
     //插入到缓冲区
-    char* buf= Sendbuf::alloc(sockfd_,  size);
-    if (!buf)
-    {
-        return 0;
-    }
-    printf("node[%d] send %ld to sockfd(%d)\n", id, size, this->sockfd_);
-    memcpy(buf, data, size);
-    Sendbuf::flush(sockfd_, buf, size);
+    //char* buf= Sendbuf::alloc(sockfd_,  size);
+    //if (!buf)
+    //{
+        //return 0;
+    //}
+    //memcpy(buf, data, size);
+    //Sendbuf::flush(sockfd_, buf, size);
+    send_buf.write_buf(data, size);
     create_file_event(this->sockfd_, AE_WRITABLE, _ev_writable, this);
     return size;
 }
@@ -548,8 +583,19 @@ Entity* Node::find_entity(int entityid)
     return NULL;
 }
 
-int Node::real_close(const char* err)
+int Node::real_close(int sockfd, const char* err)
 {
+    LOG_DEBUG("real close %s", err);
+    //移动事件
+    delete_file_event(sockfd, AE_READABLE);
+    delete_file_event(sockfd, AE_WRITABLE);
+    //关闭socket
+    ::close(sockfd);
+    if (sockfd == this->sockfd_)
+    {
+        this->is_connect_ = false;
+        this->sockfd_ = -1;
+    }
     return 0;
 }
 
@@ -561,33 +607,36 @@ bool Node::is_disconnect()
 
 void Node::recv_node_reg(MsgHeader* header, const char* data, size_t size)
 {
-    printf("node[%d] recv node reg\n", this->id);
+    LOG_DEBUG("node[%d] recv node[%d] reg", this->id, header->src_nodeid);
 }
 
 void Node::send_node_reg()
 {
-    printf("node[%d] send node reg\n", this->id);
+    LOG_DEBUG("node[%d] send node reg", this->id);
     static MsgHeader header;
     header.src_nodeid = this->id;
     header.src_entityid = 0;
     header.dst_entityid = 0;
-    header.dst_nodeid = get_id();
+    header.dst_nodeid = this->id;
     header.id = MSG_NODE_REG;
     header.len = sizeof(MsgHeader);
-    send((char *)&header, sizeof(header));
+    real_send(&MAGIC_CODE, sizeof(uint32_t));
+    MAGIC_CODE += header.len;
+    real_send((char *)&header, sizeof(header));
+    real_send(&MAGIC_CODE, sizeof(uint32_t));
 }
 
 
 void Node::recv_create_entity(MsgHeader* header, const char* data, size_t size)
 {
     CreateEntityMsg* msg = (CreateEntityMsg*)data;
-    printf("node[%d] recv create entity %s\n", this->id, msg->filepath);
+    LOG_DEBUG("node[%d] recv create entity %s", this->id, msg->filepath);
     create_entity_local(msg->filepath);
 }
 
 void Node::create_entity_remote(Entity* src_entity, const char* filepath)
 {
-    printf("node[%d] send create entity %s\n", this->id, filepath);
+    LOG_DEBUG("node[%d] send create entity %s", this->id, filepath);
 
     unsigned short str_len = strlen(filepath);
     Node* src_node = src_entity->node;
@@ -609,25 +658,29 @@ void Node::create_entity_remote(Entity* src_entity, const char* filepath)
         recv_create_entity(&header, (const char *)&msg, sizeof(msg));
     } else
     {
-        send((char *)&header, sizeof(header));
-        send((char*)&msg, sizeof(msg));
+        real_send(&MAGIC_CODE, sizeof(uint32_t));
+        MAGIC_CODE += header.len;
+        real_send((char *)&header, sizeof(header));
+        real_send(&MAGIC_CODE, sizeof(uint32_t));
+        real_send((char*)&msg, sizeof(msg));
     }
 }
 
 
 int Node::create_file_event(int fd, int mask, aeFileProc* proc, void* userdata)
 {
-    return aeCreateFileEvent(loop_, fd, mask, proc, userdata);
+    return aeCreateFileEvent(NodeMgr::loop, fd, mask, proc, userdata);
 }
 
 void Node::delete_file_event(int fd, int mask)
 {
-    aeDeleteFileEvent(loop_, fd, mask);
+    aeDeleteFileEvent(NodeMgr::loop, fd, mask);
 }
 
 
 Entity* Node::create_entity_local(const char* filepath)
 {
+    lua_State* L = NodeMgr::L;
     LOG_DEBUG("node[%d] create entity local %s", this->id, filepath);
     Entity* entity = NULL;
     if (filepath == NULL)
@@ -641,7 +694,7 @@ Entity* Node::create_entity_local(const char* filepath)
         lua_getglobal(L, filepath);
         if (lua_pcall(L, 1, 1, 0) != 0)
         {
-            printf("node[%d] create entity local error %s\n", this->id, lua_tostring(L, -1));
+            LOG_DEBUG("node[%d] create entity local error %s", this->id, lua_tostring(L, -1));
             lua_printstack();
         }
         tolua_Error tolua_err;
@@ -670,170 +723,44 @@ void Node::transfer_entity(Entity* src_entity)
 
 int Node::lua_printstack() 
 {
-    lua_getglobal(L, "debug");  
-    lua_getfield(L, -1, "traceback");  
-    lua_pcall(L, 0, 1, 0);   
-    const char* sz = lua_tostring(L, -1);  
-    printf("%s\n", sz);
-    return 0;
+    lua_State* L = NodeMgr::L;
+    return Script::lua_printstack(L);
 }
 
 
 int Node::lua_pushfunction(const char *func)
 {
-    char *start = (char *)func;
-    char *class_name = start;
-    char *pfunc = start;
-    while(*pfunc != 0)
-    {
-        if(*pfunc == '.' && class_name == start)
-        {
-            *pfunc = 0;
-            lua_getglobal(L, class_name);
-            *pfunc = '.';
-            if(lua_isnil(L, -1)){
-                return 1;
-            }
-            class_name = pfunc + 1;
-        }else if(*pfunc == '.')
-        {
-            *pfunc = 0;
-            lua_pushstring(L, class_name);
-            lua_gettable(L, -2);
-            *pfunc = '.';
-            if(lua_isnil(L, -1))
-            {
-                return 2;
-            }
-            lua_remove(L, -2);//弹出table
-            class_name = pfunc + 1;
-        }
-        pfunc++;
-    }
-    if(class_name == start)
-    {
-        lua_getglobal(L, class_name);
-        if(lua_isnil(L, -1))
-        {
-            return 3;
-        }
-    }else
-    {
-        lua_pushstring(L, class_name);
-        lua_gettable(L, -2);
-        if(lua_isnil(L, -1))
-        {
-            return 4;
-        }
-        lua_remove(L, -2);//弹出table
-    }
-    return 0;     
+    lua_State* L = NodeMgr::L;
+    return Script::lua_pushfunction(L, func);
 }
 
 bool Node::lua_getvalue(const char *fieldname)
 {
-    static char fieldbuf[128];
-    strcpy(fieldbuf, fieldname);
-    char *start = (char *)fieldbuf;
-    char *class_name = start;
-    char *pfunc = start;
-    while(*pfunc != 0)
-    {
-        if(*pfunc == '.' && class_name == start)
-        {
-            *pfunc = 0;
-            lua_getglobal(L, class_name);
-            *pfunc = '.';
-            if(lua_isnil(L, -1)){
-                lua_pop(L, 1);
-                return false;
-            }
-            class_name = pfunc + 1;
-        }else if(*pfunc == '.')
-        {
-            *pfunc = 0;
-            lua_pushstring(L, class_name);
-            lua_gettable(L, -2);
-            *pfunc = '.';
-            if(lua_isnil(L, -1))
-            {
-                lua_pop(L, 2);
-                return false;
-            }
-            lua_remove(L, -2);//弹出table
-            class_name = pfunc + 1;
-        }
-        pfunc++;
-    }
-    if(class_name == start)
-    {
-        lua_getglobal(L, class_name);
-        if(lua_isnil(L, -1))
-        {
-            lua_pop(L, 1);
-            return false;
-        }
-        return (int64_t)lua_tonumber(L, -1);
-    }else
-    {
-        lua_pushstring(L, class_name);
-        lua_gettable(L, -2);
-        if(lua_isnil(L, -1))
-        {
-            lua_pop(L, 2);
-            return false;
-        }
-        lua_remove(L, -2);//弹出table
-    }
-    return true;
+    lua_State* L = NodeMgr::L;
+    return Script::lua_getvalue(L, fieldname);
 }
 
 const char* Node::lua_getstring(const char *fieldname)
 {
-    if(!lua_getvalue(fieldname))
-    {
-        return NULL;
-    }
-    if(!lua_isstring(L, -1))
-    {
-        lua_pop(L, 1);
-        return NULL;
-    }
-    const char* result = (const char*)lua_tostring(L, -1);
-    lua_pop(L, 1);
-    return result;
+    lua_State* L = NodeMgr::L;
+    return Script::lua_getstring(L, fieldname);
 }
 
 int64_t Node::lua_getnumber(const char *fieldname)
 {
-    if(!lua_getvalue(fieldname))
-    {
-        return 0;
-    }
-    if(!lua_isnumber(L, -1))
-    {
-        lua_pop(L, 1);
-        return 0;
-    }
-    int64_t result = (int64_t)lua_tonumber(L, -1);
-    lua_pop(L, 1);
-    return result;
+    lua_State* L = NodeMgr::L;
+    return Script::lua_getnumber(L, fieldname);
 }
 
 void Node::lua_reglib(int (*p)(lua_State* L))
 {
-    p(L);
+    lua_State* L = NodeMgr::L;
+    Script::lua_reglib(L, p);
 }
 
 int Node::lua_dofile(const char* filepath)
 {
-    if(luaL_dofile(L, filepath))
-    {
-        if (lua_isstring(L, -1))
-        {
-            printf("dofile error %s\n", lua_tostring(L, -1));
-        }
-    }
-    return 0;
+    lua_State* L = NodeMgr::L;
+    return Script::lua_dofile(L, filepath);
 }
 

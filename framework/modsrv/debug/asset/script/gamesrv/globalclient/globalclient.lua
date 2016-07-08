@@ -10,11 +10,11 @@ function main()
     Port.on_connect_err(portfd, 'Globalclient.ev_connect_err')
     Port.on_connect_suc(portfd, 'Globalclient.ev_connect_suc')
     check_connections()
+    Ae.create_time_event(Ae.main_loop(), argv.check_connect_interval, 'Globalclient.check_connections')
 end
 
 function ev_connect_err(sockfd, host, port)
     socket_table[sockfd] = nil
-    check_connections()
 end
 
 function ev_connect_suc(sockfd, host, port)
@@ -64,6 +64,7 @@ end
 
 --重连
 function check_connections()
+    loginfo('check_connections')
     local globalsrv_list = argv.globalsrv_list
     for sockfd, info in pairs(socket_table) do
         local find = false

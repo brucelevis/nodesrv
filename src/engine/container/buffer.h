@@ -8,6 +8,7 @@ class Buffer
     public:
         Buffer();
         Buffer(uint32_t init_size);
+        Buffer(const void* buf, uint32_t buflen);
         ~Buffer();
 
         int64_t read_int64(int64_t def = 0);
@@ -23,7 +24,10 @@ class Buffer
         int write_int8(int8_t val);
         int write_buf(const void* data, uint32_t datalen);
 
+        void buf2line();
+        uint32_t already_read();
         uint32_t size();
+        uint32_t maxsize();
         void reset();
         const char* get_buffer();
     public:
@@ -35,8 +39,9 @@ class Buffer
     private:
         char* buf;
         uint32_t buflen;
-        uint32_t rptr;
-        uint32_t wptr;
+        uint32_t rptr;//读指针
+        uint32_t wptr;//写指针
+        bool use_extern_buf;
         static Buffer* instance_;
 };//tolua_export
 

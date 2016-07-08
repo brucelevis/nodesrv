@@ -41,7 +41,7 @@ extern "C" {
 //tolua_begin
 namespace Neox
 {
-    int init();
+    int main(int argc, char** argv);
     int update(long long cur_tick);
 
     Node* create_node_remote(int nodeid);
@@ -56,8 +56,8 @@ namespace Neox
     void loop();
 //tolua_end
 
-    void lua_openlibs(lua_State* L);
-
+    int lua_openlibs(lua_State* L);
+    void lua_dofile(const char* filepath);
 //tolua_begin
 };
 //tolua_end

@@ -79,6 +79,7 @@ gamesrv_def = {
     },
         {'gamesrv/player',},
     {'gamesrv/globalclient',
+        check_connect_interval = 1000,
         globalsrv_list = {
             {srvid = 2001, host = '127.0.0.1', port = 3335, alias = 'CenterSrvSockfd'},
             {srvid = 2001, host = '127.0.0.1', port = 3334, alias = 'DbSrvSockfd'},

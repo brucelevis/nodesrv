@@ -7,8 +7,9 @@ extern "C"{
 namespace Neox
 {
 
-    int init()
+    int main(int argc, char** argv)
     {
+        NodeMgr::main(argc, argv);
         //Net::init(); 
         //Script::init();
         //初始化lua
@@ -124,7 +125,7 @@ namespace Neox
         }
     }
 
-    void lua_openlibs(lua_State* L)
+    int lua_openlibs(lua_State* L)
     {
         luaopen_neox(L);
         luaopen_json(L);
@@ -140,6 +141,7 @@ namespace Neox
         luaopen_redis(L);
         luaopen_mysql(L);
         luaopen_srvapp(L);
+        return 0;
     }
 };
 

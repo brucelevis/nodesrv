@@ -1,4 +1,5 @@
 #include "container/buffer.h"
+#include "log/log.h"
 #include <memory.h>
 #include <stdlib.h>
 
@@ -11,7 +12,16 @@ Buffer::Buffer(uint32_t init_size)
     this->buf = 0;
     this->buflen = 0;
     this->rptr = this->wptr = 0;
+    this->use_extern_buf = false;
     expand_buf(init_size);
+}
+
+Buffer::Buffer(const void* buf, uint32_t buflen)
+{
+    this->buf = (char*)buf;
+    this->buflen = buflen;
+    this->rptr = this->wptr = 0;
+    this->use_extern_buf = true;
 }
 
 Buffer::Buffer()
@@ -19,6 +29,7 @@ Buffer::Buffer()
     this->buf = 0;
     this->buflen = 0;
     this->rptr = this->wptr = 0;
+    this->use_extern_buf = false;
 }
 
 Buffer::~Buffer()
@@ -50,7 +61,7 @@ int Buffer::read_buf(void *data, uint32_t datalen)
 
 int Buffer::write_buf(const void* data, uint32_t datalen)
 {
-    if (this->wptr >= this->buflen)
+    if (this->wptr + datalen >= this->buflen)
     {
         expand_buf((this->buflen + datalen) * 2);
     }
@@ -66,9 +77,24 @@ int Buffer::write_buf(const void* data, uint32_t datalen)
     return 0;
 }
 
+void Buffer::buf2line()
+{
+    int size = this->wptr - this->rptr;
+    if (size && this->rptr > 0)
+    {
+        memmove(this->buf, this->buf + this->rptr, size);
+        this->rptr = 0;
+        this->wptr = size;
+    }
+}
 
 int Buffer::expand_buf(uint32_t newsize)
 {
+    if (this->use_extern_buf)
+    {
+        return 1;
+    }
+    //LOG_DEBUG("expand buf %d", newsize);
     if (this->buf == 0)
     {
         uint32_t newbuflen = newsize;
@@ -79,6 +105,7 @@ int Buffer::expand_buf(uint32_t newsize)
         }
         this->buf = newbuf;
         this->buflen = newbuflen;
+     //   LOG_DEBUG("new expand buf %d", newsize);
     } else 
     {
         uint32_t newbuflen = newsize;
@@ -180,4 +207,15 @@ Buffer* Buffer::temp()
 const char* Buffer::get_buffer()
 {
     return this->buf + this->rptr;
+}
+
+
+uint32_t Buffer::maxsize()
+{
+    return this->buflen;
+}
+
+uint32_t Buffer::already_read()
+{
+    return this->rptr;
 }

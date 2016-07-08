@@ -27,6 +27,7 @@ typedef struct TimeData
 {
     lua_State *L;
     char time_proc[64];
+    int interval;
 }TimeData;
 
 static FileData file_data_array[MAX_FILE_DATA];
@@ -129,8 +130,12 @@ static int time_proc(struct aeEventLoop *eventLoop, long long id, void *clientDa
         lua_pop(L, lua_gettop(L));
         return AE_NOMORE;
     }
-    int ir = (int)lua_tointeger(L, -1);
-    return ir;
+    if (lua_isnumber(L, -1))
+    {
+        int ir = (int)lua_tointeger(L, -1);
+        return ir;
+    }
+    return timedata->interval;
 }
 
 static void finalizer_proc(struct aeEventLoop *eventLoop, void *clientData) 
@@ -262,6 +267,7 @@ static int lcreate_time_event(lua_State *L)
     {
         strcpy(timedata->time_proc, time_proc_name);
     }
+    timedata->interval = milliseconds;
     timedata->L = L;
     int id = aeCreateTimeEvent(event_loop, milliseconds, time_proc, (void *)timedata, finalizer_proc);
     lua_pushnumber(L, id);

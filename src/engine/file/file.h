@@ -1,16 +1,19 @@
 #ifndef __FILE_H__
 #define __FILE_H__ 
 
-extern "C" {
+extern "C" 
+{
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
 }
 
 //tolua_begin
-namespace File {
+namespace File 
+{
 
-    enum {
+    enum 
+    {
         TYPE_FILE = 1,
         TYPE_DIR = 2,
     };

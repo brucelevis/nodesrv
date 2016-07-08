@@ -1,7 +1,9 @@
 
 gatesrv:
-	cd ../gatesrv;make tolua;make
-	proc/gatesrv1/gatesrv
+	bin/gatesrv gatesrv1
+
+scenesrv:
+	bin/scenesrv scenesrv1
 
 clean:
 	cd ../gatesrv;make clean

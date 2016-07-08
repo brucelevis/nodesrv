@@ -30,7 +30,7 @@ class Node
         /*
          * 入口
          */
-        void main(const char* mainfile);
+        void main();
         /*
          * 帧函数
          */
@@ -48,7 +48,7 @@ class Node
         /*
          * 发送消息
          */
-        int send(const char* data, size_t size);
+        int real_send(const void* data, size_t size);
 
         /*
          * 查找实体
@@ -95,7 +95,6 @@ class Node
         void ev_accept(int sockfd);
         void ev_writable(int sockfd);
         void ev_readable(int sockfd);
-        void on_create();
 
         int lua_printstack(); 
         int lua_pushfunction(const char *func);
@@ -107,7 +106,7 @@ class Node
 
     private:
         int dispatch(char *data, size_t datalen);
-        int real_close(const char* err);
+        int real_close(int sockfd, const char* err);
         int real_connect();
     public:
         lua_State* L;
@@ -122,6 +121,7 @@ class Node
         bool is_local_;
         pthread_t tid_;
         aeEventLoop* loop_;
+        Buffer send_buf;
 };//tolua_export
 
 #endif

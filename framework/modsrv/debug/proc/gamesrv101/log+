@@ -9291,3 +9291,14 @@
 [2016-07-06 19:36:08 700087][TAG][24993][INFO][Login]CAL_ Login.msg_db_srv_set_playerdata FROM Globalsrv usec:110 body_len:45
 [2016-07-06 19:36:08 700101][TAG][24993][INFO]real_send(35)
 
+[2016-07-06 20:00:01 918636][TAG][24993][DEBUG]net/port.cc:220
+[2016-07-06 20:00:01 918662][TAG][24993][DEBUG]real recv 0 bufremain 1024
+
+[2016-07-06 20:00:01 918694][TAG][24993][INFO][Gatesrv]ev_close sockfd(5) reason(127.0.0.1)
+[2016-07-06 20:00:01 918711][TAG][24993][INFO][Gatesrv]gate disconnect srvname(gatesrv1)
+[2016-07-06 20:00:01 925193][TAG][24993][INFO]sig_int
+[2016-07-06 20:00:01 925238][TAG][24993][INFO]atint
+[2016-07-06 20:00:01 925261][TAG][24993][INFO][Asyncsrv]game over!
+[2016-07-06 20:00:01 925281][TAG][24993][INFO]_atexit
+[2016-07-06 20:00:01 925290][TAG][24993][INFO]atexit
+[2016-07-06 20:00:01 925373][TAG][24993][INFO]exit pid(24993)

@@ -4,9 +4,18 @@
 
 #include "node/node.h"
 #include "container/buffer.h"
+#include "net/ae.h"
 #include <vector>
 #include <google/protobuf/message.h>
 #include <map>
+
+extern "C" {
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+#include <tolua++.h>
+}
+
 
 class Node;
 
@@ -15,9 +24,16 @@ class Node;
 namespace NodeMgr
 {
 //tolua_end
+    extern aeEventLoop* loop;
+    extern lua_State* L;
     extern std::map<int, Node*> node_map_;
     extern std::vector<Node*> node_vector_;
     extern std::vector<Node*> temp_node_vector_;
+
+    void main(int argc, char** argv);
+
+    void lua_dofile(const char* filepath);
+    void lua_reglib(int (*p)(lua_State* L));
 
 //tolua_begin
     /*
@@ -46,6 +62,7 @@ namespace NodeMgr
     void forward_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t len);
 
     void create_entity_remote(Entity* src_entity, int dst_nodeid, const char* filepath);
+
 };
 //tolua_end
 

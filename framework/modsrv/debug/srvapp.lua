@@ -73,7 +73,8 @@ Log.info(string.format('running dir(%s)', File.getcwd()))
 
 Srvapp.fork_daemon(is_daemon)
 if is_daemon then
-    Log.stdout2file('log+')
+    local d = os.date('*t')
+    Log.stdout2file(string.format('%s_%04d%02d%02d', Config.srvname, d.year, d.month, d.day))
 end
 
 recordpid()

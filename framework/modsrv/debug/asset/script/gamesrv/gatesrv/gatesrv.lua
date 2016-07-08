@@ -3,7 +3,7 @@ module('Gatesrv', package.seeall)
 portfd = port or nil
 
 gate_manager = gate_manager or {
-    --[srvid] = {srvid = srvid, srvname = srvname}
+    --[srvid] = {srvid = srvid, srvname = srvname, sockfd, time}
 }
 
 function main()
@@ -56,5 +56,3 @@ function REGIST(sockfd, srvid, srvname)
     gate_manager[srvid] = srv 
     loginfo('a gate regist srvname(%s)', srvname)
 end
-
-

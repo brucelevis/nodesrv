@@ -44,6 +44,8 @@ typedef struct tagMsgHeader
 #define MSG_NEW_CONNECTION 7
 //断开链接
 #define MSG_CLOSE_CONNECTION 8
+//远程方法调用
+#define MSG_RPC 9
 
 #pragma pack(push, 1)
 
