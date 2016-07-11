@@ -20,3 +20,9 @@ list:
 	bin/srvlist
 test:
 	bin/pbclient login.login
+
+dbinit:
+	bin/dbinit
+
+reload:
+	bin/reload

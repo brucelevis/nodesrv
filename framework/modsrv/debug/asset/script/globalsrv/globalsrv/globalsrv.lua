@@ -36,9 +36,9 @@ function ev_accept(sockfd)
 end
 
 function listen()
-    log('listen on host(%s) port(%d)', _CONF.host, _CONF.port)
+    log('listen on host(%s) port(%d)', argv.host, argv.port)
     Port.rename(portfd, "GlobalSrv")
-    if not Port.listen(portfd, _CONF.port) then
+    if not Port.listen(portfd, argv.port) then
         error('listen fail')
     end
     Port.on_accept(portfd, 'Globalsrv.ev_accept')

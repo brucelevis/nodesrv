@@ -46,7 +46,7 @@ function ev_read(sockfd, msgname, msg)
     route = route or argv.route[msgname]
     --2.分发消息到gamesrv
     if player and player.srvid and not route then
-        Gameclient.forward(player.srvname, player.uid, msg)
+        Gameclient.forward(player, msg)
         return
     end
     --3.分发消息到globalsrv

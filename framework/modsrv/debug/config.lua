@@ -7,6 +7,10 @@ centersrv_def = {
         host = '0.0.0.0', port = 1234
     },
     {'centersrv/login'},
+    {'centersrv/admin'},
+    {'centersrv/adminsrv', 
+        host = '0.0.0.0', port = 3336 
+    },
 }
 
 --数据库
@@ -84,12 +88,14 @@ gamesrv_def = {
             {srvid = 2001, host = '127.0.0.1', port = 3335, alias = 'CenterSrvSockfd'},
             {srvid = 2001, host = '127.0.0.1', port = 3334, alias = 'DbSrvSockfd'},
         },
-    }
+    },
+    {'gamesrv/user'},
 }
 
 --部署配置
 Config = 
 {
+
     --asset_dir = nil,
     --proc_dir = nil,
     srvlist = {
@@ -98,6 +104,8 @@ Config =
         {srvid = 301, srvname = 'dbsrv301',  bin = 'bin/globalsrv', ['globalsrv/gamesrv'] = {host = '127.0.0.1', port = 3334}, srvdef = dbsrv_def},
         {srvid = 401, srvname = 'centersrv', bin = 'bin/globalsrv', ['globalsrv/gamesrv'] = {host = '127.0.0.1', port = 3335}, srvdef = centersrv_def},
     },
+    --后台管理
+    adminsrv = {host = '127.0.0.1', port = 3336},
 }
 
 

@@ -57,7 +57,7 @@ function PLAYER_EXIT(sockfd, srvid, uid)
     local player = player_manager[uid]
     local srvid = game.srvid
     if not player then
-        log('player is not online uid(%d)', uid)
+        logerr('player is not online uid(%d)', uid)
         return
     end
     if player.srvid ~= game.srvid then

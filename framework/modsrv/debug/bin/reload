@@ -1,11 +1,18 @@
-#!/usr/local/bin/luaexe
+#!bin/lneox
 dofile(os.getenv('ENGINE_PATH')..'/bin/luaenv')
 --连上管理台，调用函数
---
+
 local usage = [[
 usage:
 reload srvid login
 reload srvid
 ]]
+
+local loop = Ae.create(1024)
+portfd = RMIPort.create(loop)
+Port.rename(portfd, 'CenterClient')
+local sockfd = Port.syncconnect(portfd, Config.adminsrv.host, Config.adminsrv.port)
+
+GET(sockfd, 10, 'Admin.RELOAD')
 
 

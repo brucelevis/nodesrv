@@ -38,23 +38,24 @@ end
 local srvname = arg[2]
 local is_daemon = arg[3] == '-d'
 
-local srv_conf = nil
+local srvconf = nil
 for k, conf in pairs(Config.srvlist) do
     if srvname == conf.srvname then
-        srv_conf = conf
+        srvconf = conf
     end
 end
-if not srv_conf then
+if not srvconf then
     print(string.format('%s not found', srvname))
     os.exit(1)
 end
-if not srv_conf.srvdef then
+if not srvconf.srvdef then
     print(string.format('srvdef not found'))
     os.exit(1)
 end
 
-Config.srvid = srv_conf.srvid
-Config.srvname = srv_conf.srvname
+Config.srvid = srvconf.srvid
+Config.srvname = srvconf.srvname
+Config.srvconf = srvconf
 
 
 --切换工作目录
@@ -83,10 +84,10 @@ import('pblua')
 Pblua.import_dir(string.format('%s/proto', asset_dir))
 Pblua.import_dir(string.format('%s/dbproto', asset_dir))
 
-for _, argv in pairs(srv_conf.srvdef) do
+for _, argv in pairs(srvconf.srvdef) do
     local mod = import(argv[1])
     --重写配置
-    local argv2 = srv_conf[argv[1]]
+    local argv2 = srvconf[argv[1]]
     if argv2 then
         for k, v in pairs(argv2) do
             argv[k] = v

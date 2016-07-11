@@ -43,6 +43,11 @@ function ev_close(sockfd, host, port, reason)
     check_connections();
 end
 
+--转发消息到逻辑服
+function forward(player, msg)
+    FORWARD(player.gamesrvsockfd, player.uid, msg)
+end
+
 --重连
 function check_connections()
     local gamesrv_list = argv.gamesrv_list

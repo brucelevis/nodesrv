@@ -26,6 +26,27 @@ function ev_close(sockfd, reason)
     end
 end
 
+function ev_read(sockfd, uid, msgname, msg)
+    loginfo('ev_read uid(%d) msgname(%s)', uid, msgname)
+    local player = Login.player_manager[uid]
+    if player then
+        local pats = string.split(msgname, '.')
+        local modname = pats[1]
+        local msgname = pats[2]
+        local mod = _G[string.cap(modname)]
+        if not mod then
+            logwarn('mod(%s) not found', modname)
+            return
+        end
+        local func = mod['MSG_'..msgname]
+        if not func then
+            logwarn('func(%s) not found', msgname)
+            return
+        end
+        func(player, msg)
+    end
+end
+
 function ev_accept(sockfd)
     loginfo('accept a gate sockfd(%d)', sockfd)
 end
@@ -36,6 +57,7 @@ function listen()
     if not Port.listen(portfd, argv.port) then
         error('listen fail')
     end
+    Port.on_read(portfd, 'Gatesrv.ev_read')
     Port.on_accept(portfd, 'Gatesrv.ev_accept')
     Port.on_close(portfd, 'Gatesrv.ev_close')
 end
@@ -56,3 +78,4 @@ function REGIST(sockfd, srvid, srvname)
     gate_manager[srvid] = srv 
     loginfo('a gate regist srvname(%s)', srvname)
 end
+

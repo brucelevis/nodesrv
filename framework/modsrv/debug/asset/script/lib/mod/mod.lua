@@ -10,12 +10,13 @@ Mod.call('update')
 
 search_path = {'.'}
 mod_table = {}
+loaded = {}
 
 function test()
     Log.info('test')
 end
 
-function load(mod_path)
+function load(mod_path, isreload)
     local real_path = mod_path
     for _, root_path in pairs(search_path) do
         real_path = string.format('%s/%s', root_path, mod_path)
@@ -39,7 +40,10 @@ function load(mod_path)
             if index and index + 3 == string.len(file_path) then
                 local require_path = string.sub(file_path, 1, index - 1)
                 Log.info(string.format('scan file(%s)', file_path))
-                local mod = require(require_path)
+                if isreload then
+                    package.loaded[require_path] = nil
+                end
+                require(require_path)
             else
                 Log.info(string.format('ignore file(%s)!!!!!', file_path))
             end
@@ -51,6 +55,7 @@ function load(mod_path)
         os.exit(1)
     end
     mod_table[#mod_table + 1] = mod
+    loaded[mod_path] = mod_name
     mod.loginfo = function(format, ...) Log.info(string.format('[%s]'..format, mod_name, ...)) end
     mod.logwarn = function(format, ...) Log.info(string.format('[%s]'..format, mod_name, ...)) end
     mod.logerr = function(format, ...) Log.info(string.format('[%s]'..format, mod_name, ...)) end
@@ -63,6 +68,7 @@ function cap(str)
 end
 
 function reload(mod_path)
+    import(mod_path, true)
 end
 
 function call(func_name, ...)
@@ -75,3 +81,4 @@ function call(func_name, ...)
 end
 
 _G['import'] = load
+_G['reimport'] = reload

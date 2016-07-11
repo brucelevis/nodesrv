@@ -23,6 +23,7 @@ function ev_close(sockfd, host, port, reason)
 end
 
 function send(player, msgname, params)
+    params = params or {}
     local msg = Pblua.msgnew(msgname)
     for k, v in pairs(params) do
         msg[k] = v
