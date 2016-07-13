@@ -6,9 +6,9 @@ INCLUDE_DIRS =-I. -I$(ROOT_PATH)/3rd/protobuf/src -I$(ROOT_PATH)/3rd/lua/src -I$
 
 LIB_DIRS =
 
-LIBS =$(ROOT_PATH)/lib/libprotobuf.a $(ROOT_PATH)/3rd/lua/src/liblua.a $(ROOT_PATH)/3rd/mysql/lib/libmysqlclient.a $(ROOT_PATH)/3rd/hiredis/libhiredis.a $(ROOT_PATH)/3rd/tolua++/tolua++.a  
+LIBS =$(ROOT_PATH)/lib/libprotobuf.a $(ROOT_PATH)/lib/liblua.a $(ROOT_PATH)/3rd/mysql/lib/libmysqlclient.a $(ROOT_PATH)/lib/libhiredis.a $(ROOT_PATH)/lib/tolua++.a  
 
-DY_LIBS = -lm -ldl -lreadline -lhistory -lncurses -lpthread
+DY_LIBS = -lm -ldl -lreadline -lncurses -lpthread
 
 CFLAGS=-O2 -Wall
 
