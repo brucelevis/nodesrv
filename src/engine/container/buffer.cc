@@ -1,4 +1,5 @@
 #include "container/buffer.h"
+#include "lualib/pblua/pblua.h"
 #include "log/log.h"
 #include <memory.h>
 #include <stdlib.h>
@@ -291,4 +292,46 @@ void Buffer::debug()
     }
 }
 
+
+int Buffer::read_protobuf(lua_State* L)
+{
+    if (!lua_isstring(L, 2))
+    {
+        return 0;
+    }
+    if (!lua_isnumber(L, 3))
+    {
+        return 0;
+    }
+
+    const char* msg_name = (const char*)lua_tostring(L, 2);
+    int msg_len = (int)lua_tonumber(L, 3);
+
+    google::protobuf::Message* message = pblua_load_msg(msg_name);
+    if(message == NULL)
+    {
+        LOG_ERROR("can not load msg %s", msg_name);
+        return 0;
+    }
+    char* buf = this->buf + this->rptr;
+    google::protobuf::io::ArrayInputStream stream(buf, msg_len);
+    if(message->ParseFromZeroCopyStream(&stream) == 0)
+    {
+        LOG_ERROR("parse fail %s\n", msg_name);
+        return 0;
+    }    
+    LuaMessage *message_lua = (LuaMessage *)lua_newuserdata(L, sizeof(LuaMessage));
+    if(message_lua == NULL)
+    {
+        LOG_ERROR("newuserdata null %s", msg_name);
+        return 0;
+    }
+    this->read_buf(NULL, msg_len);
+    message_lua->message = message;
+    message_lua->root_message = message_lua;
+    message_lua->dirty = 0;
+    luaL_getmetatable(L, "LuaMessage");
+    lua_setmetatable(L, -2);
+    return 1;
+}
 

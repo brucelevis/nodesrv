@@ -24,71 +24,60 @@ void GateSrv::listen()
         exit(1);
         return;
     }
-    const char* ip = lua_getstring("Config.ip");
-    uint16_t port = lua_getnumber("Config.port");
-    if(net_component->listen(ip, port))
-    {
-        LOG_ERROR("listen error");
-        exit(1);
-        return;
-    }
 }
 
 void GateSrv::awake()
 {
     LOG_DEBUG("GateSrv::awake");
-    //listen();
-
-    this->entity->reg_msg(MSG_NEW_CONNECTION, this);
-    this->entity->reg_msg(MSG_CLOSE_CONNECTION, this);
-    this->entity->reg_msg(MSG_NET_RAW_DATA, this);
-
-    RPCMethod method;
-    method << "Login.PLAYER_ENTER" << 333;
-    method.invoke(this, 2, 3);
+    //this->entity->reg_msg(MSG_NEW_SESSION, this);
+    //this->entity->reg_msg(MSG_CLOSE_SESSION, this);
+    //this->entity->reg_msg(MSG_NET_PACKET, this);
 }
 
 int GateSrv::recv(Message* msg)
 {
     switch(msg->header.id)
     {
-        case MSG_NEW_CONNECTION:
+        case MSG_NEW_SESSION:
             {
-                return recv_new_connection(msg);
+                return recv_new_session(msg);
             }
             break;
-        case MSG_CLOSE_CONNECTION:
+        case MSG_CLOSE_SESSION:
             {
-                return recv_close_connection(msg);
+                return recv_close_session(msg);
             }
             break;
-        case MSG_NET_RAW_DATA:
+        case MSG_NET_PACKET:
             {
-                return recv_net_raw_data(msg);
+                return recv_net_packet(msg);
             }
             break;
     }
     return 0;
 }
 
-int GateSrv::recv_close_connection(Message* msg)
+int GateSrv::recv_net_packet(Message* msg)
 {
-    int sockfd = msg->sockfd;
-    LOG_DEBUG("recv_close_connection %d", sockfd);
+    LOG_DEBUG("recv_net_packet payload(%d)", msg->payload.size());
     return 0;
 }
 
-int GateSrv::recv_new_connection(Message* msg)
+int GateSrv::recv_close_session(Message* msg)
 {
     int sockfd = msg->sockfd;
-    LOG_DEBUG("recv_new_connection %d", sockfd);
+    int sid = msg->sid;
+    LOG_DEBUG("recv_close_session sockfd(%d) sid(%d)", sockfd, sid);
     return 0;
 }
 
-int GateSrv::recv_net_raw_data(Message* msg)
+int GateSrv::recv_new_session(Message* msg)
 {
-    LOG_DEBUG("recv_net_raw_data datalen(%d)", msg->payload.size());
+    int sockfd = msg->sockfd;
+    int sid = msg->sid;
+    LOG_DEBUG("recv_new_session sockfd(%d) sid(%d)", sockfd, sid);
     return 0;
 }
+
 
 

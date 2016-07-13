@@ -57,6 +57,7 @@ int Entity::recv(Message* msg)
         Component* component = it->second;
         return component->recv(msg);
     }
+    LOG_DEBUG("component not found msg(%d)", msg->header.id);
     return 0;
 }
 

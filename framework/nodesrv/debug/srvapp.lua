@@ -82,6 +82,7 @@ if nodelist then
         local node = NodeMgr.create_node_remote(nodeid)
         local node_conf = Config.nodelist[nodeid]
         node:connect(node_conf.host, node_conf.port)
+        _G[node_conf.nodename] = nodeid
     end
 end
 

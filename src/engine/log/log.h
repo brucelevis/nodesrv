@@ -26,7 +26,8 @@ int stdout2file(const char *file_path);
 #define LOG_FATAL(str, ...)     Log::fatal("%s:%d", __FILE__, __LINE__);\
                                 Log::fatal(str, ## __VA_ARGS__);
 
-#define LOG_ERROR(str, ...)     Log::error(str, ## __VA_ARGS__);
+#define LOG_ERROR(str, ...)     Log::error("%s:%d", __FILE__, __LINE__);\
+                                Log::error(str, ## __VA_ARGS__);
 
 #define LOG_WARN(str, ...)      Log::warn("%s:%d", __FILE__, __LINE__);\
                                 Log::warn(str, ## __VA_ARGS__);

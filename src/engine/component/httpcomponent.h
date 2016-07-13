@@ -39,6 +39,7 @@ class HttpComponent : public Component
     public:
 //tolua_end
         int recv_new_connection(Message* msg);
+        int recv_close_connection(Message* msg);
         int recv_net_raw_data(Message* msg);
         int send_str(int sockfd, const char* data);
         int _real_send(int sockfd, const void* data, size_t datalen);

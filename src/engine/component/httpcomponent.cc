@@ -79,7 +79,6 @@ static HttpSession* session_get(int sockfd)
 
 HttpComponent::HttpComponent():Component()
 {
-
 }
 
 HttpComponent::~HttpComponent()
@@ -91,13 +90,13 @@ int HttpComponent::session_init(int sockfd)
 {
     if (sockfd < 0 || sockfd >= MAX_SOCKFD)
     {
-        return 1;
+        return 0;
     }
     HttpSession* session = &session_arr[sockfd];
     memset(session, 0, sizeof(HttpSession));
     session->sockfd = sockfd;
     session->sid = sockfd << 16 | sessionid_counter++;
-    return 0;
+    return session->sid;
 }
 
 void HttpComponent::session_destory(int sockfd)
@@ -109,6 +108,11 @@ int HttpComponent::recv(Message* msg)
 {
     switch(msg->header.id)
     {
+        case MSG_CLOSE_CONNECTION:
+            {
+                return recv_close_connection(msg);
+            }
+            break;
         case MSG_NEW_CONNECTION:
             {
                 return recv_new_connection(msg);
@@ -201,7 +205,38 @@ int HttpComponent::recv_new_connection(Message* msg)
 {
     int sockfd = msg->sockfd;
     printf("HttpComponent recv_new_connection %d\n", sockfd);
-    session_init(sockfd);
+    int sid = session_init(sockfd);
+
+    Message* msg2 = alloc_msg();
+    msg2->header.src_nodeid = 0;
+    msg2->header.src_entityid = 0;
+    msg2->header.dst_entityid = 0;
+    msg2->header.dst_nodeid = 0;
+    msg2->header.id = MSG_NEW_SESSION;
+    msg2->sid = sid;
+    this->entity->recv(msg2);
+    return 0;
+}
+
+int HttpComponent::recv_close_connection(Message* msg)
+{
+    int sockfd = msg->sockfd;
+    printf("HttpComponent recv_close_connection %d\n", sockfd);
+    HttpSession* session = session_get(sockfd);
+    if (session)
+    {
+        Message* msg2 = alloc_msg();
+        msg2->header.src_nodeid = 0;
+        msg2->header.src_entityid = 0;
+        msg2->header.dst_entityid = 0;
+        msg2->header.dst_nodeid = 0;
+        msg2->header.id = MSG_CLOSE_SESSION;
+        msg2->sid = session->sid;
+        this->entity->recv(msg2);
+    }
+    session_destory(sockfd);
+
+
     return 0;
 }
 
@@ -266,15 +301,19 @@ int HttpComponent::decode_one_frame(int sockfd, const char* data, size_t datalen
     }
     printf("real_payload_len(%ld)\n", real_payload_len);
     //用掩码修改数据
-    for (uint64_t i = 0; i < real_payload_len; i++)
+    if (frame_header->mask == 1)
     {
-        payload_data[i] = payload_data[i] ^ mask[i % 4];
+        for (uint64_t i = 0; i < real_payload_len; i++)
+        {
+            payload_data[i] = payload_data[i] ^ mask[i % 4];
+        }
     }
     //LOG_DEBUG("%s", data);
     //LOG_DEBUG("payload %s", payload_data);
     //是否最后一帧了
     return frame_header->fin;
 }
+
 int HttpComponent::combine_all_frame(int sockfd, const char* data , size_t datalen)
 {
     char* framedata = (char*)data;
@@ -353,40 +392,6 @@ int HttpComponent::dispatch_frame(int sockfd, int opcode, const char* data, size
     msg->payload.write_buf(data, datalen);
     this->entity->recv(msg);
     return 0;
-
-    //if (opcode == 8)
-    //{
-//        分发到lua处理
-        //static char funcname[64] = "Websocket.on_session_close";
-        //pushluafunction(funcname);
-        //lua_pushnumber(L, session->sid);
-        //if (lua_pcall(L, 1, 0, 0) != 0)
-        //{
-            //if (lua_isstring(L, -1))
-            //{
-                //printf("Websocket.dispatch error %s\n", lua_tostring(L, -1));
-            //}
-        //}
-        //return 0;
-
-    //} else 
-    //{
- //       分发到lua处理
-        //static char funcname[64] = "Websocket.dispatch";
-        //pushluafunction(funcname);
-        //lua_pushnumber(L, session->sid);
-        //lua_pushlightuserdata(L, (void*)data);
-        //lua_pushnumber(L, datalen);
-        //if (lua_pcall(L, 3, 0, 0) != 0)
-        //{
-            //if (lua_isstring(L, -1))
-            //{
-                //printf("Websocket.dispatch error %s\n", lua_tostring(L, -1));
-            //}
-        //}
-        //return 0;
-    //}
-
 }
 
 int HttpComponent::recv_net_raw_data(Message* msg)
@@ -506,6 +511,7 @@ void HttpComponent::awake()
 {
     this->net_component = (NetComponent*)this->entity->get_component("NetComponent");
     this->entity->reg_msg(MSG_NEW_CONNECTION, this);
+    this->entity->reg_msg(MSG_CLOSE_CONNECTION, this);
     this->entity->reg_msg(MSG_NET_RAW_DATA, this);
 }
 
@@ -552,5 +558,4 @@ int HttpComponent::send_frame(int sid, int opcode, const void* data, unsigned sh
     }
     return 0;
 }
-
 

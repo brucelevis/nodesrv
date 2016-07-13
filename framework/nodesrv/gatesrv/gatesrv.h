@@ -16,9 +16,9 @@ class GateSrv: public Component
 //tolua_end
     private:
         void listen();
-        int recv_net_raw_data(Message* msg);
-        int recv_new_connection(Message* msg);
-        int recv_close_connection(Message* msg);
+        int recv_new_session(Message* msg);
+        int recv_close_session(Message* msg);
+        int recv_net_packet(Message* msg);
 DECLAR(GateSrv);
 
 };//tolua_export

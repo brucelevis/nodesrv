@@ -1,6 +1,12 @@
 #ifndef __BUFFER_H__
 #define __BUFFER_H__
-
+#include <google/protobuf/message.h>
+#include <google/protobuf/dynamic_message.h>
+extern "C" {
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
+}
 #include <stdint.h>
 //tolua_begin
 class Buffer
@@ -17,6 +23,7 @@ class Buffer
         int8_t read_int8(int8_t def = 0);
         int read_buf(void* data, uint32_t datalen);
         const char* read_utf8();
+        int read_protobuf(lua_State* L);
 
         int write_utf8(const char* str, uint16_t str_len);
         int write_utf8(const char* str);

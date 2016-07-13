@@ -255,7 +255,7 @@ int Node::connect(const char* host, unsigned short port)
 
 int Node::real_connect()
 {
-    LOG_DEBUG("real_connect");
+    //LOG_DEBUG("real_connect");
     int error;
     int sockfd;
     if (this->is_connect_)
@@ -308,7 +308,7 @@ int Node::real_connect()
             //send_node_reg();
         } else
         {
-            LOG_DEBUG("node[%d] reconnect error(%d) errno(%d)", this->id, error, errno);
+            //LOG_DEBUG("node[%d] reconnect error(%d) errno(%d)", this->id, error, errno);
         }
     }
     return 0;

@@ -43,6 +43,8 @@ static void _ev_readable(struct aeEventLoop *eventLoop, int sockfd, void *client
 
 NetComponent::NetComponent():Component()
 {
+    host[0] = 0;
+    port = 0;
 }
 
 NetComponent::~NetComponent()
@@ -51,6 +53,13 @@ NetComponent::~NetComponent()
 }
 
 
+void NetComponent::awake()
+{
+    if(host[0] != 0 && port != 0)
+    {
+        listen(host, port);
+    }
+}
 void NetComponent::update(long long cur_tick)
 {
     Component::update(cur_tick);

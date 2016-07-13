@@ -65,6 +65,8 @@ public:
 #define MSG_CLOSE_CONNECTION 8
 //远程方法调用
 #define MSG_RPC 9
+#define MSG_NEW_SESSION  10
+#define MSG_CLOSE_SESSION 11
 
 #pragma pack(push, 1)
 

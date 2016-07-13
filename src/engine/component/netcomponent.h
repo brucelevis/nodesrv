@@ -18,6 +18,10 @@ class NetComponent : public Component
         int send_str(int sockfd, const char* data);
         char* alloc_send_buf(int sockfd, size_t size);
         void flush_send_buf(int sockfd, char* buf, size_t size);
+        virtual void awake();
+    public:
+        char host[64];
+        int port;
 //tolua_end
     public:
         void ev_accept(int listenfd);

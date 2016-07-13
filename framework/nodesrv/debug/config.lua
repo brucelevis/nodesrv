@@ -8,6 +8,7 @@ Config =
     --拓扑结构
     nodegrap = 
     {
+        [1] = {4},
         [4] = {3},
         [3] = {4},
     },
@@ -38,6 +39,11 @@ Config =
                 },
             },
         },
+    },
+
+    localsrv = {
+        save_interval = 3600,
+        playerdata = {'user', 'task', 'achieve', },
     },
 
     dbsrv = 

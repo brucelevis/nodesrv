@@ -1,7 +1,11 @@
+
+
 require('gatesrv/entity/gatesrv')
 
---package.path = string.format('%s;%s/?.lua', package.path, DeployConf.asset_dir)
+import('WebSocket', 'gatesrv/component/websocket')
+import('Login',     'gatesrv/module/login')
 
---require('script/gatesrv/entity/gatesrv')
-mynode:create_entity_local('GateSrvEntity')
+mysrv:create_entity_local('GateSrvEntity')
 
+
+--Login.main()

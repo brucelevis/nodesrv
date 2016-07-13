@@ -75,7 +75,7 @@ local function select_from_mysql(uid, table_name)
     end
 end
 
-function get_from_redis(sockfd, uid, callback, ...)
+function get_from_redis(srvid, uid, callback, ...)
     local table_array = {...}
     local msg_array = {}
     local hmget_str = string.format('HMGET %d ', uid)
@@ -113,11 +113,11 @@ function get_from_redis(sockfd, uid, callback, ...)
         end
     end
     Redis.command(conn, string.format('EXPIRE %d %d', uid, Config.dbsrv.expire_sec))
-    POST(sockfd, callback, uid, 1, unpack(msg_array))
+    POST(srvid, callback, uid, 1, unpack(msg_array))
     return true
 end
 
-function get_from_mysql(sockfd, uid, callback, ...)
+function get_from_mysql(srvid, uid, callback, ...)
     local total_size = 0
     local table_array = {...}
     local msg_array = {}
@@ -125,7 +125,7 @@ function get_from_mysql(sockfd, uid, callback, ...)
     for _, table_name in pairs(table_array) do
         local msg, table_bin = select_from_mysql(uid, table_name)
         if not msg then
-            POST(sockfd, callback, uid, 0)
+            POST(srvid, callback, uid, 0)
             return
         else
             table.insert(msg_array, msg)
@@ -141,21 +141,21 @@ function get_from_mysql(sockfd, uid, callback, ...)
         Redis.hmset(conn, uid, unpack(mset_args))
         Redis.command(conn, string.format('EXPIRE %d %d', uid, Config.dbsrv.expire_sec))
     end
-    POST(sockfd, callback, uid, 1, unpack(msg_array))
+    POST(srvid, callback, uid, 1, unpack(msg_array))
 end
 
 --功能:取玩家表
-function GET(sockfd, uid, callback, ...)
-    if get_from_redis(sockfd, uid, callback, ...) then
+function GET(srvid, uid, callback, ...)
+    if get_from_redis(srvid, uid, callback, ...) then
         return
     end
-    if get_from_mysql(sockfd, uid, callback, ...) then
+    if get_from_mysql(srvid, uid, callback, ...) then
         return
     end
 end
 
 --保存到redis
-function set_to_redis(sockfd, uid, callback, ...)
+function set_to_redis(srvid, uid, callback, ...)
     local args = {...}
     local mset_args = {}
     local savelist = ''..uid
@@ -192,7 +192,7 @@ function set_to_redis(sockfd, uid, callback, ...)
     return true
 end
 
-function set_to_mysql(sockfd, uid, callback, ...)
+function set_to_mysql(srvid, uid, callback, ...)
     local total_size = 0
     local args = {...}
     local conn = select_mysql_connection(uid)
@@ -250,24 +250,24 @@ end
 
 --功能:存玩家表
 --@msg db_srv.SET
-function SET(sockfd, uid, callback, ...)
-    if not set_to_redis(sockfd, uid, callback, ...) then
+function SET(srvid, uid, callback, ...)
+    if not set_to_redis(srvid, uid, callback, ...) then
         --写缓存失败，马上写数据库
-        if not set_to_mysql(sockfd, uid, callback, ...) then
-            POST(sockfd, callback, uid, 0)
+        if not set_to_mysql(srvid, uid, callback, ...) then
+            POST(srvid, callback, uid, 0)
             return
         else
-            POST(sockfd, callback, uid, 1)
+            POST(srvid, callback, uid, 1)
             return
         end
     end
     if not Config.dbsrv.delay_write then
-        if not set_to_mysql(sockfd, uid, callback, ...) then
-            POST(sockfd, callback, uid, 0)
+        if not set_to_mysql(srvid, uid, callback, ...) then
+            POST(srvid, callback, uid, 0)
             return
         end
     end
-    POST(sockfd, callback, uid, 1)
+    POST(srvid, callback, uid, 1)
 end
 
 
