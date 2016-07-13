@@ -1,4 +1,7 @@
 
+test:
+	bin/logicsrv test
+
 localsrv:
 	bin/logicsrv localsrv
 

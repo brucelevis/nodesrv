@@ -16,6 +16,7 @@ Config =
     --服务列表
     nodelist = 
     {
+        [0] = {nodeid = 0, nodename = 'test',       bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9093,    mainfile = 'test/main'},
         [1] = {nodeid = 1, nodename = 'gatesrv1',   bin = 'bin/gatesrv',    host = '127.0.0.1', port = 9090,    mainfile = 'gatesrv/main'},
         [2] = {nodeid = 2, nodename = 'scenesrv1',  bin = 'bin/scenesrv',   host = '127.0.0.1', port = 9091,    mainfile = 'scenesrv/main'},
         [3] = {nodeid = 3, nodename = 'dbsrv1',     bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9092,    mainfile = 'dbsrv/main'},
