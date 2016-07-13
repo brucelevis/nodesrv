@@ -35,14 +35,7 @@ function instantiate(conf)
     return entity
 end
 
-
-
-function import(dir)
-    Log.info(string.format('import %s', dir))
-    local files = File.listdir(dir);
-    for k, v in pairs(files) do
-        if v.type == File.TYPE_FILE then
-            print(v.name)
-        end
-    end
+--兼容以前的协议
+POST = function(...)
+    mysrv:post(...)
 end

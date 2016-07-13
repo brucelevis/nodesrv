@@ -33,15 +33,15 @@ void Entity::create()
 
 }
 
-int Entity::unreach(MsgHeader* header, const void* data, size_t datalen)
+int Entity::unreach(Message* msg)
 {
-    LOG_DEBUG("entity[%d] unreach datalen(%ld)", id, datalen);
+    LOG_DEBUG("entity[%d] unreach datalen(%ld)", msg->header.id, msg->payload.size());
     std::map<unsigned int, Component*>::iterator it;
-    it = msg_map.find(header->id);
+    it = msg_map.find(msg->header.id);
     if (it != msg_map.end())
     {
         Component* component = it->second;
-        component->unreach(header, data, datalen);
+        component->unreach(msg);
     }
     return 0;
 }
@@ -51,7 +51,7 @@ int Entity::recv(Message* msg)
 {
     LOG_DEBUG("entity[%d] recv msg", this->id);
     std::map<unsigned int, Component*>::iterator it;
-    it = msg_map.find(msg->id);
+    it = msg_map.find(msg->header.id);
     if (it != msg_map.end())
     {
         Component* component = it->second;
@@ -60,18 +60,18 @@ int Entity::recv(Message* msg)
     return 0;
 }
 
-int Entity::recv(MsgHeader* header, const void* data, size_t datalen)
-{
-    LOG_DEBUG("entity[%d] recv datalen(%ld)", id, datalen);
-    std::map<unsigned int, Component*>::iterator it;
-    it = msg_map.find(header->id);
-    if (it != msg_map.end())
-    {
-        Component* component = it->second;
-        return component->recv(header, data, datalen);
-    }
-    return 0;
-}
+//int Entity::recv(MsgHeader* header, const void* data, size_t datalen)
+//{
+    //LOG_DEBUG("entity[%d] recv datalen(%ld)", id, datalen);
+    //std::map<unsigned int, Component*>::iterator it;
+    //it = msg_map.find(header->id);
+    //if (it != msg_map.end())
+    //{
+        //Component* component = it->second;
+        //return component->recv(header, data, datalen);
+    //}
+    //return 0;
+//}
 
 int Entity::save()
 {
@@ -283,3 +283,5 @@ void Entity::awake()
         component->awake();
     }
 }
+
+

@@ -7,6 +7,16 @@ Buffer* Buffer::instance_;
 
 #define INIT_SIZE 1024
 
+Buffer::Buffer(const Buffer& other)
+{
+}
+
+const Buffer& Buffer::operator=(const Buffer& other)
+{
+    write_buf(other.get_buffer(), other.size());
+    return *this;
+}
+
 Buffer::Buffer(uint32_t init_size)
 {
     this->buf = 0;
@@ -34,15 +44,39 @@ Buffer::Buffer()
 
 Buffer::~Buffer()
 {
-    if(this->buf != NULL)
+    if (use_extern_buf) 
     {
-        free(this->buf);
+        if(this->buf != NULL)
+        {
+            free(this->buf);
+        }
     }
 }
 
-uint32_t Buffer::size()
+int Buffer::write(const Buffer* other)
+{
+    return write_buf(other->get_buffer(), other->size());
+}
+
+uint32_t Buffer::size() const
 {
     return this->wptr - this->rptr;
+}
+
+
+const char* Buffer::read_utf8()
+{
+    static char str[10240];
+    int16_t str_len = read_int16();
+    if (str_len + 1 >= (int16_t)sizeof(str))
+    {
+        LOG_ERROR("str too long %d", str_len);
+        read_buf(NULL, str_len);
+        return NULL;
+    }
+    read_buf(str, str_len);
+    str[str_len] = 0;
+    return str;
 }
 
 int Buffer::read_buf(void *data, uint32_t datalen)
@@ -59,6 +93,16 @@ int Buffer::read_buf(void *data, uint32_t datalen)
     return datalen;
 }
 
+bool Buffer::ensure_size(int datalen)
+{
+    if (this->wptr + datalen < this->buflen)
+    {
+        return true;
+    }
+    LOG_DEBUG("aaa");
+    return expand_buf(this->buflen + datalen);
+}
+
 int Buffer::write_buf(const void* data, uint32_t datalen)
 {
     if (this->wptr + datalen >= this->buflen)
@@ -67,6 +111,7 @@ int Buffer::write_buf(const void* data, uint32_t datalen)
     }
     if (this->wptr >= this->buflen)
     {
+        LOG_ERROR("money limit");
         return 0;
     }
     if (data != 0)
@@ -88,7 +133,7 @@ void Buffer::buf2line()
     }
 }
 
-int Buffer::expand_buf(uint32_t newsize)
+bool Buffer::expand_buf(uint32_t newsize)
 {
     if (this->use_extern_buf)
     {
@@ -167,6 +212,13 @@ int8_t Buffer::read_int8(int8_t def)
 }
 
 
+int Buffer::write_utf8(const char* str)
+{
+    uint16_t str_len = strlen(str);
+    this->write_utf8(str, str_len);
+    return sizeof(uint16_t) + str_len;
+}
+
 int Buffer::write_utf8(const char* str, uint16_t str_len)
 {
     int ir = write_int16(str_len);
@@ -204,7 +256,12 @@ Buffer* Buffer::temp()
     return instance_;
 }
 
-const char* Buffer::get_buffer()
+char* Buffer::get_write_buffer() const
+{
+    return this->buf + this->wptr;
+}
+
+char* Buffer::get_buffer() const
 {
     return this->buf + this->rptr;
 }
@@ -219,3 +276,19 @@ uint32_t Buffer::already_read()
 {
     return this->rptr;
 }
+
+void Buffer::debug()
+{
+    LOG_DEBUG("buf = > wptr");
+    for(uint32_t i = 0; i < this->wptr; i++)
+    {
+        printf("%d\n", this->buf[i]);
+    }
+    LOG_DEBUG("rptr = > wptr");
+    for(uint32_t i = this->rptr; i < this->wptr; i++)
+    {
+        printf("%d\n", this->buf[i]);
+    }
+}
+
+

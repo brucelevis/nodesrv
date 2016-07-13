@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <queue>
 #include <pthread.h>
 #include <google/protobuf/message.h>
 extern "C" {
@@ -46,11 +47,6 @@ class Node
         int listen(const char* host, unsigned short port);
 
         /*
-         * 发送消息
-         */
-        int real_send(const void* data, size_t size);
-
-        /*
          * 查找实体
          */
         Entity* find_entity(int entityid);
@@ -70,16 +66,20 @@ class Node
         Entity* create_entity_local(const char* filepath = NULL);
         void create_entity_remote(Entity* src_entity, const char* filepath);
 
-        void recv(MsgHeader* header, const char* data, size_t size);
-        void recv_entity_msg(MsgHeader* header, const char* data, size_t size);
-        void recv_node_reg(MsgHeader* header, const char* data, size_t size);
-        void recv_create_entity(MsgHeader* header, const char* data, size_t size);
+        Message* alloc_msg();
+        void destory_msg(Message* msg);
 
-        void send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const char* data, size_t size);
-        void send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, Buffer* buffer);
-        void send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, ::google::protobuf::Message* msg);
-        void forward_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const char* data, size_t size);
-        void forward_entity_msg(MsgHeader* header, const char* data, size_t size);
+        void recv(Message* msg);
+        void recv_entity_msg(Message* msg);
+        void recv_node_reg(Message* msg);
+        void recv_create_entity(Message* msg);
+
+        void send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const Buffer* buffer);
+        void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, Message* msg);
+        void send_entity_msg(Entity* src_entity, Message* msg);
+        void forward_entity_msg(Message* msg);
+        //兼容之前的post协议
+        int post(lua_State* L);
     public:
         int id;
         char name[64];
@@ -122,6 +122,7 @@ class Node
         pthread_t tid_;
         aeEventLoop* loop_;
         Buffer send_buf;
+        std::queue<Message*> send_msg_queue;
 };//tolua_export
 
 #endif

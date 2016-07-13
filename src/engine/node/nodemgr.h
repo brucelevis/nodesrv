@@ -56,11 +56,6 @@ namespace NodeMgr
     //将实体传输到目标节点
     void transfer_entity(Entity* src_entity, int dst_nodeid);
 
-    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, ::google::protobuf::Message* msg);
-    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, Buffer* buffer);
-    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t size);
-    void forward_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t len);
-
     void create_entity_remote(Entity* src_entity, int dst_nodeid, const char* filepath);
 
 };

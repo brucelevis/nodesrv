@@ -2,23 +2,13 @@
 #define _MSG_H_
 #include <stdint.h>
 #include <stdlib.h>
+#include "container/buffer.h"
 
 //tolua_begin
-typedef struct tagMessage
-{
-    uint32_t src_entityid;
-    uint32_t src_nodeid;
-    uint32_t dst_entityid;
-    uint32_t dst_nodeid;
-    uint32_t id;
-    int sockfd;
-    int sid;
-    const char* data;
-    size_t datalen;
-} Message;
 
-typedef struct tagMsgHeader
+class MessageHeader
 {
+public:
     uint32_t len;
     //源实体id
     uint32_t src_entityid;
@@ -28,7 +18,36 @@ typedef struct tagMsgHeader
     uint32_t dst_nodeid;
     //消息id
     uint32_t id;
-} MsgHeader;
+};
+
+class MessageOption
+{
+public:
+    bool cache;
+};
+/*
+ * local msg = mynode:alloc_msg()
+ * mynode:flush(msg)
+ *
+ */
+
+class Message
+{
+public:
+    Message();
+
+    uint32_t magic_code;
+    MessageHeader header;
+    uint32_t magic_code2;
+
+    MessageOption option;
+    uint32_t byte_sent;
+    int32_t sockfd;
+    int32_t sid;
+    int32_t ref_count;
+    Buffer payload;
+};
+
 
 //发送消息
 #define MSG_SEND 1

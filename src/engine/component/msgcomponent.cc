@@ -12,7 +12,7 @@ MsgComponent::~MsgComponent()
 
 }
 
-int MsgComponent::recv(MsgHeader* header, const char* data, size_t datalen)
+int MsgComponent::recv(Message* msg)
 {
     return 0;
 }

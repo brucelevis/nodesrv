@@ -10,9 +10,9 @@ class MsgComponent : public Component
     public:
         MsgComponent();
         virtual ~MsgComponent();
-        virtual int recv(MsgHeader* header, const char* data, size_t datalen);
+        virtual int recv(Message* msg);
     public:
-        typedef int (MsgComponent::*MsgHandler)(MsgHeader*, ::google::protobuf::Message*);
+        typedef int (MsgComponent::*MsgHandler)(Message*, ::google::protobuf::Message*);
 
         void send_msg(::google::protobuf::Message* msg);
         void regist_msg(int id, MsgHandler handler);

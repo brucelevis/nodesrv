@@ -12,7 +12,7 @@ class NodeController : public Component
         /*
          * 新节点注册
          */
-        void recv_connect(MsgHeader* header, const char* data, size_t size);
+        void recv_connect(Message* msg);
 };
 
 #endif

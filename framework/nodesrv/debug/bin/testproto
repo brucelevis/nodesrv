@@ -1,7 +1,7 @@
 #!bin/lneox
 require('deploy')
-package.path = string.format('%s;%s/?.lua', package.path, DeployConf.asset_dir)
-package.path = string.format('%s;%s/test/?.lua', package.path, DeployConf.asset_dir)
+package.path = string.format('%s;%s/?.lua', package.path, Config.asset_dir)
+package.path = string.format('%s;%s/test/?.lua', package.path, Config.asset_dir)
 
 local root_dir = string.format('%s/test', DeployConf.asset_dir)
 print(root_dir)

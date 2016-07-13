@@ -38,8 +38,9 @@ class Entity
         virtual void destory();
 
         virtual int recv(Message* msg);
-        virtual int recv(MsgHeader* header, const void* data, size_t datalen);
-        virtual int unreach(MsgHeader* header, const void* data, size_t datalen);
+
+        //virtual int recv(MsgHeader* header, const void* data, size_t datalen);
+        virtual int unreach(Message* msg);
 
         //组件相关
         int add_component(Component* component);

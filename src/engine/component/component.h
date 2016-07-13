@@ -28,8 +28,7 @@ class Component
         virtual void destory();
         virtual void update(long long cur_tick);
         virtual int recv(Message* msg);
-        virtual int recv(MsgHeader* header, const void* data, size_t datalen);
-        virtual int unreach(MsgHeader* header, const void* data, size_t datalen);
+        virtual int unreach(Message* msg);
 
         int lua_pushfunction(const char *func);
         int lua_printstack(); 
@@ -45,9 +44,9 @@ class Component
 
         int reg_msg(unsigned int id);
         int unreg_msg(unsigned int id);
-        void send_entity_msg(int dst_entityid, int msgid, const char* data, size_t size);
-        void forward_entity_msg(int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t size);
+        void send_entity_msg(int dst_nodeid, int dst_entityid, Message* msg);
         int get_component(lua_State* L);
+        Message* alloc_msg();
         Component* get_component(const char* name);
     public:
         Entity* entity;

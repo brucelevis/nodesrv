@@ -15,9 +15,6 @@ class SceneSrv: public Component
 
 //tolua_end
     private:
-        int recv_net_raw_data(Message* msg);
-        int recv_new_connection(Message* msg);
-        int recv_close_connection(Message* msg);
 DECLAR(SceneSrv);
 
 };//tolua_export

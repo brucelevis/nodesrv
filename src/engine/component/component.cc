@@ -30,17 +30,13 @@ void Component::update(long long cur_tick)
 
 }
 
+
 int Component::recv(Message* msg)
 {
     return 0;
 }
 
-int Component::recv(MsgHeader* header, const void* data, size_t datalen)
-{
-    return 0;
-}
-
-int Component::unreach(MsgHeader* header, const void* data, size_t datalen)
+int Component::unreach(Message* msg)
 {
     return 0;
 }
@@ -87,7 +83,7 @@ int Component::lua_printstack()
 
 lua_State* Component::get_lua_state()
 {
-    return this->entity->node->L;
+    return NodeMgr::L;
 }
 
 Node* Component::get_node()
@@ -99,17 +95,11 @@ Node* Component::get_node()
     return entity->node;
 }
 
-void Component::send_entity_msg(int dst_entityid, int msgid, const char* data, size_t size)
+void Component::send_entity_msg(int dst_nodeid, int dst_entityid, Message* msg)
 {
-    Node* node = get_node();    
-    node->send_entity_msg(this->entity, dst_entityid, msgid, data, size);
+    entity->node->send_entity_msg(this->entity, dst_nodeid, dst_entityid, msg);
 }
 
-
-void Component::forward_entity_msg(int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t size)
-{
-    NodeMgr::forward_entity_msg(this->entity, dst_nodeid, dst_entityid, msgid, data, size);
-}
 
 int Component::reg_msg(unsigned int id)
 {
@@ -130,4 +120,9 @@ int Component::get_component(lua_State* L)
 Component* Component::get_component(const char* name)
 {
     return this->entity->get_component(name);
+}
+
+Message* Component::alloc_msg()
+{
+    return this->entity->node->alloc_msg();
 }

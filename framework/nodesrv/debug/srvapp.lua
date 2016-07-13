@@ -35,14 +35,7 @@ function recordpid()
 end
 --------------------------------------------------------------------------------------------------------------------------------------
 
-require('config')
-if not Config.proc_dir then
-    Config.proc_dir = string.format('%s/proc', File.getcwd())
-end
-if not Config.asset_dir then
-    Config.asset_dir = string.format('%s/asset', File.getcwd())
-end
-package.path = string.format('%s;%s/script/?.lua', package.path, Config.asset_dir)
+dofile('bin/luaenv')
 
 local nodename = arg[2]
 local is_daemon = arg[3] == '-d'
@@ -63,9 +56,6 @@ Config.nodename = node_conf.nodename
 Config.host = node_conf.host
 Config.port = node_conf.port
 
-if not File.exists(Config.proc_dir) then
-    File.mkdirs(Config.proc_dir)
-end
 local running_dir = string.format('%s/%s', Config.proc_dir, Config.nodename)
 if not File.exists(running_dir) then
     File.mkdirs(running_dir)
@@ -81,9 +71,11 @@ Log.info(string.format('running dir(%s)', File.getcwd()))
 
 recordpid()
 
+--本地节点
 NodeMgr.create_node_local(Config.nodeid)
-mynode:listen(Config.host, Config.port)
+mysrv:listen(Config.host, Config.port)
 
+--远程节点
 local nodelist = Config.nodegrap[Config.nodeid]
 if nodelist then
     for k, nodeid in pairs(nodelist) do
@@ -93,24 +85,6 @@ if nodelist then
     end
 end
 
+--进入游戏
 require(node_conf.mainfile)
---import('pblua')
---Pblua.import_dir(string.format('%s/proto', asset_dir))
---Pblua.import_dir(string.format('%s/dbproto', asset_dir))
-
---for _, argv in pairs(srv_conf.srvdef) do
-    --local mod = import(argv[1])
-    ----重写配置
-    --local argv2 = srv_conf[argv[1]]
-    --if argv2 then
-        --for k, v in pairs(argv2) do
-            --argv[k] = v
-        --end
-    --end
-    --mod.argv = argv
---end
-
---Mod.call('main')
-
---Asyncsrv.mainloop()
 

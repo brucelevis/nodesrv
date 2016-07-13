@@ -1,0 +1,41 @@
+
+--环境的初始化
+
+local root_path = os.getenv('NEOX_DIR')
+if not root_path then
+    print('please set env NEOX_DIR')
+    print('run commands:')
+    print('echo "export NEOX_DIR=`pwd`" >> ~/.bashrc')
+    print('source ~/.bashrc')
+    os.exit(0)
+end
+
+
+require('config')
+
+if not Config.proc_dir then
+    Config.proc_dir = string.format('%s/proc', root_path)
+end
+if not Config.asset_dir then
+    Config.asset_dir = string.format('%s/asset', root_path)
+end
+if not File.exists(Config.proc_dir) then
+    File.mkdirs(Config.proc_dir)
+end
+
+package.path = string.format('%s;%s/?.lua', package.path, root_path)
+package.path = string.format('%s;%s/?.lua', package.path, Config.asset_dir)
+package.path = string.format('%s;%s/script/?.lua', package.path, Config.asset_dir)
+package.path = string.format('%s;%s/script/lib/?.lua', package.path, Config.asset_dir)
+
+require('lib/pblua/pblua')
+require('lib/mod/mod')
+Pblua.import_dir(string.format('%s/proto', Config.asset_dir))
+Pblua.import_dir(string.format('%s/dbproto', Config.asset_dir))
+
+table.insert(Mod.search_path, string.format('%s', Config.asset_dir))
+table.insert(Mod.search_path, string.format('%s/script', Config.asset_dir))
+table.insert(Mod.search_path, string.format('%s/script/lib', Config.asset_dir))
+
+print('Config = ')
+print(Json.encode(Config))

@@ -14,9 +14,9 @@ GateSrv::~GateSrv()
 
 }
 
-void GateSrv::awake()
+
+void GateSrv::listen()
 {
-    LOG_DEBUG("GateSrv::awake");
     NetComponent* net_component = get_component<NetComponent>();
     if (!net_component)
     {
@@ -32,15 +32,25 @@ void GateSrv::awake()
         exit(1);
         return;
     }
+}
+
+void GateSrv::awake()
+{
+    LOG_DEBUG("GateSrv::awake");
+    //listen();
 
     this->entity->reg_msg(MSG_NEW_CONNECTION, this);
     this->entity->reg_msg(MSG_CLOSE_CONNECTION, this);
     this->entity->reg_msg(MSG_NET_RAW_DATA, this);
+
+    RPCMethod method;
+    method << "Login.PLAYER_ENTER" << 333;
+    method.invoke(this, 2, 3);
 }
 
 int GateSrv::recv(Message* msg)
 {
-    switch(msg->id)
+    switch(msg->header.id)
     {
         case MSG_NEW_CONNECTION:
             {
@@ -77,7 +87,7 @@ int GateSrv::recv_new_connection(Message* msg)
 
 int GateSrv::recv_net_raw_data(Message* msg)
 {
-    LOG_DEBUG("recv_net_raw_data datalen(%d)", msg->datalen);
+    LOG_DEBUG("recv_net_raw_data datalen(%d)", msg->payload.size());
     return 0;
 }
 

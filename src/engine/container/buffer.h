@@ -16,25 +16,35 @@ class Buffer
         int16_t read_int16(int16_t def = 0);
         int8_t read_int8(int8_t def = 0);
         int read_buf(void* data, uint32_t datalen);
+        const char* read_utf8();
 
         int write_utf8(const char* str, uint16_t str_len);
+        int write_utf8(const char* str);
         int write_int64(int64_t val);
         int write_int32(int32_t val);
         int write_int16(int16_t val);
         int write_int8(int8_t val);
         int write_buf(const void* data, uint32_t datalen);
+        int write(const Buffer* other);
 
         void buf2line();
         uint32_t already_read();
-        uint32_t size();
+        uint32_t size() const;
         uint32_t maxsize();
         void reset();
-        const char* get_buffer();
+        char* get_buffer() const;
+        char* get_write_buffer() const;
+
+        bool ensure_size(int size);
+        void debug();
     public:
         static Buffer* temp();
 //tolua_end
+    public:
+        const Buffer& operator=(const Buffer& other);
     private:
-        int expand_buf(uint32_t newsize = 0);
+        Buffer(const Buffer& other);
+        bool expand_buf(uint32_t newsize = 0);
 
     private:
         char* buf;

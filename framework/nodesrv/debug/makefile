@@ -1,9 +1,15 @@
 
+localsrv:
+	bin/logicsrv localsrv
+
 gatesrv:
 	bin/gatesrv gatesrv1
 
 scenesrv:
 	bin/scenesrv scenesrv1
+
+dbsrv:
+	bin/logicsrv dbsrv1
 
 clean:
 	cd ../gatesrv;make clean

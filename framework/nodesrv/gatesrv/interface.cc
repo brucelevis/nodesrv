@@ -1,6 +1,6 @@
 /*
 ** Lua binding: gatesrv
-** Generated automatically by tolua++-1.0.92 on Mon Jul  4 17:06:52 2016.
+** Generated automatically by tolua++-1.0.92 on Mon Jul 11 20:59:08 2016.
 */
 
 #ifndef __cplusplus

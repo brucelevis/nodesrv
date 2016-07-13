@@ -1,9 +1,7 @@
---require('config')
---require('deploy')
+require('gatesrv/entity/gatesrv')
 
 --package.path = string.format('%s;%s/?.lua', package.path, DeployConf.asset_dir)
 
 --require('script/gatesrv/entity/gatesrv')
-
---mynode:create_entity_local('GateSrvEntity')
+mynode:create_entity_local('GateSrvEntity')
 

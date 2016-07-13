@@ -1,9 +1,13 @@
 
 #include "script/script.h"
-#include "pblua/pblua.h"
+#include "lualib/pblua/pblua.h"
 #include "log/llog.h"
 #include "log/log.h"
-#include "system/lsystem.h"
+#include "lualib/mysql/lmysql.h"
+#include "lualib/redis/lredis.h"
+#include "lualib/json/ljson.h"
+#include "lualib/string/lstring.h"
+#include "lualib/system/lsystem.h"
 
 
 namespace Script
@@ -187,7 +191,11 @@ namespace Script
         luaopen_neox(L);
         luaopen_log(L);
         luaopen_pblua(L);
+        luaopen_json(L);
+        luaopen_cstring(L);
+        luaopen_redis(L);
         luaopen_system(L);
+        luaopen_mysql(L);
     }
 };
 

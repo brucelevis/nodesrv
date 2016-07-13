@@ -1,6 +1,6 @@
 /*
 ** Lua binding: scenesrv
-** Generated automatically by tolua++-1.0.92 on Thu Jul  7 12:29:24 2016.
+** Generated automatically by tolua++-1.0.92 on Wed Jul 13 12:09:58 2016.
 */
 
 #ifndef __cplusplus

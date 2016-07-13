@@ -176,16 +176,16 @@ void NetComponent::ev_readable(int sockfd)
 
 int NetComponent::dispatch(int sockfd, char* data, size_t datalen)
 {
-    static Message msg;
-    msg.src_nodeid = 0;
-    msg.src_entityid = 0;
-    msg.dst_entityid = 0;
-    msg.dst_nodeid = 0;
-    msg.id = MSG_NET_RAW_DATA;
-    msg.sockfd = sockfd;
-    msg.data = data;
-    msg.datalen = datalen;
-    int ir = this->entity->recv(&msg);
+    Message* msg = alloc_msg();
+    msg->header.src_nodeid = 0;
+    msg->header.src_entityid = 0;
+    msg->header.dst_entityid = 0;
+    msg->header.dst_nodeid = 0;
+    msg->header.id = MSG_NET_RAW_DATA;
+    msg->sockfd = sockfd;
+    msg->payload.reset();
+    msg->payload.write_buf(data, datalen);
+    int ir = this->entity->recv(msg);
     return ir;
 }
 
@@ -211,15 +211,15 @@ void NetComponent::ev_accept(int listenfd)
     Sendbuf::create(sockfd);
     Recvbuf::create(sockfd, 1024);
 
-    static Message msg;
-    msg.src_nodeid = 0;
-    msg.src_entityid = 0;
-    msg.dst_entityid = 0;
-    msg.dst_nodeid = 0;
-    msg.id = MSG_NEW_CONNECTION;
+    Message* msg = alloc_msg();
+    msg->header.src_nodeid = 0;
+    msg->header.src_entityid = 0;
+    msg->header.dst_entityid = 0;
+    msg->header.dst_nodeid = 0;
+    msg->header.id = MSG_NEW_CONNECTION;
 
-    msg.sockfd = sockfd;
-    this->entity->recv(&msg);
+    msg->sockfd = sockfd;
+    this->entity->recv(msg);
 }
 
 
@@ -230,15 +230,15 @@ void NetComponent::real_close(int sockfd, const char* reason)
     Sendbuf::free(sockfd);
     this->delete_file_event(sockfd, AE_WRITABLE | AE_READABLE);
 
-    static Message msg;
-    msg.src_nodeid = 0;
-    msg.src_entityid = 0;
-    msg.dst_entityid = 0;
-    msg.dst_nodeid = 0;
-    msg.id = MSG_CLOSE_CONNECTION;
+    Message* msg = alloc_msg();
+    msg->header.src_nodeid = 0;
+    msg->header.src_entityid = 0;
+    msg->header.dst_entityid = 0;
+    msg->header.dst_nodeid = 0;
+    msg->header.id = MSG_CLOSE_CONNECTION;
 
-    msg.sockfd = sockfd;
-    this->entity->recv(&msg);
+    msg->sockfd = sockfd;
+    this->entity->recv(msg);
 }
 
 char* NetComponent::alloc_send_buf(int sockfd, size_t size)

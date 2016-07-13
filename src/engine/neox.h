@@ -19,7 +19,6 @@
 #include "node/entity.h"
 #include "node/entityroute.h"
 #include "node/node.h"
-#include "node/node.h"
 #include "node/nodemgr.h"
 #include "log/log.h"
 #include "log/llog.h"
@@ -28,6 +27,7 @@
 #include "file/file.h"
 #include "script/script.h"
 #include "component/netcomponent.h"
+#include "component/rpccomponent.h"
 
 #include <stdio.h>
 #include <signal.h>

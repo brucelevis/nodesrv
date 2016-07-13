@@ -6,7 +6,6 @@ extern "C"{
 
 namespace Neox
 {
-
     int main(int argc, char** argv)
     {
         NodeMgr::main(argc, argv);

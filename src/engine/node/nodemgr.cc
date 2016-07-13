@@ -113,26 +113,6 @@ namespace NodeMgr
         return NULL;
     }
 
-    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t len)
-    {
-        Node* node = find_node(dst_nodeid);
-        if (!node)
-        {
-            return;
-        }
-        node->send_entity_msg(src_entity, dst_entityid, msgid, data, len);
-    }
-
-    void forward_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, const char* data, size_t len)
-    {
-        Node* node = find_node(dst_nodeid);
-        if (!node)
-        {
-            return;
-        }
-        node->forward_entity_msg(src_entity, dst_entityid, msgid, data, len);
-    }
-
     void create_entity_remote(Entity* src_entity, int dst_nodeid, const char* filepath)
     {
         Node* node = find_node(dst_nodeid);
@@ -142,26 +122,6 @@ namespace NodeMgr
             return;
         }
         node->create_entity_remote(src_entity, filepath);
-    }
-
-    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, ::google::protobuf::Message* msg)
-    {
-        Node* node = find_node(dst_nodeid);
-        if (!node)
-        {
-            return;
-        }
-        node->send_entity_msg(src_entity, dst_entityid, msgid, msg);
-    }
-
-    void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, int msgid, Buffer* buffer)
-    {
-        Node* node = find_node(dst_nodeid);
-        if (!node)
-        {
-            return;
-        }
-        node->send_entity_msg(src_entity, dst_entityid, msgid, buffer);
     }
 
     void transfer_entity(Entity* src_entity, int dst_nodeid)

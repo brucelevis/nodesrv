@@ -1,5 +1,4 @@
 
-
 【client】
 模拟前端
 
@@ -12,9 +11,11 @@
 【common】
 通用c++代码
 
-
 【adminsrv】
 管理后台
 
-【dbsrv】
-数据服
+【logic】
+逻辑服务器，杂七杂八服务器
+
+【adminshell】
+管理后台shell

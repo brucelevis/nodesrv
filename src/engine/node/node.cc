@@ -8,6 +8,7 @@
 #include "node/nodemgr.h"
 #include "log/log.h"
 #include "script/script.h"
+#include "component/rpccomponent.h"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -64,7 +65,7 @@ void Node::main()
     lua_State* L = NodeMgr::L;
     //将自己注册到lua
     tolua_pushusertype(L, (void*)this, "Node");
-    lua_setglobal(L, "mynode");
+    lua_setglobal(L, "mysrv");
     //创建事件
     //loop_ = aeCreateEventLoop(10240);
     //if (mainfile[0] != 0)
@@ -119,6 +120,10 @@ void Node::ev_readable(int sockfd)
         {
             break;
         }
+        //for (int i = 0; i < ir; i++)
+        //{
+            //printf("%d\n", wptr[i]);
+        //}
         Recvbuf::wskip(sockfd, ir);
 
         for (;;)
@@ -144,25 +149,46 @@ void Node::ev_writable(int sockfd)
     //发送数据
     for(;;)
     {
-        //int datalen = Sendbuf::datalen(sockfd_);
-        int datalen = send_buf.size();
-        if (datalen <= 0)
+        if (send_msg_queue.size() <= 0)
         {
             LOG_DEBUG("node[%d] delete write event", this->id);
-            delete_file_event(this->sockfd_, AE_WRITABLE);
+            delete_file_event(sockfd, AE_WRITABLE);
             break;
         }
-        //char* buf = Sendbuf::get_read_ptr(sockfd_);
-        char* buf = (char *)send_buf.get_buffer();
-        int ir = ::send(sockfd_, buf, datalen, 0);
+        int ir = 0;
+        Message* msg = send_msg_queue.front();
+        if (msg->byte_sent < sizeof(msg->magic_code) + sizeof(msg->header) + sizeof(msg->magic_code2))
+        {
+            char* buf = (char*)(&msg->magic_code);
+            ir = ::send(sockfd, buf + msg->byte_sent, sizeof(msg->magic_code) + sizeof(msg->header) + sizeof(msg->magic_code2) - msg->byte_sent, 0);
+            //for (int i = 0; i < ir; i++)
+            //{
+                //printf("%d\n", (buf + msg->byte_sent)[i]);
+            //}
+            if (ir > 0)msg->byte_sent += ir; else goto ev_writable_end; 
+        }
+        LOG_DEBUG("node[%d] real send header %d", this->id, ir);
+        if (msg->payload.size() <= 0)
+        {
+            send_msg_queue.pop();
+            destory_msg(msg);
+            break;
+        }
+        ir = ::send(sockfd, msg->payload.get_buffer(), msg->payload.size(), 0);
+        if (ir > 0)
+        {
+            //for (int i = 0; i < ir; i++)
+            //{
+                //printf("%d\n",  (msg->payload.get_buffer())[i]);
+            //}
+            msg->byte_sent += ir;
+            msg->payload.read_buf(NULL, ir);
+        }
         LOG_DEBUG("node[%d] real send %d", this->id, ir);
-        if (ir > 0) 
+
+ev_writable_end:
+        if (ir == -1 && errno == EAGAIN) 
         {
-            //Sendbuf::skip_read_ptr(sockfd_, ir);
-            send_buf.read_buf(NULL, ir);
-        } else if (ir == -1 && errno == EAGAIN) 
-        {
-            send_buf.buf2line();
             break;
         } else if(ir == -1) 
         {
@@ -201,13 +227,15 @@ int Node::listen(const char* host, unsigned short port)
     int reuse = 1;
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
 	error = ::bind(sockfd,(struct sockaddr *)&addr,sizeof(addr));
-	if(error < 0){		
+	if(error < 0)
+    {		
         ::close(sockfd);
         LOG_ERROR("node[%d] bind error %d", this->id, port);
 		return 3;	
     }
 	error = ::listen(sockfd, 5);	
-    if(error < 0){
+    if(error < 0)
+    {
         ::close(sockfd);
         LOG_ERROR("node[%d] listen error", this->id);
         return 4;
@@ -275,10 +303,9 @@ int Node::real_connect()
         {
             LOG_DEBUG("node[%d] reconnect success", this->id);
             this->is_connect_ = true;
-            //Sendbuf::create(this->sockfd_);
-            //Recvbuf::create(this->sockfd_, 1024);
             create_file_event(this->sockfd_, AE_READABLE, _ev_readable, this);
-            send_node_reg();
+            create_file_event(this->sockfd_, AE_WRITABLE, _ev_writable, this);
+            //send_node_reg();
         } else
         {
             LOG_DEBUG("node[%d] reconnect error(%d) errno(%d)", this->id, error, errno);
@@ -304,45 +331,46 @@ void Node::update(long long cur_tick)
 }
 
 
-void Node::recv(MsgHeader* header, const char* data, size_t size)
+void Node::recv(Message* msg)
 {
+    LOG_INFO("node[%d] recv msgid(%d) from node(%d) entity(%d) len(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_entityid, msg->header.len);
     struct timeval t1;
     gettimeofday(&t1, NULL);
     //不可靠的消息传输
-    switch(header->id)
+    switch(msg->header.id)
     {
         case MSG_NODE_REG:
             {
-                recv_node_reg(header, data, size);
+                recv_node_reg(msg);
             }
             break;
         case MSG_CREATE_ENTITY:
             {
-                recv_create_entity(header, data, size);
+                recv_create_entity(msg);
             };
             break;
         default:
             {
-                recv_entity_msg(header, data, size);
+                recv_entity_msg(msg);
             }
             break;
     }
     struct timeval t2;
     gettimeofday(&t2, NULL);
-    LOG_INFO("node[%d] recv msgid(%d) from node(%d) entity(%d) len(%d) usec(%d)", this->id, header->id, header->src_nodeid, header->src_entityid, header->len, time_diff(&t1, &t2));
+    LOG_INFO("node[%d] recv msgid(%d) from node(%d) entity(%d) len(%d) usec(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_entityid, msg->header.len, time_diff(&t1, &t2));
 }
 
 int Node::dispatch(char* data, size_t datalen)
 {
     uint32_t magic_code = 0;
     uint32_t magic_code2 = 0;
-    if (datalen < sizeof(magic_code) + sizeof(MsgHeader) + sizeof(magic_code2))
+    if (datalen < sizeof(magic_code) + sizeof(MessageHeader) + sizeof(magic_code2))
     {
         return 0;
     }
     magic_code = *(int *)(data);
-    MsgHeader *header = (MsgHeader*)(data + sizeof(magic_code));
-    magic_code2 = *(int *)(data + sizeof(magic_code) + sizeof(MsgHeader));
+    MessageHeader *header = (MessageHeader*)(data + sizeof(magic_code));
+    magic_code2 = *(int *)(data + sizeof(magic_code) + sizeof(MessageHeader));
     if (magic_code2 - header->len != magic_code)
     {
         LOG_ERROR("magic code error");
@@ -352,84 +380,52 @@ int Node::dispatch(char* data, size_t datalen)
     {
         return 0;
     }
-    char *body = data + sizeof(magic_code) + sizeof(MsgHeader) + sizeof(magic_code2);
-    int bodylen = header->len - sizeof(MsgHeader);
-    recv(header, body, bodylen);
+    char *payload = data + sizeof(magic_code) + sizeof(MessageHeader) + sizeof(magic_code2);
+    int payloadlen = header->len - sizeof(MessageHeader);
 
+    Message* msg = alloc_msg();
+    msg->header = *header;
+    msg->payload.reset();
+    msg->payload.write_buf(payload, payloadlen);
+    recv(msg);
+    destory_msg(msg);
 
     return sizeof(magic_code) + header->len + sizeof(magic_code2);
 }
 
-void Node::forward_entity_msg(MsgHeader* header, const char* data, size_t size)
+void Node::forward_entity_msg(Message* msg)
 {
-    Entity* entity = find_entity(header->dst_entityid);
-    if (entity)
-    {
-        entity->recv(header, data, size);
-        return;
-    }
-    if (is_disconnect())
-    {
-        return;
-    }
-    real_send(&MAGIC_CODE, sizeof(uint32_t));
-    MAGIC_CODE += header->len;
-    real_send((char *)&header, sizeof(header));
-    real_send(&MAGIC_CODE, sizeof(uint32_t));
-    real_send(data, size);
-}
-
-void Node::forward_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const char* data, size_t size)
-{
-    Node* src_node = src_entity->node;
-    if (!src_node)
-    {
-        return;
-    }
-    static MsgHeader header;
-    header.src_nodeid = src_node->get_id();
-    header.src_entityid = src_entity->id;
-    header.dst_entityid = dst_entityid;
-    header.dst_nodeid = this->id;
-    header.id = msgid;
     //先发给本地实体
-    Entity* entity = find_entity(dst_entityid);
+    Entity* entity = find_entity(msg->header.dst_entityid);
     if (entity)
     {
-        entity->recv(&header, data, size);
+        entity->recv(msg);
         return;
     }
     if (is_disconnect())
     {
-        src_entity->unreach(&header, data, size);
         return;
     }
-    //发给关联节点
-    real_send(&MAGIC_CODE, sizeof(uint32_t));
-    MAGIC_CODE += header.len;
-    real_send((char *)&header, sizeof(header));
-    real_send(&MAGIC_CODE, sizeof(uint32_t));
-    real_send(data, size);
+    send_entity_msg(NULL, msg);
 }
 
-void Node::recv_entity_msg(MsgHeader* header, const char* data, size_t size)
+void Node::recv_entity_msg(Message* msg)
 {
-    int dst_entityid = header->dst_entityid;
+    int dst_entityid = msg->header.dst_entityid;
     //广播 
     if (dst_entityid == 0)
     {
         for (int i = entity_vector_.size() - 1; i >= 0; i--)
         {
             Entity* entity = entity_vector_[i];
-            entity->recv(header, data, size);
+            entity->recv(msg);
         }
     } else
     {
-
         Entity* entity = find_entity(dst_entityid);
         if(entity)
         {
-            entity->recv(header, data, size);
+            entity->recv(msg);
         } else
         {
             //转发到中心节点
@@ -438,111 +434,106 @@ void Node::recv_entity_msg(MsgHeader* header, const char* data, size_t size)
             {
                 return;
             }
-            center_node->forward_entity_msg(header, data, size);
+            if (center_node)
+            {
+                center_node->forward_entity_msg(msg);
+            }
         }
     }
 }
 
-void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, ::google::protobuf::Message* msg)
+void Node::send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, Message* msg)
 {
-    /*  
-    LOG_DEBUG("node[%d] send entity msg", id);
+    if (!src_entity)
+    {
+        LOG_ERROR("src_entity not found");
+        return;
+    }
+    Node* src_node = src_entity->node;
+    if (!src_node)
+    {
+        LOG_ERROR("src_node not found");
+        return;
+    }
+    Node* node = NodeMgr::find_node(dst_nodeid);
+    if (!node)
+    {
+        LOG_ERROR("dst_node(%d) not found", dst_nodeid);
+        return;
+    }
+    msg->header.src_entityid = src_entity->id;
+    msg->header.src_nodeid = src_node->id;
+    msg->header.dst_nodeid = dst_nodeid;
+    msg->header.dst_entityid = dst_entityid;
+    node->send_entity_msg(src_entity, msg);
+}
+
+void Node::send_entity_msg(Entity* src_entity, Message* msg)
+{
+    if (src_entity)
+    {
+        msg->header.src_entityid = src_entity->id;
+        msg->header.src_nodeid = src_entity->node->id;
+    }
+    //发给本地实体
+    Entity* dst_entity = find_entity(msg->header.dst_entityid);
+    if (dst_entity)
+    {
+        dst_entity->recv(msg);
+        destory_msg(msg);
+    } 
+    else if (is_disconnect())
+    {
+        LOG_DEBUG("node[%d] is disconnect", get_id());
+        int src_entityid = msg->header.src_entityid;
+        Entity* src_entity = find_entity(src_entityid);
+        if (src_entity)
+        {
+            src_entity->unreach(msg);
+        } 
+        if (msg->option.cache)
+        {
+            msg->header.len = sizeof(MessageHeader) + msg->payload.size();
+            msg->magic_code = MAGIC_CODE;
+            MAGIC_CODE += msg->header.len;
+            msg->magic_code2 = MAGIC_CODE;
+            this->send_msg_queue.push(msg);
+        } else 
+        {
+            destory_msg(msg);
+        }
+    }
+    else 
+    {
+        msg->header.len = sizeof(MessageHeader) + msg->payload.size();
+        msg->magic_code = MAGIC_CODE;
+        MAGIC_CODE += msg->header.len;
+        msg->magic_code2 = MAGIC_CODE;
+        this->send_msg_queue.push(msg);
+        create_file_event(this->sockfd_, AE_WRITABLE, _ev_writable, this);
+    }
+}
+
+void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const Buffer* buffer)
+{
+    LOG_DEBUG("node[%d] send entity msg(%d)", this->id, msgid);
     Node* src_node = src_entity->node;
     if (!src_node)
     {
         return;
     }
-    int msg_size = msg->ByteSize();
-    static MsgHeader header;
+    Message* msg = alloc_msg();
+    MessageHeader& header = msg->header;
     header.src_nodeid = src_node->get_id();
     header.src_entityid = src_entity->id;
     header.dst_entityid = dst_entityid;
     header.dst_nodeid = this->id;
     header.id = msgid;
-    header.len = sizeof(MsgHeader) + msg_size;
-    //发给本地实体
-    Entity* entity = find_entity(dst_entityid);
-    if (entity)
-    {
-    //    entity->recv(&header, data, size);
-        return;
-    } 
-    if (is_disconnect())
-    {
-        LOG_DEBUG("node[%d] is disconnect", get_id());
-     //   src_entity->unreach(&header, data, size);
-        return;
-    }
-    //插入到缓冲区
-    char* buf= Sendbuf::alloc(this->sockfd_,  header.len);
-    if (!buf)
-    {
-        return;
-    }
-    LOG_DEBUG("node[%d] send %ld to sockfd(%d)", id, header.len, this->sockfd_);
-    memcpy(buf, &header, sizeof(header));
-    msg->SerializeToArray(buf + sizeof(header), msg_size);
-    Sendbuf::flush(this->sockfd_, buf, header.len);
-    create_file_event(this->sockfd_, AE_WRITABLE, _ev_writable, this);
-    */
-}
 
-void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, Buffer* buffer)
-{
-    send_entity_msg(src_entity, dst_entityid, msgid, buffer->get_buffer(), buffer->size());
-}
+    msg->payload.reset();
+    msg->payload.write(buffer);
 
-
-void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const char* data, size_t size)
-{
-    LOG_DEBUG("node[%d] send entity msg", id);
-    Node* src_node = src_entity->node;
-    if (!src_node)
-    {
-        return;
-    }
-    static MsgHeader header;
-    header.src_nodeid = src_node->get_id();
-    header.src_entityid = src_entity->id;
-    header.dst_entityid = dst_entityid;
-    header.dst_nodeid = this->id;
-    header.id = msgid;
-    header.len = sizeof(MsgHeader) + size;
-    //发给本地实体
-    Entity* entity = find_entity(dst_entityid);
-    if (entity)
-    {
-        entity->recv(&header, data, size);
-        return;
-    } 
-    if (is_disconnect())
-    {
-        LOG_DEBUG("node[%d] is disconnect", get_id());
-        src_entity->unreach(&header, data, size);
-        return;
-    }
-    //发送给自己的关联节点
-    real_send(&MAGIC_CODE, sizeof(uint32_t));
-    MAGIC_CODE += header.len;
-    real_send((char *)&header, sizeof(header));
-    real_send(&MAGIC_CODE, sizeof(uint32_t));
-    real_send(data, size);
-}
-
-int Node::real_send(const void* data, size_t size)
-{
-    LOG_DEBUG("node[%d] send %ld to sockfd(%d)", id, size, this->sockfd_);
-    //插入到缓冲区
-    //char* buf= Sendbuf::alloc(sockfd_,  size);
-    //if (!buf)
-    //{
-        //return 0;
-    //}
-    //memcpy(buf, data, size);
-    //Sendbuf::flush(sockfd_, buf, size);
-    send_buf.write_buf(data, size);
-    create_file_event(this->sockfd_, AE_WRITABLE, _ev_writable, this);
-    return size;
+    send_entity_msg(src_entity, msg);
 }
 
 
@@ -605,64 +596,54 @@ bool Node::is_disconnect()
 }
 
 
-void Node::recv_node_reg(MsgHeader* header, const char* data, size_t size)
+void Node::recv_node_reg(Message* msg)
 {
-    LOG_DEBUG("node[%d] recv node[%d] reg", this->id, header->src_nodeid);
+    LOG_DEBUG("node[%d] recv node[%d] reg", this->id, msg->header.src_nodeid);
 }
 
 void Node::send_node_reg()
 {
     LOG_DEBUG("node[%d] send node reg", this->id);
-    static MsgHeader header;
+    Message* msg = alloc_msg();
+    MessageHeader& header = msg->header;
     header.src_nodeid = this->id;
     header.src_entityid = 0;
     header.dst_entityid = 0;
     header.dst_nodeid = this->id;
     header.id = MSG_NODE_REG;
-    header.len = sizeof(MsgHeader);
-    real_send(&MAGIC_CODE, sizeof(uint32_t));
-    MAGIC_CODE += header.len;
-    real_send((char *)&header, sizeof(header));
-    real_send(&MAGIC_CODE, sizeof(uint32_t));
+    send_entity_msg(NULL, msg);
 }
 
 
-void Node::recv_create_entity(MsgHeader* header, const char* data, size_t size)
+void Node::recv_create_entity(Message* msg)
 {
-    CreateEntityMsg* msg = (CreateEntityMsg*)data;
-    LOG_DEBUG("node[%d] recv create entity %s", this->id, msg->filepath);
-    create_entity_local(msg->filepath);
+    const char* filepath = msg->payload.read_utf8();
+    LOG_DEBUG("node[%d] recv create entity %s", this->id, filepath);
+    create_entity_local(filepath);
 }
 
 void Node::create_entity_remote(Entity* src_entity, const char* filepath)
 {
     LOG_DEBUG("node[%d] send create entity %s", this->id, filepath);
 
-    unsigned short str_len = strlen(filepath);
     Node* src_node = src_entity->node;
 
-    static MsgHeader header;
+    Message* msg = alloc_msg();
+    MessageHeader& header = msg->header;
     header.src_nodeid = src_node->id;
     header.src_entityid = src_entity->id;
     header.dst_entityid = 0;
     header.dst_nodeid = this->id;
     header.id = MSG_CREATE_ENTITY;
-    header.len = sizeof(MsgHeader) + sizeof(str_len) + str_len + 1;
-    
-    CreateEntityMsg msg; 
-    msg.len = str_len;
-    memcpy(msg.filepath, filepath, str_len + 1);
+    msg->payload.write_utf8(filepath);
 
     if (is_local())
     {
-        recv_create_entity(&header, (const char *)&msg, sizeof(msg));
+        recv(msg);
+        destory_msg(msg);
     } else
     {
-        real_send(&MAGIC_CODE, sizeof(uint32_t));
-        MAGIC_CODE += header.len;
-        real_send((char *)&header, sizeof(header));
-        real_send(&MAGIC_CODE, sizeof(uint32_t));
-        real_send((char*)&msg, sizeof(msg));
+        send_entity_msg(NULL, msg);
     }
 }
 
@@ -763,4 +744,44 @@ int Node::lua_dofile(const char* filepath)
     lua_State* L = NodeMgr::L;
     return Script::lua_dofile(L, filepath);
 }
+
+Message* Node::alloc_msg()
+{
+    Message* msg = new Message();
+    msg->ref_count++;
+    return msg;
+}
+
+void Node::destory_msg(Message* msg)
+{
+    if(msg == NULL)
+    {
+        return;
+    }
+    msg->ref_count--;
+    if (msg->ref_count <= 0)
+    {
+        delete msg;
+    }
+}
+
+int Node::post(lua_State* L)
+{
+    Entity* entity = find_entity(0);
+    if(!entity)
+    {
+        LOG_ERROR("entity 0 not found");
+        return 0;
+    }
+    RPCComponent* rpc = dynamic_cast<RPCComponent *>(entity->get_component(RPCComponent::type));
+    if (!rpc)
+    {
+        LOG_ERROR("rpc component not found");
+        return 0;
+    }
+    return rpc->post(L);
+}
+
+
+
 

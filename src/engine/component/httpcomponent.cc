@@ -107,7 +107,7 @@ void HttpComponent::session_destory(int sockfd)
 
 int HttpComponent::recv(Message* msg)
 {
-    switch(msg->id)
+    switch(msg->header.id)
     {
         case MSG_NEW_CONNECTION:
             {
@@ -341,17 +341,17 @@ int HttpComponent::dispatch_frame(int sockfd, int opcode, const char* data, size
     HttpSession* session = session_get(sockfd);
     //lua_State* L = get_lua_state(); 
     printf("websocket recv a frame sid(%d) opcode(%d) datalen(%ld)\n", session->sid, opcode, datalen);
-    static Message msg;
-    msg.src_nodeid = 0;
-    msg.src_entityid = 0;
-    msg.dst_entityid = 0;
-    msg.dst_nodeid = 0;
-    msg.id = MSG_NET_PACKET;
-    msg.sockfd = sockfd;
-    msg.sid = session->sid;
-    msg.data = data;
-    msg.datalen = datalen;
-    this->entity->recv(&msg);
+    Message* msg = alloc_msg();
+    msg->header.src_nodeid = 0;
+    msg->header.src_entityid = 0;
+    msg->header.dst_entityid = 0;
+    msg->header.dst_nodeid = 0;
+    msg->header.id = MSG_NET_PACKET;
+    msg->sockfd = sockfd;
+    msg->sid = session->sid;
+    msg->payload.reset();
+    msg->payload.write_buf(data, datalen);
+    this->entity->recv(msg);
     return 0;
 
     //if (opcode == 8)
@@ -393,8 +393,8 @@ int HttpComponent::recv_net_raw_data(Message* msg)
 {
     printf("HttpComponent recv_net_raw_data\n");
 
-    const char* data = msg->data;
-    size_t datalen = msg->datalen;
+    const char* data = msg->payload.get_buffer();
+    size_t datalen = msg->payload.size();
     int sockfd = msg->sockfd;
 
     HttpSession *session = session_get(sockfd);
