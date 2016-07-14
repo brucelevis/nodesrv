@@ -16,7 +16,7 @@ function test()
     Log.info('test')
 end
 
-function load(mod_name, mod_path, isreload)
+function load(mod_path, isreload, mod_name)
     local real_path = mod_path
     for _, root_path in pairs(search_path) do
         real_path = string.format('%s/%s', root_path, mod_path)
@@ -25,6 +25,9 @@ function load(mod_name, mod_path, isreload)
         end
     end
     local pats = string.split(mod_path, '/')
+    if not mod_name then
+        mod_name = string.cap(pats[#pats])
+    end
     local mod = _G[mod_name]
     Log.info(string.format('import mod_path(%s) mod_name(%s)', mod_path, mod_name))
     local files = File.listdir(real_path)

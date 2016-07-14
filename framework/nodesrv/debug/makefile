@@ -1,6 +1,6 @@
 
 test:
-	bin/logicsrv test
+	bin/logicsrv test Login.login
 
 localsrv:
 	bin/logicsrv localsrv

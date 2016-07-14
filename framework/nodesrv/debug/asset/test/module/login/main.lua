@@ -2,7 +2,7 @@ module('Login', package.seeall)
 
 --登录
 function login(player)
-    print('login')
+    print('hello login')
 end
 
 function hello(player)
