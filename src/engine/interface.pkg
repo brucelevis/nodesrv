@@ -1,6 +1,7 @@
 
 $cfile "neox.h"
 $cfile "type/type.h"
+$cfile "net/httpclient.h"
 $cfile "node/entity.h"
 $cfile "node/node.h"
 $cfile "node/nodemgr.h"

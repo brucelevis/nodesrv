@@ -2,7 +2,7 @@
 
 require('dbsrv/entity/dbsrv')
 
-import('DbSrv', 'dbsrv/module/dbsrv')
+import('dbsrv/module/dbsrv', true, 'DbSrv')
 
 --require('dbsrv/module/dbsrv/dbsrv')
 --require('dbsrv/module/dbsrv/mysql_conn')

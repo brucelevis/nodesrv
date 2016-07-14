@@ -7,6 +7,7 @@ function awake(self)
     self:reg_msg(MSG_NEW_SESSION)
     self:reg_msg(MSG_CLOSE_SESSION)
     self:reg_msg(MSG_NET_PACKET)
+    http_component = self:get_component('HttpComponent')
 end
 
 function recv(self, msg)
@@ -27,16 +28,36 @@ end
 
 function recv_close_session(self, msg)
     loginfo('recv_close_session %d', msg.sid)
+    Login.player_disconnect(msg.sid)
 end
 
 function recv_net_packet(self, msg)
-    loginfo('recv_net_packet %d', msg.payload:size())
-    local msg_name = msg.payload:read_utf8()
-    local reply = msg.payload:read_protobuf(msg_name, msg.payload:size())
-    print(reply:debug_string())
+    local msgname = msg.payload:read_utf8()
+    local reply = msg.payload:read_protobuf(msgname, msg.payload:size())
+    loginfo(reply:debug_string())
+
+    loginfo('recv_net_packet msgname(%s)', msgname)
+    print(string.len(msgname), type(msgname))
+    local pats = string.split(msgname, '.')
+    local modname = pats[1]
+    local funcname = pats[2]
+    local mod = _G[string.cap(modname)]
+    if not mod then
+        logerr('mod(%s) not found', msgname)
+        return
+    end
+    local func = mod['MSG_'..funcname]
+    if not func then
+        logerr('func(msgname) not found', msgname)
+        return
+    end
+    func(msg.sid, reply)
 end
 
 
-function reply(msg)
-
+function reply(sid, reply)
+    local buffer = Buffer:new_local()
+    buffer:write_utf8(reply:msgname())
+    buffer:write_protobuf(reply)
+    http_component:send_binary_frame(sid, buffer)
 end

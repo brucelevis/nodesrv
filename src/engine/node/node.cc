@@ -145,7 +145,7 @@ void Node::ev_readable(int sockfd)
 
 void Node::ev_writable(int sockfd)
 {
-    LOG_DEBUG("node[%d] ev_writable", this->id);
+    LOG_DEBUG("node[%d] ev_writable sockfd(%d)", this->id, sockfd);
     //发送数据
     for(;;)
     {

@@ -117,11 +117,7 @@ namespace Neox
 
     void loop()
     {
-        for(;;)
-        {
-            sleep(1);
-            NodeMgr::update(time(NULL));
-        }
+        NodeMgr::update(time(NULL));
     }
 
     int lua_openlibs(lua_State* L)

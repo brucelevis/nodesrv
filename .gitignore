@@ -1,2 +1,11 @@
+tags
 *.o
 *.a
+*.swp
+framework/modsrv/debug/proc/
+framework/nodesrv/debug/proc/
+framework/nodesrv/gatesrv/gatesrv
+framework/nodesrv/logicsrv/logicsrv
+framework/nodesrv/scenesrv/scenesrv
+src/engine/lneox
+src/engine/test

@@ -33,6 +33,7 @@ class Buffer
         int write_int8(int8_t val);
         int write_buf(const void* data, uint32_t datalen);
         int write(const Buffer* other);
+        int write_protobuf(lua_State* L);
 
         void buf2line();
         uint32_t already_read();

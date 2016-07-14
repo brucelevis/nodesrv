@@ -515,6 +515,11 @@ void HttpComponent::awake()
     this->entity->reg_msg(MSG_NET_RAW_DATA, this);
 }
 
+int HttpComponent::send_binary_frame(int sid, Buffer* buffer)
+{
+    return send_frame(sid, 2, buffer->get_buffer(), buffer->size());
+}
+
 int HttpComponent::send_binary_frame(int sid, const void* data, unsigned short datalen)
 {
     return send_frame(sid, 2, data, datalen);

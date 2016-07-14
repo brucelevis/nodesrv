@@ -15,6 +15,7 @@
 #include "net/lae.h"
 #include "net/port.h"
 #include "net/lport.h"
+#include "net/httpclient.h"
 #include "msg/msg.h"
 #include "node/entity.h"
 #include "node/entityroute.h"

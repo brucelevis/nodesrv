@@ -35,6 +35,7 @@ class HttpComponent : public Component
         virtual int recv(Message* msg);
         virtual void awake();
         int send_binary_frame(int sid, const void* data, unsigned short datalen);
+        int send_binary_frame(int sid, Buffer* buffer);
         int send_string_frame(int sid, const char* str);
     public:
 //tolua_end

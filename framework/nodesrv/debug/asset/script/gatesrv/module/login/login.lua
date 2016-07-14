@@ -1,5 +1,8 @@
 module('Login', package.seeall)
 
+player_session = player_session or {
+    --[sid] = player
+}
 player_manager = player_manager or {}
 
 function main()
@@ -10,7 +13,7 @@ end
 
 --功能：进入游戏服
 function MSG_ENTER(sid, msg)
-    local player = player_manager[sid]
+    local player = player_session[sid]
     if not player then
         logerr('player not found')
         return
@@ -48,17 +51,19 @@ function MSG_LOGIN(sid, msg)
         packet_counter = 0,
         last_check_packet_time = 0,
     }
+    player_session[sid] = player
     player_manager[uid] = player
     POST(localsrv, 'Login.PLAYER_LOGIN', player.uid)
 end
 
 --功能：下线
 function player_disconnect(sid)
-    local player = player_manager[sid]
+    local player = player_session[sid]
     if not player then
         logerr('player not found sid(%d)', sid)
         return
     end
+    player_manager[player.uid] = nil
     POST(localsrv, 'Login.PLAYER_LOGOUT', player.uid)
 end
 

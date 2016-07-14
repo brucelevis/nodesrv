@@ -270,7 +270,7 @@ int NetComponent::send(int sockfd, const void* data, size_t size)
     {
         return 0;
     }
-    LOG_DEBUG("entity[%d] send %ld to sockfd(%d)\n", this->entity->id, size, sockfd);
+    //LOG_DEBUG("entity[%d] send %ld to sockfd(%d)\n", this->entity->id, size, sockfd);
     memcpy(buf, data, size);
     Sendbuf::flush(sockfd, buf, size);
     this->create_file_event(sockfd, AE_WRITABLE, _ev_writable, this);

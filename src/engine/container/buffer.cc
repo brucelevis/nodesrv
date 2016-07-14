@@ -100,7 +100,6 @@ bool Buffer::ensure_size(int datalen)
     {
         return true;
     }
-    LOG_DEBUG("aaa");
     return expand_buf(this->buflen + datalen);
 }
 
@@ -332,6 +331,47 @@ int Buffer::read_protobuf(lua_State* L)
     message_lua->dirty = 0;
     luaL_getmetatable(L, "LuaMessage");
     lua_setmetatable(L, -2);
+    return 1;
+}
+
+
+int Buffer::write_protobuf(lua_State* L)
+{
+    if (!lua_isuserdata(L, 2))
+    {
+        LOG_ERROR("arg error");
+        return 0;
+    }
+    LuaMessage *message_lua = (LuaMessage *)luaL_checkudata(L, 2, "LuaMessage");
+    if(message_lua == NULL)
+    {
+        LOG_ERROR("checkuserdata is null");
+        return 0;
+    }
+    google::protobuf::Message *message = message_lua->message;
+    const char *msg_name = message->GetDescriptor()->full_name().data();
+    if(message == NULL)
+    {
+        LOG_ERROR("message is null");
+        return 0;
+    }
+
+    int msgdata_len = message->ByteSize();
+    if (!this->ensure_size(msgdata_len))
+    {
+        LOG_ERROR("memory limit");
+        return 0;
+    }
+    char* buf = this->get_write_buffer();
+    char * buf_end = (char *)message->SerializeWithCachedSizesToArray((google::protobuf::uint8 *)buf);
+    int real_len = buf_end - buf;
+    if(real_len != msgdata_len)
+    {
+        LOG_ERROR("serialize fail %d/%d msg_name:%s\n", buf_end - buf, msgdata_len, msg_name);
+        return 0;
+    }
+    this->write_buf(NULL, real_len);
+    lua_pushboolean(L, true);
     return 1;
 }
 
