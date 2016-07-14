@@ -2,6 +2,7 @@
 
 #include "node/entity.h"
 #include "log/log.h"
+#include "net/http.h"
 #include "node/node.h"
 #include "net/sendbuf.h"
 #include "net/recvbuf.h"
@@ -459,6 +460,7 @@ int HttpComponent::dispatch_request(int sockfd)
 
 
         http_request& request = session->request;
+
         lua_pushnil(L);
         lua_setglobal(L, "_HEADER");
         lua_newtable(L);
@@ -472,8 +474,37 @@ int HttpComponent::dispatch_request(int sockfd)
             lua_settable(L, -3);
         }
 
+         lua_pushnil(L);
+        lua_setglobal(L, "_COOKIE");
+        lua_newtable(L);
+        lua_setglobal(L, "_COOKIE");
+        lua_getglobal(L, "_COOKIE");
+        for (int i = 0; i < request.cookie_count; i++)
+        {
+            http_header* cookie = &request.cookie[i];
+            lua_pushlstring(L, cookie->field.buf, cookie->field.len);
+            lua_pushlstring(L, cookie->value.buf, cookie->value.len);
+            lua_settable(L, -3);
+        }
+
+        lua_pushnil(L);
+        lua_setglobal(L, "_GET");
+        lua_newtable(L);
+        lua_setglobal(L, "_GET");
+        lua_getglobal(L, "_GET");
+        for (int i = 0; i < request.get_count; i++)
+        {
+            http_header* get = &request.get[i];
+            lua_pushlstring(L, get->field.buf, get->field.len);
+            lua_pushlstring(L, get->value.buf, get->value.len);
+            lua_settable(L, -3);
+        }
+
         lua_pushlstring(L, request.url.buf, request.url.len);
         lua_setglobal(L, "_REQUEST_URL");
+
+        lua_pushlstring(L, request.query_string.buf, request.query_string.len);
+        lua_setglobal(L, "_QUERY_STRING");
 
         lua_pushlstring(L, request.method.buf, request.method.len);
         lua_setglobal(L, "_METHOD");
@@ -586,6 +617,7 @@ int HttpComponent::recv_net_raw_data(Message* msg)
             }
         }
         //分析header
+        request.cookie_count = 0;
         for (int i = 0; i < request.header_count; i++)
         {
             http_header& header = request.headers[i];
@@ -606,23 +638,99 @@ int HttpComponent::recv_net_raw_data(Message* msg)
                 LOG_DEBUG("Upgrade");
                 session->is_upgrade = 1;
             }
+            if(strcmp(header.field.buf, "Cookie") ==  0)
+            {
+                request.cookie[request.cookie_count].field.buf = header.value.buf;
+                for(int i = 0; i < header.value.len; i++)
+                {
+                    if(header.value.buf[i] == '=')
+                    {
+                        request.cookie[request.cookie_count].field.len = header.value.buf + i - request.cookie[request.cookie_count].field.buf;;
+                        request.cookie[request.cookie_count].value.buf = header.value.buf + i + 1;
+                    }
+                    if(header.value.buf[i] == ';')
+                    {
+                        request.cookie[request.cookie_count].value.len = header.value.buf + i - request.cookie[request.cookie_count].value.buf;;
+                        request.cookie_count++;
+                        if (request.cookie_count >= MAX_HTTP_COOKIE_COUNT)
+                        {
+                            break;
+                        }
+                        request.cookie[request.cookie_count].field.buf = header.value.buf + i + 2;
+                    }
+                    if(i == header.value.len - 1)
+                    {
+                        request.cookie[request.cookie_count].value.len = header.value.buf + i + 1 - request.cookie[request.cookie_count].value.buf;;
+                        request.cookie_count++;
+                    }
+                }
+            }
             if(i == 0)
             {
                 request.method.buf = header.field.buf;
                 request.method.len = header.field.len;
 
                 request.url.buf = header.value.buf;
+                request.query_string.len = 0;
+                bool has_query_string = false;
                 for(uint32_t k = 0; k < header.value.len; k++)
                 {
-                    if (header.value.buf[k] == ' ')
+                    if (header.value.buf[k] == '?')
                     {
                         request.url.len = k;
+                        request.query_string.buf = header.value.buf + k + 1;
+                        has_query_string = true;
+                    }
+                    if (header.value.buf[k] == ' ')
+                    {
+                        if (has_query_string)
+                        {
+                            request.query_string.len = header.value.buf + k - request.query_string.buf;
+                        } else 
+                        {
+                            request.url.len = k;
+                        }
                     }
                 }
             }
             header.value.buf[header.value.len] = c1;
             header.field.buf[header.field.len] = c2;
         }
+        //分析header
+        request.get_count = 0;
+        request.get[request.get_count].field.buf = request.query_string.buf;
+        for(int i = 0; i < request.query_string.len; i++)
+        {
+            if(request.query_string.buf[i] == '=')
+            {
+                request.get[request.get_count].field.len = request.query_string.buf + i - request.get[request.get_count].field.buf;;
+                request.get[request.get_count].value.buf = request.query_string.buf + i + 1;
+            }
+            if(request.query_string.buf[i] == '&')
+            {
+                request.get[request.get_count].value.len = request.query_string.buf + i - request.get[request.get_count].value.buf;;
+                request.get_count++;
+                if (request.get_count >= MAX_HTTP_GET_COUNT)
+                {
+                    break;
+                }
+                request.get[request.get_count].field.buf = request.query_string.buf + i + 1;
+            }
+            if(i == request.query_string.len - 1)
+            {
+                request.get[request.get_count].value.len = request.query_string.buf + i + 1 - request.get[request.get_count].value.buf;;
+                request.get_count++;
+            }
+        }
+        for (int i = 0; i < request.get_count; i++)
+        {
+            http_header& get = request.get[i];
+            get.field.len = Http::urldecode(get.field.buf, get.field.len, get.field.buf, get.field.len);
+            get.value.len = Http::urldecode(get.value.buf, get.value.len, get.value.buf, get.value.len);
+        }
+
+
+
         if (datalen < session->content_length + header_len)
         {
             LOG_WARN("wait body");

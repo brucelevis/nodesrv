@@ -8,6 +8,7 @@
 #include "lualib/json/ljson.h"
 #include "lualib/string/lstring.h"
 #include "lualib/system/lsystem.h"
+#include "lualib/date/ldate.h"
 
 
 namespace Script
@@ -196,6 +197,7 @@ namespace Script
         luaopen_redis(L);
         luaopen_system(L);
         luaopen_mysql(L);
+        luaopen_date(L);
     }
 };
 

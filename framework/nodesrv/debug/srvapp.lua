@@ -2,11 +2,11 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function _atint()
-    Log.info('atint')
+    lofinfo('atint')
 end
 
 function _atexit()
-    Log.info('atexit')
+    loginfo('atexit')
     clearpid()
 end
 
@@ -17,13 +17,13 @@ function clearpid()
         local pid = file:read()
         file:close()
         os.remove('pid')
-        Log.info(string.format('exit pid(%d)', pid))
+        loginfo('exit pid(%d)', pid)
     end
 end
 
 function recordpid()
     --if File.exists('pid') then
-        --Log.info('pid file exists')
+        --loginfo('pid file exists')
         --os.exit(1)
         --return
     --end
@@ -31,7 +31,7 @@ function recordpid()
     local file = io.open('pid', 'w+')
     file:write(pid)
     file:close()
-    Log.info(string.format('running pid(%d)', pid))
+    loginfo('running pid(%d)', pid)
 end
 --------------------------------------------------------------------------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ if not File.exists(running_dir) then
     File.mkdirs(running_dir)
 end
 File.chdir(running_dir)
-Log.info(string.format('running dir(%s)', File.getcwd()))
+loginfo('running dir(%s)', File.getcwd())
 
 --nodeapp.fork_daemon(is_daemon)
 --if is_daemon then

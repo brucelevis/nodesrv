@@ -1,5 +1,5 @@
 module('Account', package.seeall)
 
 function action_login()
-    render('index.html')
+    render('account/index.html')
 end

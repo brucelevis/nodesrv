@@ -27,15 +27,14 @@ package.path = string.format('%s;%s/?.lua', package.path, root_path)
 package.path = string.format('%s;%s/?.lua', package.path, Config.asset_dir)
 package.path = string.format('%s;%s/script/?.lua', package.path, Config.asset_dir)
 package.path = string.format('%s;%s/script/lib/?.lua', package.path, Config.asset_dir)
-
 require('lib/pblua/pblua')
-require('lib/mod/mod')
 Pblua.import_dir(string.format('%s/proto', Config.asset_dir))
 Pblua.import_dir(string.format('%s/dbproto', Config.asset_dir))
 
-table.insert(Mod.search_path, string.format('%s', Config.asset_dir))
-table.insert(Mod.search_path, string.format('%s/script', Config.asset_dir))
-table.insert(Mod.search_path, string.format('%s/script/lib', Config.asset_dir))
+loginfo = function(format, ...) Log.info(string.format('[%s]'..format, _NAME or '', ...)) end
+logwarn = function(format, ...) Log.info(string.format('[%s]'..format, _NAME or '', ...)) end
+logerr = function(format, ...) Log.info(string.format('[%s]'..format, _NAME or '', ...)) end
+logmsg = function(format, ...) Log.msg(string.format('[%s]'..format, _NAME or '', ...)) end
 
 print('Config = ')
 print(Json.encode(Config))

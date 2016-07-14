@@ -18,13 +18,20 @@ typedef struct http_header
 }http_header;
 
 #define MAX_HTTP_HEADER_COUNT 32
+#define MAX_HTTP_GET_COUNT 32
+#define MAX_HTTP_COOKIE_COUNT 32
 typedef struct http_request
 {
     http_header headers[MAX_HTTP_HEADER_COUNT];
     unsigned char header_count;
     http_string url; 
+    http_string query_string; 
     http_string body;
     http_string method;
+    http_header get[MAX_HTTP_GET_COUNT];
+    unsigned char get_count;
+    http_header cookie[MAX_HTTP_COOKIE_COUNT];
+    unsigned char cookie_count;
 }http_request;
 
 //tolua_begin

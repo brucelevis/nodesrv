@@ -258,11 +258,12 @@ end
 function format_time(time)
     return os.strftime('%a, %d-%b-%Y %H:%m:%S %Z', time)
 end
+
 --功能:设置cookie
 --@k
 --@v
 --@expires 秒
---@domain 
+--@domain baidu.com
 --@path
 function cookie_set(player, k, v, expires, domain, path)
     local reply = player.reply
