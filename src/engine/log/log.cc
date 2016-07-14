@@ -54,6 +54,15 @@ void info(const char *fmt, ...)
     va_end(args);
 }
 
+void msg(const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    logger.msg(fmt, args);
+    va_end(args);
+}
+
+
 void debug(const char *fmt, ...)
 {
     va_list args;
@@ -67,8 +76,9 @@ void openlevel(int level)
     logger.openlevel(level);
 }
 
-void closeall()
+void closealllevel()
 {
+    logger.closealllevel();
 }
 
 void closelevel(int level)

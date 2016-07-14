@@ -11,7 +11,6 @@ function awake(self)
 end
 
 function recv(self, msg)
-    loginfo('recv %d', msg.header.id) 
     local id = msg.header.id
     if id == MSG_NEW_SESSION then
         recv_new_session(self, msg)
@@ -33,11 +32,11 @@ end
 
 function recv_net_packet(self, msg)
     local msgname = msg.payload:read_utf8()
-    local reply = msg.payload:read_protobuf(msgname, msg.payload:size())
-    loginfo(reply:debug_string())
+    loginfo('RECV NET PACKET %s', msgname)
 
-    loginfo('recv_net_packet msgname(%s)', msgname)
-    print(string.len(msgname), type(msgname))
+    local reply = msg.payload:read_protobuf(msgname, msg.payload:size())
+    logmsg(reply:debug_string())
+
     local pats = string.split(msgname, '.')
     local modname = pats[1]
     local funcname = pats[2]
@@ -52,6 +51,8 @@ function recv_net_packet(self, msg)
         return
     end
     func(msg.sid, reply)
+
+    logmsg('RECV NET PACKET %s FINISH', msgname)
 end
 
 

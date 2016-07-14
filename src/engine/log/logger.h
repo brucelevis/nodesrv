@@ -18,6 +18,7 @@
 #define WARN    2
 #define INFO    3
 #define DEBUG   4
+#define MSG     5
 
 #define LOG_LEVEL_MAX = 5
 
@@ -31,15 +32,18 @@ public:
     void warn(const char* fmt, ...);
     void info(const char* fmt, ...);
     void debug(const char* fmt, ...);
+    void msg(const char* fmt, ...);
 
     void fatal(const char* fmt, va_list args); 
     void error(const char* fmt, va_list args);
     void warn(const char* fmt, va_list args);
     void info(const char* fmt, va_list args);
     void debug(const char* fmt, va_list args);
+    void msg(const char* fmt, va_list args);
 
     void openlevel(int level);
     void closelevel(int level);
+    void closealllevel();
 
     void set_tag(const char* val);
     void set_format(const char* val);

@@ -1,6 +1,6 @@
 #include "log/logger.h"
 
-static const char *s_level_str[] = {"FATAL", "ERROR", "WARN", "INFO", "DEBUG"};
+static const char *s_level_str[] = {"FATAL", "ERROR", "WARN", "INFO", "DEBUG", "MSG"};
 
 Logger::Logger()
 {
@@ -62,6 +62,20 @@ void Logger::info(const char* fmt, ...)
     va_end(args);
 }
 
+void Logger::msg(const char* fmt, va_list args)
+{
+    log_vprint(MSG, fmt, args);
+}
+
+void Logger::msg(const char* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    log_vprint(MSG, fmt, args);
+    va_end(args);
+}
+
+
 void Logger::debug(const char* fmt, va_list args)
 {
     log_vprint(DEBUG, fmt, args);
@@ -83,6 +97,10 @@ void Logger::log(const char* str)
 
 void Logger::log_vprint(int level, const char *fmt, va_list ap)
 {
+    if (!(flag & (1 << level)))
+    {
+        return;
+    }
     static char msg[4096];
     vsnprintf(msg, sizeof(msg), fmt, ap);
 
@@ -433,3 +451,7 @@ repeat:
     return str - buf;
 }
 
+void Logger::closealllevel()
+{
+    flag = 0;
+}

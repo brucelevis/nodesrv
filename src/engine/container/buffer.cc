@@ -105,13 +105,17 @@ bool Buffer::ensure_size(int datalen)
 
 int Buffer::write_buf(const void* data, uint32_t datalen)
 {
+    if(datalen <= 0)
+    {
+        return 0;
+    }
     if (this->wptr + datalen >= this->buflen)
     {
         expand_buf((this->buflen + datalen) * 2);
     }
     if (this->wptr >= this->buflen)
     {
-        LOG_ERROR("money limit");
+        LOG_ERROR("money limit wptr(%d) buflen(%d) datalen(%d)", this->wptr, this->buflen, datalen);
         return 0;
     }
     if (data != 0)
@@ -374,4 +378,21 @@ int Buffer::write_protobuf(lua_State* L)
     lua_pushboolean(L, true);
     return 1;
 }
+
+int Buffer::write_string(lua_State* L)
+{
+    if(!lua_isstring(L, 2))
+    {
+        LOG_ERROR("arg error");
+        return 0;
+    }
+    size_t str_len = 0;
+    const char* str = (const char*)lua_tolstring(L, 2, &str_len);
+    if(str)
+    {
+        this->write_buf(str, str_len);
+    }
+    return 0;
+}
+
 

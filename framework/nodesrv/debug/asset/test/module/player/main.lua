@@ -4,8 +4,14 @@ function connect(player)
     if not player.http_client then
         local http_client = HttpClient:new()
         player.http_client = http_client
-        http_client:connect(Config.test.host, Config.test.port)
-        http_client:send_open_websock()
+        if not http_client:connect(Config.test.host, Config.test.port) then
+            logerr('connect err')
+            os.exit(0)
+        end
+        if not http_client:send_open_websock() then
+            logerr('open websock err')
+            os.exit(0)
+        end
         http_client:recv()
     end
 end

@@ -7,7 +7,7 @@
 
 typedef struct http_string
 {
-    const char* buf;
+    char* buf;
     size_t len;
 }http_string;
 
@@ -24,6 +24,7 @@ typedef struct http_request
     unsigned char header_count;
     http_string url; 
     http_string body;
+    http_string method;
 }http_request;
 
 //tolua_begin
@@ -37,6 +38,9 @@ class HttpComponent : public Component
         int send_binary_frame(int sid, const void* data, unsigned short datalen);
         int send_binary_frame(int sid, Buffer* buffer);
         int send_string_frame(int sid, const char* str);
+        int send_string(int sid, const char* str);
+        int send_string(lua_State* L);
+        int send_buffer(int sid, Buffer* buffer);
     public:
 //tolua_end
         int recv_new_connection(Message* msg);
@@ -50,6 +54,7 @@ class HttpComponent : public Component
         int decode_one_frame(int sockfd, const char* data, size_t datalen);
         int dispatch_frame(int sockfd, int opcode, const char* data, size_t datalen);
         int send_frame(int sid, int opcode, const void* data, unsigned short datalen);
+        int dispatch_request(int sockfd);
     private:
         NetComponent* net_component;
 //

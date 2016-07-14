@@ -1,6 +1,7 @@
 #include "httpcomponent.h"
 
 #include "node/entity.h"
+#include "log/log.h"
 #include "node/node.h"
 #include "net/sendbuf.h"
 #include "net/recvbuf.h"
@@ -25,6 +26,8 @@ extern "C" {
 
 IMPLEMENT(HttpComponent)
 
+#define CRLF2 "\r\n\r\n"
+#define CRLF "\r\n"
 
 typedef struct tagFrameHeader
 {
@@ -43,6 +46,9 @@ typedef struct tagHttpSession
     int sockfd; 
     unsigned int sid;
     int is_upgrade;
+    uint32_t header_len;
+    uint32_t content_length;
+    http_request request;
 } HttpSession;
 
 static HttpSession session_arr[MAX_SOCKFD];
@@ -127,84 +133,87 @@ int HttpComponent::recv(Message* msg)
     return 0;
 }
 
+/*  
 static int on_message_begin(http_parser *p)
 {
-    printf("on_message_begin\n");
+    LOG_DEBUG("on_message_begin");
     return 0;
 }
 
 static int on_headers_complete(http_parser *p)
 {
-    printf("on_headers_complete\n");
+    LOG_DEBUG("on_headers_complete");
     return 0;
 }
 static int on_message_complete(http_parser *p)
 {
-    printf("on_message_complete\n");
+    LOG_DEBUG("on_message_complete");
     return 0;
 }
 static int on_chunk_complete(http_parser *p)
 {
-    printf("on_chunk_complete\n");
+    LOG_DEBUG("on_chunk_complete");
     return 0;
 }
 static int on_chunk_header(http_parser *p)
 {
-    printf("on_chunk_header\n");
+    LOG_DEBUG("on_chunk_header");
     return 0;
 }
 
 static int on_header_field(http_parser *p, const char *buf, size_t len)
 {
-    printf("on_header_field\n");
-    http_request* request = (http_request *)p->data;
-    if (request->header_count >= MAX_HTTP_HEADER_COUNT) 
-    {
-        return 1;
-    }
-    request->headers[request->header_count].field.buf = buf;
-    request->headers[request->header_count].field.len = len;
+    LOG_DEBUG("on_header_field");
+
+    //http_request* request = (http_request *)p->data;
+    //if (request->header_count >= MAX_HTTP_HEADER_COUNT) 
+    //{
+        //return 1;
+    //}
+    //request->headers[request->header_count].field.buf = buf;
+    //request->headers[request->header_count].field.len = len;
     return 0;
 }
 static int on_header_value(http_parser *p, const char *buf, size_t len)
 {
-    printf("on_header_value\n");
-    http_request* request = (http_request *)p->data;
-    if (request->header_count >= MAX_HTTP_HEADER_COUNT) 
-    {
-        return 1;
-    }
-    request->headers[request->header_count].value.buf = buf;
-    request->headers[request->header_count].value.len = len;
-    request->header_count++;
+    LOG_DEBUG("on_header_value");
+    //http_request* request = (http_request *)p->data;
+    //if (request->header_count >= MAX_HTTP_HEADER_COUNT) 
+    //{
+        //return 1;
+    //}
+    //request->headers[request->header_count].value.buf = buf;
+    //request->headers[request->header_count].value.len = len;
+    //request->header_count++;
     return 0;
 }
 static int on_url(http_parser *p, const char *buf, size_t len)
 {
-    printf("on_url\n");
-    http_request* request = (http_request *)p->data;
-    request->url.buf = buf;
-    request->url.len = len;
+    LOG_DEBUG("on_url");
+    //http_request* request = (http_request *)p->data;
+    //request->url.buf = buf;
+    //request->url.len = len;
     return 0;
 }
 static int on_status(http_parser *p, const char *buf, size_t len)
 {
-    printf("on_status\n");
+    LOG_DEBUG("on_status");
     return 0;
 }
 static int on_body(http_parser *p, const char *buf, size_t len)
 {
-    printf("on_body\n");
-    http_request* request = (http_request *)p->data;
-    request->body.buf = buf;
-    request->body.len = len;
+    LOG_DEBUG("on_body");
+    //http_request* request = (http_request *)p->data;
+    //request->body.buf = buf;
+    //request->body.len = len;
     return 0;
 }
+*/
 
 int HttpComponent::recv_new_connection(Message* msg)
 {
     int sockfd = msg->sockfd;
-    printf("HttpComponent recv_new_connection %d\n", sockfd);
+    LOG_DEBUG("HttpComponent recv_new_connection sockfd(%d)", sockfd);
     int sid = session_init(sockfd);
 
     Message* msg2 = alloc_msg();
@@ -221,7 +230,7 @@ int HttpComponent::recv_new_connection(Message* msg)
 int HttpComponent::recv_close_connection(Message* msg)
 {
     int sockfd = msg->sockfd;
-    printf("HttpComponent recv_close_connection %d\n", sockfd);
+    LOG_DEBUG("HttpComponent recv_close_connection sockfd(%d)", sockfd);
     HttpSession* session = session_get(sockfd);
     if (session)
     {
@@ -235,8 +244,6 @@ int HttpComponent::recv_close_connection(Message* msg)
         this->entity->recv(msg2);
     }
     session_destory(sockfd);
-
-
     return 0;
 }
 
@@ -247,7 +254,7 @@ int HttpComponent::decode_one_frame(int sockfd, const char* data, size_t datalen
         return 0;
     }
     FrameHeader* frame_header = (FrameHeader*)data;
-    printf("fin(%d) rsv(%d) mask(%d) opcode(%d) payload_len(%d)\n", 
+    LOG_DEBUG("fin(%d) rsv(%d) mask(%d) opcode(%d) payload_len(%d)", 
             frame_header->fin, frame_header->rsv, frame_header->mask, frame_header->opcode, frame_header->payload_len);
     //接下来开始计算真实的长度
     uint64_t framelen = 2;
@@ -299,7 +306,7 @@ int HttpComponent::decode_one_frame(int sockfd, const char* data, size_t datalen
     {
         return 0;
     }
-    printf("real_payload_len(%ld)\n", real_payload_len);
+    LOG_DEBUG("real_payload_len(%ld)", real_payload_len);
     //用掩码修改数据
     if (frame_header->mask == 1)
     {
@@ -378,8 +385,7 @@ int HttpComponent::combine_all_frame(int sockfd, const char* data , size_t datal
 int HttpComponent::dispatch_frame(int sockfd, int opcode, const char* data, size_t datalen)
 {
     HttpSession* session = session_get(sockfd);
-    //lua_State* L = get_lua_state(); 
-    printf("websocket recv a frame sid(%d) opcode(%d) datalen(%ld)\n", session->sid, opcode, datalen);
+    LOG_MSG("HttpComponent dispatch a frame sid(%d) opcode(%d) datalen(%ld)", session->sid, opcode, datalen);
     Message* msg = alloc_msg();
     msg->header.src_nodeid = 0;
     msg->header.src_entityid = 0;
@@ -394,65 +400,19 @@ int HttpComponent::dispatch_frame(int sockfd, int opcode, const char* data, size
     return 0;
 }
 
-int HttpComponent::recv_net_raw_data(Message* msg)
+int HttpComponent::dispatch_request(int sockfd)
 {
-    printf("HttpComponent recv_net_raw_data\n");
-
-    const char* data = msg->payload.get_buffer();
-    size_t datalen = msg->payload.size();
-    int sockfd = msg->sockfd;
+    LOG_INFO("dispatch_request");
 
     HttpSession *session = session_get(sockfd);
     if (!session)
     {
-        printf("HttpComponent session not found\n");
-        return datalen;
+        LOG_ERROR("HttpComponent session not found\n");
+        return 0;
     }
     if (session->is_upgrade)
     {
-        printf("HttpComponent recv a frame\n");
-        if(decode_one_frame(sockfd, data, datalen) == 0)
-        {
-            return 0;
-        }
-        //全部帧都到了
-        return combine_all_frame(sockfd, data, datalen);
-    }
-
-    http_parser_settings settings;
-    settings.on_message_begin = on_message_begin;
-    settings.on_header_field = on_header_field;
-    settings.on_header_value = on_header_value;
-    settings.on_url = on_url;
-    settings.on_status = on_status;
-    settings.on_body = on_body;
-    settings.on_headers_complete = on_headers_complete;
-    settings.on_message_complete = on_message_complete;
-    settings.on_chunk_header = on_chunk_header;
-    settings.on_chunk_complete = on_chunk_complete;
-    //http_parser parser;
-    http_parser parser;
-    http_parser_init(&parser, HTTP_REQUEST);
-
-    http_request request;
-    memset(&request, 0, sizeof(request));
-    parser.data = &request;
-
-    size_t parsed = http_parser_execute(&parser, &settings, (const char*)data, datalen);
-    /*  
-     *  Start up / continue the parser.
-     *  Note we pass recved==0 to signal that EOF has been received.
-     */
-    //printf("parsed %d nread %d\n", parsed, parser.nread);
-    if(parsed != datalen)
-    {
-        /*  Handle error. Usually just close the connection. */ 
-        return datalen;
-    }
-    else if (parser.upgrade)
-    {
-        /*  handle new protocol */ 
-        //printf("handle new proto %s\n", data);
+        http_request& request = session->request;
         for (int i = 0; i < request.header_count; i++)
         {
             http_header* header = &request.headers[i];
@@ -460,14 +420,11 @@ int HttpComponent::recv_net_raw_data(Message* msg)
             {
                 continue;
             }
-
             //printf("Sec-WebSocket-Key: %s", header->value.buf);
-
             static unsigned char sha1_out[20];
             static unsigned char sec_websocket_key[128];
             static char sec_websocket_accept[128];
             static char datestr[128];
-
             SHA1_CTX context; 
             SHA1Init(&context); 
             //计算sha1
@@ -476,17 +433,13 @@ int HttpComponent::recv_net_raw_data(Message* msg)
             strcat((char*)sec_websocket_key, "258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
             SHA1Update(&context, sec_websocket_key, strlen((char *)sec_websocket_key)); 
             SHA1Final(sha1_out, &context); 
-
             //计算base64
             base64_encode(sha1_out, sizeof(sha1_out), sec_websocket_accept);
-
            // 计算日期
             time_t t = time(NULL);
             struct tm* tmp = localtime(&t);
             strftime(datestr, sizeof(datestr), "Date:%a, %d %b %Y %H:%M:%S GMT\r\n", tmp);
-
             //printf("Sec-WebSocket-Accept: %s\n", sec_websocket_accept);
-
             net_component->send_str(sockfd, "HTTP/1.1 101 Switching Protocols\r\n"
                          "Connection:Upgrade\r\n"
                          "Server:lujingwei002@qq.com\r\n"
@@ -497,13 +450,201 @@ int HttpComponent::recv_net_raw_data(Message* msg)
             net_component->send_str(sockfd, "Sec-WebSocket-Accept:");
             net_component->send_str(sockfd, sec_websocket_accept);
             net_component->send_str(sockfd, "\r\n\r\n");
-            session->is_upgrade = 1;
         }
-        return datalen;
-    } else
+    } else 
     {
+        //默认交给lua处理
+        //开始设置环境
+        lua_State* L = get_lua_state();
+
+
+        http_request& request = session->request;
+        lua_pushnil(L);
+        lua_setglobal(L, "_HEADER");
+        lua_newtable(L);
+        lua_setglobal(L, "_HEADER");
+        lua_getglobal(L, "_HEADER");
+        for (int i = 0; i < request.header_count; i++)
+        {
+            http_header* header = &request.headers[i];
+            lua_pushlstring(L, header->field.buf, header->field.len);
+            lua_pushlstring(L, header->value.buf, header->value.len);
+            lua_settable(L, -3);
+        }
+
+        lua_pushlstring(L, request.url.buf, request.url.len);
+        lua_setglobal(L, "_REQUEST_URL");
+
+        lua_pushlstring(L, request.method.buf, request.method.len);
+        lua_setglobal(L, "_METHOD");
+
+        lua_pushnil(L);
+        lua_setglobal(L, "_CONTENT");
+        if (request.body.len != 0)
+        {
+            lua_pushlstring(L, request.body.buf, request.body.len);
+            lua_setglobal(L, "_CONTENT");
+        }
+        lua_pushfunction("_REQUEST");
+        tolua_pushusertype(L, this, "HttpComponent");
+        lua_pushnumber(L, session->sid);
+        if (lua_pcall(L, 2, 0, 0) != 0)
+        {
+            printf("HttpComponent dispatch request error %s\n", lua_tostring(L, -1));
+            lua_printstack();
+        }
+        lua_pop(L, lua_gettop(L));
+    }
+    //重置
+    session->header_len = 0;
+    return 0;
+}
+
+int HttpComponent::recv_net_raw_data(Message* msg)
+{
+    int sockfd = msg->sockfd;
+    LOG_DEBUG("HttpComponent recv_net_raw_data sockfd(%d)\n", sockfd);
+
+    char* data = (char*)msg->data;
+    size_t datalen = msg->datalen;
+
+    HttpSession *session = session_get(sockfd);
+    if (!session)
+    {
+        LOG_ERROR("HttpComponent session not found\n");
         return datalen;
     }
+    if (session->is_upgrade)
+    {
+        LOG_DEBUG("HttpComponent recv a frame\n");
+        if(decode_one_frame(sockfd, data, datalen) == 0)
+        {
+            return 0;
+        }
+        //全部帧都到了
+        return combine_all_frame(sockfd, data, datalen);
+    } else if (session->header_len == 0)
+    {
+        //接收请求头
+        uint32_t header_len = 0;
+        //搜索\r\n\r\n
+        for (uint32_t i = 0; i < datalen; i++)
+        {
+            if(strncmp(data + i, CRLF2, 4) == 0)
+            {
+                //找到
+                header_len = i + 4;
+                break;
+            }
+        }
+        //消息头末找到
+        if (header_len == 0)
+        {
+            return 0;
+        }
+        session->header_len = header_len;
+    
+        //抽出消息头
+        http_request& request = session->request;
+        request.header_count = 0;
+        char* header_field = data;
+        char* header_value = NULL;
+        for (uint32_t i = 0; i < header_len; i++)
+        {
+            //寻找field
+            if (header_value == NULL)
+            {
+                if (data[i] == ':' || data[i] == ' ')
+                {
+                    request.headers[request.header_count].field.buf = header_field;
+                    request.headers[request.header_count].field.len = data + i - header_field;
+                    uint32_t k = i + 1;
+                    for (; k < header_len; k++)
+                    {
+                        if (data[k] != ':' && data[k] != ' ')
+                        {
+                            header_value = data + k;
+                            break;
+                        }
+                    }
+                    i = k + 1;
+                }
+            } else
+            {
+                if (data[i] == '\r')
+                {
+                    request.headers[request.header_count].value.buf = header_value;
+                    request.headers[request.header_count].value.len = data + i - header_value;
+                    request.header_count++;
+                    if (request.header_count >= MAX_HTTP_HEADER_COUNT)
+                    {
+                        break;
+                    }
+                    header_field = data + i + 2;
+                    header_value = NULL;
+                }
+            }
+        }
+        //分析header
+        for (int i = 0; i < request.header_count; i++)
+        {
+            http_header& header = request.headers[i];
+
+            char c1 = header.value.buf[header.value.len];
+            header.value.buf[header.value.len] = 0;
+            char c2 = header.field.buf[header.field.len];
+            header.field.buf[header.field.len] = 0;
+
+            LOG_MSG("header %s", header.field.buf);
+            LOG_MSG("header %s", header.value.buf);
+            if(strncmp(header.field.buf, "Content-Length", 14) == 0)
+            {
+                session->content_length = atoi(header.value.buf);
+            }
+            if(strcmp(header.field.buf, "Upgrade") == 0)
+            {
+                LOG_DEBUG("Upgrade");
+                session->is_upgrade = 1;
+            }
+            if(i == 0)
+            {
+                request.method.buf = header.field.buf;
+                request.method.len = header.field.len;
+
+                request.url.buf = header.value.buf;
+                for(uint32_t k = 0; k < header.value.len; k++)
+                {
+                    if (header.value.buf[k] == ' ')
+                    {
+                        request.url.len = k;
+                    }
+                }
+            }
+            header.value.buf[header.value.len] = c1;
+            header.field.buf[header.field.len] = c2;
+        }
+        if (datalen < session->content_length + header_len)
+        {
+            LOG_WARN("wait body");
+            return header_len;
+        }
+        request.body.buf = data + header_len;
+        request.body.len = datalen - header_len;
+        dispatch_request(sockfd);
+        return header_len;
+    } else 
+    {
+        if (datalen < session->content_length)
+        {
+            return 0;
+        }
+        http_request& request = session->request;
+        request.body.buf = data;
+        request.body.len = datalen;
+        dispatch_request(sockfd);
+        return datalen;
+    }
+    return 0;
 }
 
 
@@ -531,14 +672,52 @@ int HttpComponent::send_string_frame(int sid, const char* str)
     return send_frame(sid, 1, str, strlen(str) + 1);
 }
 
+int HttpComponent::send_string(lua_State* L)
+{
+    if (!lua_isnumber(L, 2))
+    {
+        LOG_ERROR("arg error");
+        return 0;
+    }
+    if (!lua_isstring(L, 3))
+    {
+        LOG_ERROR("arg error");
+        return 0;
+    }
+    int sid = (int)lua_tonumber(L, 2);
+    HttpSession* session = session_find(sid);
+    if (!session)
+    {
+        LOG_ERROR("session(%d) not found", sid);
+        return 0;
+    }
+    int sockfd = session->sockfd;
+    size_t str_len = 0;
+    const char* data = (const char*)lua_tolstring(L, 3, &str_len);
+    net_component->send(sockfd, data, str_len);
+    return 0;
+}
+
+int HttpComponent::send_string(int sid, const char* str)
+{
+    HttpSession* session = session_find(sid);
+    if (!session)
+    {
+        LOG_ERROR("session(%d) not found", sid);
+        return 0;
+    }
+    int sockfd = session->sockfd;
+    return net_component->send(sockfd, str, sizeof(str));
+}
+
 //发送帧
 int HttpComponent::send_frame(int sid, int opcode, const void* data, unsigned short datalen)
 {
-    printf("Websocket.send_frame sid(%d) opcode(%d) datalen(%d)\n", sid, opcode, datalen);
+    LOG_MSG("HttpComponent::send_frame sid(%d) opcode(%d) datalen(%d)", sid, opcode, datalen);
     HttpSession* session = session_find(sid);
     if(!session)
     {
-        printf("session not found\n");
+        LOG_ERROR("session not found\n");
         return 0;
     }
     int sockfd = session->sockfd;
@@ -564,3 +743,14 @@ int HttpComponent::send_frame(int sid, int opcode, const void* data, unsigned sh
     return 0;
 }
 
+int HttpComponent::send_buffer(int sid, Buffer* buffer)
+{
+    HttpSession* session = session_find(sid);
+    if (!session)
+    {
+        LOG_ERROR("session(%d) not found", sid);
+        return 0;
+    }
+    int sockfd = session->sockfd;
+    return net_component->send(sockfd, buffer->get_buffer(), buffer->size());
+}

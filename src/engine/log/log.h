@@ -14,10 +14,11 @@ void error(const char *fmt, ...);
 void warn(const char *fmt, ...);
 void info(const char *fmt, ...);
 void debug(const char *fmt, ...);
+void msg(const char *fmt, ...);
 
 void openlevel(int level);
 void closelevel(int level);
-void closeall();
+void closealllevel();
 
 int stdout2file(const char *file_path);
 
@@ -36,5 +37,7 @@ int stdout2file(const char *file_path);
 
 #define LOG_DEBUG(str, ...)     Log::debug("%s:%d", __FILE__, __LINE__);\
                                 Log::debug(str, ## __VA_ARGS__);
+
+#define LOG_MSG(str, ...)     Log::msg(str, ## __VA_ARGS__);
 
 #endif

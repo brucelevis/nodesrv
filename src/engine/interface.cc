@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Thu Jul 14 14:35:58 2016.
+** Generated automatically by tolua++-1.0.92 on Thu Jul 14 20:48:43 2016.
 */
 
 #ifndef __cplusplus
@@ -4748,6 +4748,105 @@ static int tolua_neox_HttpComponent_send_string_frame00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: send_string of class  HttpComponent */
+#ifndef TOLUA_DISABLE_tolua_neox_HttpComponent_send_string00
+static int tolua_neox_HttpComponent_send_string00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"HttpComponent",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  HttpComponent* self = (HttpComponent*)  tolua_tousertype(tolua_S,1,0);
+  int sid = ((int)  tolua_tonumber(tolua_S,2,0));
+  const char* str = ((const char*)  tolua_tostring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_string'",NULL);
+#endif
+  {
+   int tolua_ret = (int)  self->send_string(sid,str);
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'send_string'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: send_string of class  HttpComponent */
+#ifndef TOLUA_DISABLE_tolua_neox_HttpComponent_send_string01
+static int tolua_neox_HttpComponent_send_string01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"HttpComponent",0,&tolua_err) ||
+     false
+ )
+  goto tolua_lerror;
+ else
+ {
+  HttpComponent* self = (HttpComponent*)  tolua_tousertype(tolua_S,1,0);
+  lua_State* L =  tolua_S;
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_string'",NULL);
+#endif
+  {
+return self->send_string(L);
+  }
+ }
+ return 1;
+tolua_lerror:
+ return tolua_neox_HttpComponent_send_string00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: send_buffer of class  HttpComponent */
+#ifndef TOLUA_DISABLE_tolua_neox_HttpComponent_send_buffer00
+static int tolua_neox_HttpComponent_send_buffer00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"HttpComponent",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,3,"Buffer",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  HttpComponent* self = (HttpComponent*)  tolua_tousertype(tolua_S,1,0);
+  int sid = ((int)  tolua_tonumber(tolua_S,2,0));
+  Buffer* buffer = ((Buffer*)  tolua_tousertype(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_buffer'",NULL);
+#endif
+  {
+   int tolua_ret = (int)  self->send_buffer(sid,buffer);
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'send_buffer'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: new of class  RPCComponent */
 #ifndef TOLUA_DISABLE_tolua_neox_RPCComponent_new00
 static int tolua_neox_RPCComponent_new00(lua_State* tolua_S)
@@ -5364,6 +5463,49 @@ static int tolua_set_Message_payload(lua_State* tolua_S)
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
   self->payload = *((Buffer*)  tolua_tousertype(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: data of class  Message */
+#ifndef TOLUA_DISABLE_tolua_get_Message_data
+static int tolua_get_Message_data(lua_State* tolua_S)
+{
+  Message* self = (Message*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'data'",NULL);
+#endif
+  tolua_pushstring(tolua_S,(const char*)self->data);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: datalen of class  Message */
+#ifndef TOLUA_DISABLE_tolua_get_Message_datalen
+static int tolua_get_Message_datalen(lua_State* tolua_S)
+{
+  Message* self = (Message*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'datalen'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->datalen);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: datalen of class  Message */
+#ifndef TOLUA_DISABLE_tolua_set_Message_datalen
+static int tolua_set_Message_datalen(lua_State* tolua_S)
+{
+  Message* self = (Message*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'datalen'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->datalen = ((int)  tolua_tonumber(tolua_S,2,0))
 ;
  return 0;
 }
@@ -6085,6 +6227,38 @@ static int tolua_neox_Buffer_write_buf00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'write_buf'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: write_string of class  Buffer */
+#ifndef TOLUA_DISABLE_tolua_neox_Buffer_write_string00
+static int tolua_neox_Buffer_write_string00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Buffer",0,&tolua_err) ||
+     false
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Buffer* self = (Buffer*)  tolua_tousertype(tolua_S,1,0);
+  lua_State* L =  tolua_S;
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'write_string'",NULL);
+#endif
+  {
+return self->write_string(L);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'write_string'.",&tolua_err);
  return 0;
 #endif
 }
@@ -7013,6 +7187,9 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"send_binary_frame",tolua_neox_HttpComponent_send_binary_frame00);
    tolua_function(tolua_S,"send_binary_frame",tolua_neox_HttpComponent_send_binary_frame01);
    tolua_function(tolua_S,"send_string_frame",tolua_neox_HttpComponent_send_string_frame00);
+   tolua_function(tolua_S,"send_string",tolua_neox_HttpComponent_send_string00);
+   tolua_function(tolua_S,"send_string",tolua_neox_HttpComponent_send_string01);
+   tolua_function(tolua_S,"send_buffer",tolua_neox_HttpComponent_send_buffer00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"RPCComponent","RPCComponent","Component",tolua_collect_RPCComponent);
@@ -7056,6 +7233,8 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"sid",tolua_get_Message_sid,tolua_set_Message_sid);
    tolua_variable(tolua_S,"ref_count",tolua_get_Message_ref_count,tolua_set_Message_ref_count);
    tolua_variable(tolua_S,"payload",tolua_get_Message_payload,tolua_set_Message_payload);
+   tolua_variable(tolua_S,"data",tolua_get_Message_data,NULL);
+   tolua_variable(tolua_S,"datalen",tolua_get_Message_datalen,tolua_set_Message_datalen);
   tolua_endmodule(tolua_S);
   tolua_constant(tolua_S,"MSG_SEND",MSG_SEND);
   tolua_constant(tolua_S,"MSG_NODE_REG",MSG_NODE_REG);
@@ -7102,6 +7281,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"write_int16",tolua_neox_Buffer_write_int1600);
    tolua_function(tolua_S,"write_int8",tolua_neox_Buffer_write_int800);
    tolua_function(tolua_S,"write_buf",tolua_neox_Buffer_write_buf00);
+   tolua_function(tolua_S,"write_string",tolua_neox_Buffer_write_string00);
    tolua_function(tolua_S,"write",tolua_neox_Buffer_write00);
    tolua_function(tolua_S,"write_protobuf",tolua_neox_Buffer_write_protobuf00);
    tolua_function(tolua_S,"buf2line",tolua_neox_Buffer_buf2line00);

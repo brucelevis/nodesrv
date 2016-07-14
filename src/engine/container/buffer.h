@@ -32,6 +32,7 @@ class Buffer
         int write_int16(int16_t val);
         int write_int8(int8_t val);
         int write_buf(const void* data, uint32_t datalen);
+        int write_string(lua_State* L);
         int write(const Buffer* other);
         int write_protobuf(lua_State* L);
 

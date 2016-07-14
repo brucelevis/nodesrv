@@ -61,6 +61,7 @@ function load(mod_path, isreload, mod_name)
     mod.loginfo = function(format, ...) Log.info(string.format('[%s]'..format, mod_name, ...)) end
     mod.logwarn = function(format, ...) Log.info(string.format('[%s]'..format, mod_name, ...)) end
     mod.logerr = function(format, ...) Log.info(string.format('[%s]'..format, mod_name, ...)) end
+    mod.logmsg = function(format, ...) Log.msg(string.format('[%s]'..format, mod_name, ...)) end
     Log.info('')
     return mod
 end

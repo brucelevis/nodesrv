@@ -9,12 +9,12 @@ int main(int argc, char **argv)
 
     HttpClient client;
     client.connect("192.168.100.34", 12341);
-    client.send_open_websock();
-    //client.send("GET / HTTP/1.1\r\n");
-    //client.send("\r\n");
+    //client.send_open_websock();
+    client.send("GET / HTTP/1.1\r\n");
+    client.send("\r\n");
     client.recv();
-    client.send_string_frame("hello");
-    client.recv_frame();
+    //client.send_string_frame("hello");
+    //client.recv_frame();
 
     //Logger logger;
     //logger.set_tag("gatesrv1");

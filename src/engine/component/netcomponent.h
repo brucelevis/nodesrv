@@ -24,6 +24,7 @@ class NetComponent : public Component
         int port;
 //tolua_end
     public:
+        typedef int (Component::*EvReadableHandler)(int sockfd, const char* data, int datalen);
         void ev_accept(int listenfd);
         void ev_writable(int listenfd);
         void ev_readable(int listenfd);

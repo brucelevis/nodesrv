@@ -95,7 +95,7 @@ void Node::ev_accept(int listenfd)
     {
         return;
     }
-    LOG_DEBUG("accept a new socket");
+    LOG_INFO("accept a new socket");
     //Sendbuf::create(sockfd);
     Recvbuf::create(sockfd, 1024);
     create_file_event(sockfd, AE_READABLE, _ev_readable, this);
@@ -242,7 +242,7 @@ int Node::listen(const char* host, unsigned short port)
     }
     this->listenfd_ = sockfd;
     create_file_event(sockfd, AE_READABLE | AE_WRITABLE, _ev_accept, this);
-    LOG_DEBUG("node[%d] listen(%d) success", this->id, port);
+    LOG_INFO("node[%d] listen(%d) success", this->id, port);
     return 0;
 }
 
@@ -301,7 +301,7 @@ int Node::real_connect()
         error = ::connect(this->sockfd_, (struct sockaddr *)&addr, sizeof(addr));
         if ((error == 0) || (error < 0 && errno == EISCONN))
         {
-            LOG_DEBUG("node[%d] reconnect success", this->id);
+            LOG_INFO("node[%d] reconnect success", this->id);
             this->is_connect_ = true;
             create_file_event(this->sockfd_, AE_READABLE, _ev_readable, this);
             create_file_event(this->sockfd_, AE_WRITABLE, _ev_writable, this);
@@ -333,7 +333,7 @@ void Node::update(long long cur_tick)
 
 void Node::recv(Message* msg)
 {
-    LOG_INFO("node[%d] recv msgid(%d) from node(%d) entity(%d) len(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_entityid, msg->header.len);
+    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_entityid, msg->header.len);
     struct timeval t1;
     gettimeofday(&t1, NULL);
     //不可靠的消息传输
@@ -357,7 +357,7 @@ void Node::recv(Message* msg)
     }
     struct timeval t2;
     gettimeofday(&t2, NULL);
-    LOG_INFO("node[%d] recv msgid(%d) from node(%d) entity(%d) len(%d) usec(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_entityid, msg->header.len, time_diff(&t1, &t2));
+    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d) usec(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_entityid, msg->header.len, time_diff(&t1, &t2));
 }
 
 int Node::dispatch(char* data, size_t datalen)
@@ -484,7 +484,7 @@ void Node::send_entity_msg(Entity* src_entity, Message* msg)
     } 
     else if (is_disconnect())
     {
-        LOG_DEBUG("node[%d] is disconnect", get_id());
+        LOG_WARN("node[%d] is disconnect", get_id());
         int src_entityid = msg->header.src_entityid;
         Entity* src_entity = find_entity(src_entityid);
         if (src_entity)
@@ -516,7 +516,7 @@ void Node::send_entity_msg(Entity* src_entity, Message* msg)
 
 void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const Buffer* buffer)
 {
-    LOG_DEBUG("node[%d] send entity msg(%d)", this->id, msgid);
+    LOG_INFO("node[%d] send entity msg(%d)", this->id, msgid);
     Node* src_node = src_entity->node;
     if (!src_node)
     {

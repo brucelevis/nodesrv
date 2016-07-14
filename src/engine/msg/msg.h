@@ -46,6 +46,8 @@ public:
     int32_t sid;
     int32_t ref_count;
     Buffer payload;
+    const char* data;
+    int datalen;
 };
 
 

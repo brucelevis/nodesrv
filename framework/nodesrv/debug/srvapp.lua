@@ -86,6 +86,11 @@ if nodelist then
     end
 end
 
+Log.closealllevel()
+for _, v in pairs(Config.loglevel) do
+    Log.openlevel(Log[v])
+end
+
 --进入游戏
 require(node_conf.mainfile)
 

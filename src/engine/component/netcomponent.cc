@@ -103,7 +103,7 @@ int NetComponent::listen(const char* host, unsigned short port)
     }
     this->listenfd_ = sockfd;
     this->create_file_event(this->listenfd_, AE_READABLE | AE_WRITABLE, _ev_accept, this);
-    LOG_DEBUG("NetComponent listen on host(%s) port(%d)", host, port);
+    LOG_INFO("NetComponent listen on host(%s) port(%d)", host, port);
     return 0;
 }
 
@@ -192,8 +192,8 @@ int NetComponent::dispatch(int sockfd, char* data, size_t datalen)
     msg->header.dst_nodeid = 0;
     msg->header.id = MSG_NET_RAW_DATA;
     msg->sockfd = sockfd;
-    msg->payload.reset();
-    msg->payload.write_buf(data, datalen);
+    msg->data = data;
+    msg->datalen = datalen;
     int ir = this->entity->recv(msg);
     return ir;
 }
