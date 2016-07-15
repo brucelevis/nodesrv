@@ -9,10 +9,6 @@
 #include "encrypt/base64.h"
 #include "encrypt/sha1.h"
 #include "encrypt/md5.h"
-extern "C" {
-    #include "http_parser.h"
-}
-
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -641,7 +637,7 @@ int HttpComponent::recv_net_raw_data(Message* msg)
             if(strcmp(header.field.buf, "Cookie") ==  0)
             {
                 request.cookie[request.cookie_count].field.buf = header.value.buf;
-                for(int i = 0; i < header.value.len; i++)
+                for(uint32_t i = 0; i < header.value.len; i++)
                 {
                     if(header.value.buf[i] == '=')
                     {
@@ -699,7 +695,7 @@ int HttpComponent::recv_net_raw_data(Message* msg)
         //分析header
         request.get_count = 0;
         request.get[request.get_count].field.buf = request.query_string.buf;
-        for(int i = 0; i < request.query_string.len; i++)
+        for(uint32_t i = 0; i < request.query_string.len; i++)
         {
             if(request.query_string.buf[i] == '=')
             {
