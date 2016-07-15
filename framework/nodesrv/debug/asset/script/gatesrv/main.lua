@@ -16,6 +16,8 @@ Config.httpsrv.template_dir = string.format('%s/script/gatesrv/web/', Config.ass
 Config.httpsrv.static_dir = string.format('%s/script/gatesrv/static/', Config.asset_dir)
 
 mydb.connect(Config.mydbconf)
+--local r = mydb.test:select('select * from user')
+--print(Json.encode(r))
 
 mysrv:create_entity_local('GateSrvEntity')
 

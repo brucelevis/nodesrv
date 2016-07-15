@@ -1,0 +1,10 @@
+package dbproto;
+
+
+message CmsMenuData
+{
+    optional int32 id = 1[default = 0];
+    optional string name = 2[default = ''];
+    optional string parent = 3[default = ''];
+    optional string url = 4[default = ''];
+}

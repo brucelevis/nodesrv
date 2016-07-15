@@ -1,7 +1,6 @@
 #!bin/lneox
 
 dofile('bin/luaenv')
-require('lib/pblua/pblua')
 
 --功能:创建表
 function create_binary_table(conn, dbname, table_name)
@@ -16,7 +15,7 @@ function alter_table(conn, dbname, table_name, pb_file)
         return
     end
     local str = string.format("SELECT table_schema, table_name, data_type, column_name FROM columns WHERE table_schema='%s' and table_name='%s'", dbname, table_name)
-    local table_desc = Mysql.select(conn, str)
+    local table_desc = conn:select(str)
     if not command(conn, string.format('USE %s', dbname)) then
         return
     end
@@ -79,12 +78,12 @@ end
 
 --功能:表是否存在
 function is_table_exist(conn, dbname, table_name)
-    if not Mysql.command(conn, 'USE information_schema') then
+    if not conn:command('USE information_schema') then
         os.exit(1)
     end
     local str = string.format("SELECT table_name FROM TABLES WHERE table_schema = '%s'", dbname)
-    local reply = Mysql.select(conn, str)
-    if not Mysql.command(conn, 'USE '..dbname) then
+    local reply = conn:select(str)
+    if not conn:command('USE '..dbname) then
         os.exit(1)
     end
     for _, row in pairs(reply) do
@@ -97,15 +96,15 @@ end
 
 function command(conn, sql)
     print('command:', sql)
-    return Mysql.command(conn, sql)
+    return conn:command(sql)
 end
 
 function main()
     for dbname, mysql_conf in pairs(Config.dbinit.mysql_conf) do
-        Pblua.import_dir(mysql_conf.dbproto_dir)
+        import_proto(mysql_conf.dbproto_dir)
         print(string.format('test db(%s)', dbname))
-        local conn = Mysql.connect(mysql_conf.host, '', mysql_conf.user, mysql_conf.password)
-        if not conn then
+        local conn = mysql.create()
+        if not conn:connect(mysql_conf.host, '', mysql_conf.user, mysql_conf.password) then
             print(string.format('connect host(%s) user(%s) dbname(%s) fail', mysql_conf.host, mysql_conf.user, dbname))
             return
         end
@@ -126,7 +125,7 @@ function main()
                 end
             end
         end
-        Mysql.close(conn)
+        conn:close()
     end
     os.exit(0)
 end

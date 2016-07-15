@@ -40,6 +40,7 @@ Config =
                     task = {class = 'dbproto.TaskData', binary = true},
                     achieve = {class = 'dbproto.AchieveData', binary = true},
                     friend = {class = 'dbproto.FriendData', binary = true},
+                    cms_menu = {class = 'dbproto.CmsMenuData'},
                 },
             },
         },
@@ -75,7 +76,7 @@ Config =
 
     httpsrv = 
     {
-        domain = '192.168.100.34',
+        domain = '192.168.2.100',
         session = {
             secret = '19860701',
             expires = 3600,
@@ -86,6 +87,7 @@ Config =
         --路由
         route = {
             ['/static'] = '/home/ljw/neox/framework/nodesrv/debug/asset/script/gatesrv',
+            ['/static'] = '/Users/lujingwei/Documents/nodesrv2/framework/nodesrv/debug/asset/script/gatesrv',
             --['/%w+%.css'] = '',
         },
     },
