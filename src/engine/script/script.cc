@@ -9,6 +9,7 @@
 #include "lualib/string/lstring.h"
 #include "lualib/system/lsystem.h"
 #include "lualib/date/ldate.h"
+#include "lualib/srvapp/srvapp.h"
 
 
 namespace Script
@@ -198,6 +199,7 @@ namespace Script
         luaopen_system(L);
         luaopen_mysql(L);
         luaopen_date(L);
+        luaopen_srvapp(L);
     }
 };
 

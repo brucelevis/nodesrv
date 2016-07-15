@@ -1,0 +1,10 @@
+#!bin/lneox
+dofile('bin/luaenv')
+
+for _, conf in pairs(Config.srvlist) do
+    if conf.srvname ~= 'test' then
+        os.execute(string.format('%s %s -d', conf.bin, conf.srvname))
+    end
+end
+
+

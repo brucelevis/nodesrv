@@ -1,0 +1,27 @@
+#!bin/lneox
+dofile('bin/luaenv')
+
+local usage = 'srvstop gamesrv1'
+local srvname = arg[1]
+
+if not srvname then
+    print(usage)
+    os.exit(1)
+end
+
+local proc_dir = 'proc'
+
+local filepath = string.format('%s/%s/pid', proc_dir, srvname)
+if not File.exists(filepath) then
+    print(string.format('%s not found', srvname))
+    return
+end
+local file = io.open(filepath, 'r')
+local pid = file:read()
+file:close()
+
+local cmd = string.format('kill -2 %s', pid)
+
+print(string.format('stop %s(%s)', srvname, cmd))
+
+os.execute(cmd)

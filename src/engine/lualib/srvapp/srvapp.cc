@@ -95,7 +95,7 @@ namespace Srvapp
         /*for(i = 0; i <=2; i++){
           close(i);
           }*/
-         signal(SIGHUP, SIG_IGN);
+        signal(SIGHUP, SIG_IGN);
         signal(SIGQUIT, SIG_IGN);
         signal(SIGTTOU, SIG_IGN);
         signal(SIGTTIN, SIG_IGN);

@@ -33,7 +33,6 @@ SOURCE = $(wildcard \
 		 lualib/pblua/*.cc\
 		 lualib/system/*.cc\
 		 lualib/mysql/*.cc\
-		 $(ROOT_PATH)/3rd/http-parser/http_parser.cc\
 		 interface.cc\
 		 neox.cc\
 		 ) 

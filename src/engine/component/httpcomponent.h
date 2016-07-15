@@ -4,35 +4,7 @@
 
 #include "component/component.h"
 #include "component/netcomponent.h"
-
-typedef struct http_string
-{
-    char* buf;
-    size_t len;
-}http_string;
-
-typedef struct http_header
-{
-    http_string field; 
-    http_string value;
-}http_header;
-
-#define MAX_HTTP_HEADER_COUNT 32
-#define MAX_HTTP_GET_COUNT 32
-#define MAX_HTTP_COOKIE_COUNT 32
-typedef struct http_request
-{
-    http_header headers[MAX_HTTP_HEADER_COUNT];
-    unsigned char header_count;
-    http_string url; 
-    http_string query_string; 
-    http_string body;
-    http_string method;
-    http_header get[MAX_HTTP_GET_COUNT];
-    unsigned char get_count;
-    http_header cookie[MAX_HTTP_COOKIE_COUNT];
-    unsigned char cookie_count;
-}http_request;
+#include "net/http_parser.h"
 
 //tolua_begin
 class HttpComponent : public Component
@@ -58,8 +30,7 @@ class HttpComponent : public Component
         int session_init(int sockfd);
         void session_destory(int sockfd);
         int combine_all_frame(int sockfd, const char* data , size_t datalen);
-        int decode_one_frame(int sockfd, const char* data, size_t datalen);
-        int dispatch_frame(int sockfd, int opcode, const char* data, size_t datalen);
+        int dispatch_frame(int sockfd, http_frame_request& frame);
         int send_frame(int sid, int opcode, const void* data, unsigned short datalen);
         int dispatch_request(int sockfd);
     private:

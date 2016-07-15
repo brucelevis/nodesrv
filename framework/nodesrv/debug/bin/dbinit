@@ -1,6 +1,7 @@
 #!bin/lneox
 
 dofile('bin/luaenv')
+require('lib/pblua/pblua')
 
 --功能:创建表
 function create_binary_table(conn, dbname, table_name)

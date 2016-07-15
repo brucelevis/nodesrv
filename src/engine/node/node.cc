@@ -21,9 +21,40 @@
 #include <string.h>
 #include <stdio.h>
 #include <errno.h>
+#include <signal.h>
 
 
 static uint32_t MAGIC_CODE = 19860801;
+
+static void _atexit() 
+{
+    LOG_INFO("_atexit");
+    lua_State* L = NodeMgr::L;
+    if (L != NULL) 
+    {
+        lua_getglobal(L, "_atexit");
+        if(!lua_isnil(L, -1))
+        {
+            lua_pcall(L, 0, 0, 0);
+        }
+    }    
+}
+
+static void sig_int(int b)
+{
+    LOG_INFO("sig_int");
+    lua_State* L = NodeMgr::L;
+    if (L != NULL) 
+    {
+        lua_getglobal(L, "_atint");
+        if(!lua_isnil(L, -1))
+        {
+            lua_pcall(L, 0, 0, 0);
+        }
+    } 
+    exit(0);
+}
+
 
 static int time_diff(struct timeval *t1, struct timeval *t2)
 {
@@ -784,4 +815,44 @@ int Node::post(lua_State* L)
 
 
 
+void Node::run_background()
+{
+    int pid;
+    pid = fork();
+    if(pid)
+    {
+        exit(0);
 
+    }else if(pid < 0){
+        LOG_ERROR("fork error");
+        exit(1);
+    }
+    setsid();
+    pid = fork();
+    if(pid)
+    {
+        exit(0);
+    }else if(pid < 0)
+    {
+        LOG_ERROR("fork error");
+        exit(1);
+    }
+    //ps, 关了就不要写
+    /*for(i = 0; i <=2; i++){
+      close(i);
+      }*/
+    signal(SIGHUP, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);
+    signal(SIGTTOU, SIG_IGN);
+    signal(SIGTTIN, SIG_IGN);
+    signal(SIGCHLD, SIG_IGN);
+    signal(SIGTERM, SIG_IGN);
+    signal(SIGHUP, SIG_IGN);
+    //往关闭的socket写数据
+    signal(SIGPIPE, SIG_IGN);
+    //google protobuf出错时候会出这个
+    signal(SIGABRT, SIG_IGN);
+    atexit(_atexit);
+    //ctrl-c信号
+    signal(SIGINT, sig_int);
+}

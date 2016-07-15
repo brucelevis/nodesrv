@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Thu Jul 14 20:48:43 2016.
+** Generated automatically by tolua++-1.0.92 on Fri Jul 15 13:39:31 2016.
 */
 
 #ifndef __cplusplus
@@ -2719,6 +2719,37 @@ return self->post(L);
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'post'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: run_background of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_run_background00
+static int tolua_neox_Node_run_background00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'run_background'",NULL);
+#endif
+  {
+   self->run_background();
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'run_background'.",&tolua_err);
  return 0;
 #endif
 }
@@ -7080,6 +7111,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"send_entity_msg",tolua_neox_Node_send_entity_msg02);
    tolua_function(tolua_S,"forward_entity_msg",tolua_neox_Node_forward_entity_msg00);
    tolua_function(tolua_S,"post",tolua_neox_Node_post00);
+   tolua_function(tolua_S,"run_background",tolua_neox_Node_run_background00);
    tolua_variable(tolua_S,"id",tolua_get_Node_id,tolua_set_Node_id);
    tolua_variable(tolua_S,"name",tolua_get_Node_name,tolua_set_Node_name);
   tolua_endmodule(tolua_S);

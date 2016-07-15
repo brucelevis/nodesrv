@@ -1,4 +1,5 @@
 #include "component/mysqlcomponent.h"
+#include "net/http_parser.h"
 
 MYSQLComponent::MYSQLComponent()
 {

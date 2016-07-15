@@ -2,7 +2,7 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function _atint()
-    lofinfo('atint')
+    loginfo('atint')
 end
 
 function _atexit()
@@ -11,6 +11,7 @@ function _atexit()
 end
 
 function clearpid()
+    loginfo('clearpid')
     --清理pid
     local file = io.open('pid', 'r')
     if file then
@@ -37,59 +38,62 @@ end
 
 dofile('bin/luaenv')
 
-local nodename = arg[2]
+local srvname = arg[2]
 local is_daemon = arg[3] == '-d'
 
 local node_conf = nil
-for k, conf in pairs(Config.nodelist) do
-    if nodename == conf.nodename then
+for k, conf in pairs(Config.srvlist) do
+    if srvname == conf.srvname then
         node_conf = conf
     end
 end
 if not node_conf then
-    print(string.format('%s not found', nodename))
+    print(string.format('%s not found', srvname))
     os.exit(0)
 end
 
 Config.nodeid = node_conf.nodeid
-Config.nodename = node_conf.nodename
+Config.srvname = node_conf.srvname
 Config.host = node_conf.host
 Config.port = node_conf.port
 
-local running_dir = string.format('%s/%s', Config.proc_dir, Config.nodename)
+local running_dir = string.format('%s/%s', Config.proc_dir, Config.srvname)
 if not File.exists(running_dir) then
     File.mkdirs(running_dir)
 end
 File.chdir(running_dir)
 loginfo('running dir(%s)', File.getcwd())
 
---nodeapp.fork_daemon(is_daemon)
---if is_daemon then
-    --local d = os.date('*t')
-    --Log.stdout2file(string.format('%s_%04d%02d%02d', Config.nodename, d.year, d.month, d.day))
---end
-
-recordpid()
 
 --本地节点
 NodeMgr.create_node_local(Config.nodeid)
 mysrv:listen(Config.host, Config.port)
-
 --远程节点
-local nodelist = Config.nodegrap[Config.nodeid]
-if nodelist then
-    for k, nodeid in pairs(nodelist) do
+local srvlist = Config.srvgrap[Config.nodeid]
+if srvlist then
+    for k, nodeid in pairs(srvlist) do
         local node = NodeMgr.create_node_remote(nodeid)
-        local node_conf = Config.nodelist[nodeid]
+        local node_conf = Config.srvlist[nodeid]
         node:connect(node_conf.host, node_conf.port)
-        _G[node_conf.nodename] = nodeid
+        _G[node_conf.srvname] = nodeid
     end
 end
+
+
+if is_daemon then
+    mysrv:run_background()
+    local d = os.date('*t')
+    Log.stdout2file(string.format('%s_%04d%02d%02d', Config.srvname, d.year, d.month, d.day))
+end
+recordpid()
 
 Log.closealllevel()
 for _, v in pairs(Config.loglevel) do
     Log.openlevel(Log[v])
 end
+
+Pblua.import_dir(string.format('%s/proto', Config.asset_dir))
+Pblua.import_dir(string.format('%s/dbproto', Config.asset_dir))
 
 --进入游戏
 require(node_conf.mainfile)

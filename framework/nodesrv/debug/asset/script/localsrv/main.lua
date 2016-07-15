@@ -1,10 +1,9 @@
 
 
 require('localsrv/entity/localsrv')
-
-import('localsrv/module/hall')
-import('localsrv/module/login')
-import('localsrv/module/player')
+require('localsrv/module/hall/main')
+require('localsrv/module/login/main')
+require('localsrv/module/player/main')
 
 mysrv:create_entity_local('LocalSrvEntity')
 

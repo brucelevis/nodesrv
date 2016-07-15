@@ -80,6 +80,7 @@ class Node
         void forward_entity_msg(Message* msg);
         //兼容之前的post协议
         int post(lua_State* L);
+        void run_background();
     public:
         int id;
         char name[64];
