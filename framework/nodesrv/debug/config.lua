@@ -74,7 +74,21 @@ Config =
         },
     },
 
+    httpsrv = 
+    {
+        domain = '192.168.100.34',
+        session = {
+            secret = '19860701',
+            expires = 3600,
+            host = redis_host, dbname = '0', port = 6666, password = redis_password,
+        },
+        static_dir = '',
+        template_dir = '',
+        --路由
+        route = {
+            ['/static'] = '/home/ljw/neox/framework/nodesrv/debug/asset/script/gatesrv',
+            --['/%w+%.css'] = '',
+        },
+    },
 }
-
-
 

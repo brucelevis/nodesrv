@@ -6,11 +6,23 @@ local slt2 = require('lib/slt2')
 headers = {}
 cookies = {}
 sessions = {}
-response_buffer = Buffer:new()
+status_code = 200
+status_code_conf = {
+    [200] = 'OK',
+    [404] = 'NOT FOUND',
+}
+ext_conf = {
+    ['ico'] = 'image/png',
+    ['png'] = 'image/png',
+    ['jpg'] = 'image/png',
+    ['jpeg'] = 'image/png',
+    ['css'] = 'text/css',
+    ['html'] = 'text/html',
+    ['js'] = 'text/javascript',
+}
 
-if not Config.template_dir then
-    Config.template_dir = string.format('%s/template/', Config.asset_dir)
-end
+
+response_buffer = Buffer:new()
 
 _REQUEST = function(self, sid)
     print('sid', sid)
@@ -32,13 +44,14 @@ _REQUEST = function(self, sid)
     end
     
     response_buffer:reset()
+    status_code = 200
     cookies = {}
     headers = {}
 
     httpmain()
 
     headers['Content-Length'] = tostring(response_buffer:size())
-    self:send_string(sid, 'HTTP/1.1 200 OK\r\n')
+    self:send_string(sid, string.format('HTTP/1.1 %d %s\r\n', status_code, status_code_conf[status_code]))
     for k, v in pairs(headers) do
         self:send_string(sid, string.format('%s: %s\r\n', k, v))
     end
@@ -58,7 +71,7 @@ _G.header_set = header_set
 
 
 function render(filename, args)
-    local filepath = string.format('%s/%s', Config.template_dir, filename)
+    local filepath = string.format('%s/%s', Config.httpsrv.template_dir, filename)
     local file = io.open(filepath)
     local str = file:read('*a')
     local tmpl = slt2.loadstring(str)
@@ -74,8 +87,20 @@ _G.echo = echo
 
 
 _G.httpmain = function()
+    local url = _REQUEST_URL
+
+    --路由
+    local route = Config.httpsrv.route
+    for pattern, relpath in pairs(route) do
+        if string.match(url, pattern) then
+            render_static_file(string.format('%s/%s', relpath, url))
+            return
+        end
+    end
+
+
     --render('index.html')
-    local pats = string.split(_REQUEST_URL, '/')
+    local pats = string.split(url, '/')
     local mod = _G
     for k = 2, #pats do
         local action = mod['action_'..pats[k]]
@@ -88,7 +113,7 @@ _G.httpmain = function()
             break
         end
     end
-    logerr('mod not found url(%s)', _REQUEST_URL)
+    logerr('mod not found url(%s)', url)
 end
 
 --功能:设置cookie
@@ -101,7 +126,7 @@ function cookie_set(k, v, expires, domain, path)
     if v then
         v = tostring(v)
     end
-    domain = domain or '192.168.2.100'
+    domain = domain or Config.httpsrv.domain
     path = path or '/'
     expires = expires or 3600
     expires = os.time() + expires
@@ -163,4 +188,39 @@ function session_set(k, v)
 end
 _G.session_set = session_set
 
+--功能:设置消息体类型
+function set_content_type(str)
+    headers['Content-Type'] = str
+end
+_G.set_content_type = set_content_type
 
+--功能:
+function set_last_modified(player, time)
+    header_set(player, 'Last-Modified', format_time(time))
+end
+
+--功能:重定向
+function redirect(url)
+    set_status_code(player, '302 Temporarily Moved')
+    set_header(player, 'Location', url)
+end
+
+--功能:设置响应头
+function set_status_code(code)
+    status_code = code
+end
+
+
+--功能:返回静态文件
+function render_static_file(filepath)
+    local file = io.open(filepath)
+    print(filepath)
+    local str = file:read('*a')
+    file:close()
+    --找出文件后缀
+    local ext = string.match(filepath, '%w+%.(%w+)')
+    local content_type = ext_conf[ext]
+    content_type = content_type or 'image/png'
+    set_content_type(content_type)
+    echo(str)
+end
