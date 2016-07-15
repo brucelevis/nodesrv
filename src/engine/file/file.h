@@ -34,6 +34,8 @@ namespace File
 
     int basename(lua_State* L);
 
+    int extname(lua_State* L);
+
     const char* dirname(const char* path);
 
     int listdir(lua_State* L);

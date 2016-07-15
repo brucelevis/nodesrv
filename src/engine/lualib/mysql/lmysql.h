@@ -1,5 +1,6 @@
 #ifndef __LMYSQL_H__
 #define __LMYSQL_H__
+#include <mysql.h>
 extern "C" {
 #include <lua.h>
 #include <lualib.h>

@@ -1,65 +1,97 @@
-#include "mysql/lmysql.h"
+#include "lmysql.h"
 #include "log/log.h"
 
-#include <mysql.h>
-static int lconnect(lua_State *L)
+typedef struct MySql
 {
-    if(lua_gettop(L) == 4 && lua_isstring(L, 1) && lua_isstring(L, 2) && lua_isstring(L, 3) && lua_isstring(L, 4))
+    MYSQL *conn;
+}MySql;
+
+
+static int lcreate(lua_State *L)
+{
+    if (lua_gettop(L) == 0)
     {
-        const char *host = lua_tostring(L, 1);
-        const char *dbname = lua_tostring(L, 2);
-        const char *user = lua_tostring(L, 3);
-        const char *passwd = lua_tostring(L, 4);
-        my_bool b = 1;
-        MYSQL *conn = mysql_init(NULL);
-        mysql_options(conn, MYSQL_OPT_RECONNECT, &b);
-        conn = mysql_real_connect(conn, host, user, passwd, dbname, 0, NULL, MYSQL_OPT_RECONNECT);
-        if(conn == NULL)
+        MySql *mysql = (MySql *)lua_newuserdata(L, sizeof(MySql));
+        if(mysql == NULL)
         {
-            LOG_ERROR("connect fail %s\n", mysql_error(conn));
+            LOG_ERROR("newuserdata fail");
+        }
+        mysql->conn = mysql_init(NULL);
+        if(mysql->conn == NULL)
+        {
+            LOG_ERROR("mysql_init fail %u: %s", mysql_error(mysql->conn), mysql_error(mysql->conn));
             return 0;
         }
-        mysql_query(conn, "set names utf8");
-        //mysql_options(mysql->conn, MYSQL_SET_CHARSET_NAME, "utf8");
-        lua_pushlightuserdata(L, conn);
+        luaL_getmetatable(L, "MySqlMetatable");
+        lua_setmetatable(L, -2);
         return 1;
     }
-    return 0;
+    lua_pushnil(L);
+    return 1;
+}
+
+static int lconnect(lua_State *L)
+{
+    if(lua_gettop(L) == 5 && lua_isstring(L, 2) && lua_isstring(L, 3) && lua_isstring(L, 4) && lua_isstring(L, 5)
+    ){
+        MySql *mysql = (MySql *)luaL_checkudata(L, 1, "MySqlMetatable");
+        const char *host = lua_tostring(L, 2);
+        const char *dbname = lua_tostring(L, 3);
+        const char *user = lua_tostring(L, 4);
+        const char *passwd = lua_tostring(L, 5);
+        my_bool b = true;
+        mysql_options(mysql->conn, MYSQL_OPT_RECONNECT, &b);
+        mysql->conn = mysql_real_connect(mysql->conn, host, user, passwd, dbname, 0, NULL, MYSQL_OPT_RECONNECT);
+        if(mysql->conn == NULL)
+        {
+            LOG_ERROR("connect fail host(%s) dbname(%s) user(%s), %s", host, dbname, user, mysql_error(mysql->conn));
+            lua_pushboolean(L, false);
+            return 1;
+        }
+        mysql_query(mysql->conn, "set names utf8");
+        //mysql_options(mysql->conn, MYSQL_SET_CHARSET_NAME, "utf8");
+        lua_pushboolean(L, true);
+        return 1;
+    }
+    lua_pushboolean(L, false);
+    return 1;
 }
 
 static int lcommand(lua_State *L)
 {
-    if(lua_gettop(L) == 2 && lua_isstring(L, 2))
-    {
-        MYSQL *conn = (MYSQL *)lua_touserdata(L, 1);
-        if(conn == NULL)
-        {
+    if(lua_gettop(L) == 2 && lua_isstring(L, 2)){
+        MySql *mysql = (MySql *)luaL_checkudata(L, 1, "MySqlMetatable");
+        if(mysql == NULL){
             LOG_ERROR("checkuserdata fail");
-            lua_pushboolean(L, 0);
+            lua_pushboolean(L, false);
             return 1;
         }
-        mysql_query(conn, "set names utf8");
+        MYSQL *conn = mysql->conn;
+        if(conn == NULL){
+            LOG_ERROR("disconnect");
+            lua_pushboolean(L, false);
+            return 1;
+        }
+        mysql_query(mysql->conn, "set names utf8");
         const char *command = lua_tostring(L, 2);
-        if(mysql_query(conn, command) != 0)
-        {
-            LOG_ERROR("%s\n", mysql_error(conn));
-            lua_pushboolean(L, 0);
+        if(mysql_query(conn, command) != 0){
+            LOG_ERROR("%s", mysql_error(conn));
+            lua_pushboolean(L, false);
             lua_pushstring(L, mysql_error(conn));
             return 2;
         }
-        lua_pushboolean(L, 1);
+        lua_pushboolean(L, true);
         return 1;
     }
-    lua_pushboolean(L, 0);
+    lua_pushboolean(L, false);
     return 1;
 }
 
-static int laffectedrows(lua_State *L)
+static int laffected_rows(lua_State *L)
 {
-    if(lua_gettop(L) == 1)
-    {
-        MYSQL *conn = (MYSQL *)lua_touserdata(L, 1);
-        lua_pushnumber(L, mysql_affected_rows(conn));
+    if(lua_gettop(L) == 1){
+        MySql *mysql = (MySql *)luaL_checkudata(L, 1, "MySqlMetatable");
+        lua_pushnumber(L, mysql_affected_rows(mysql->conn));
         return 1;
     }
     lua_pushnumber(L, 0);
@@ -68,47 +100,44 @@ static int laffectedrows(lua_State *L)
 
 static int lselect(lua_State *L)
 {
-    int i;
-    if(lua_gettop(L) == 2 && lua_isstring(L, 2))
-    {
+    if(lua_gettop(L) == 2 && lua_isstring(L, 2)){
         MYSQL_RES *result;
         MYSQL_ROW row;
         MYSQL_FIELD *fields;
         int index = 1;
-        MYSQL *conn = (MYSQL *)lua_touserdata(L, 1);
-        if(conn == NULL)
-        {
+        MySql *mysql = (MySql *)luaL_checkudata(L, 1, "MySqlMetatable");
+        if(mysql == NULL){
+            LOG_ERROR("checkuserdata fail");
+            return 0;
+        }
+        MYSQL *conn = mysql->conn;
+        if(conn == NULL){
             LOG_ERROR("disconnect");
             return 0;
         }
+        mysql_query(mysql->conn, "set names utf8");
         const char *command = lua_tostring(L, 2);
-        mysql_query(conn, "set names utf8");
         mysql_query(conn, command);
         result = mysql_store_result(conn);
-        if(result == NULL)
-        {
+        if(result == NULL){
             LOG_ERROR("select fail %d %s command %s", mysql_errno(conn), mysql_error(conn), command);
             return 0;
         }
         lua_newtable(L);
-        while(result != NULL)
-        {
+        while(result != NULL){
             int num_fields = mysql_num_fields(result);
             fields = mysql_fetch_fields(result);
-            if(fields == NULL)
-            {
+            if(fields == NULL){
                 mysql_free_result(result);
                 LOG_ERROR("select fail fetch_fields command:%s", command);
                 break;
             }
-            while ((row = mysql_fetch_row(result)))
-            {
+            while ((row = mysql_fetch_row(result))){
                 unsigned long *lengths = mysql_fetch_lengths(result);
                 lua_pushnumber(L, index);
                 lua_newtable(L);
                 index++;
-                for(i = 0; i < num_fields; i++)
-                {
+                for(int i = 0; i < num_fields; i++){
                     lua_pushstring(L, fields[i].name);
                     if(row[i] != NULL){
                         if(fields[i].type == FIELD_TYPE_STRING
@@ -142,18 +171,49 @@ static int lselect(lua_State *L)
         }
         return 1;
     }
-    return 0;
+    lua_pushnumber(L, -1);
+    return 1;
 }
 
+static int lping(lua_State *L)
+{
+    if(lua_gettop(L) == 1)
+    {
+        MySql *mysql = (MySql *)luaL_checkudata(L, 1, "MySqlMetatable");
+        if(mysql == NULL)
+        {
+            LOG_ERROR("checkuserdata fail");
+            lua_pushboolean(L, false);
+            return 0;
+        }
+        MYSQL *conn = mysql->conn;
+        if(conn == NULL)
+        {
+            LOG_ERROR("disconnect");
+            lua_pushboolean(L, false);
+            return 1;
+        }
+        if(mysql_ping(mysql->conn))
+        {
+            lua_pushboolean(L, false);
+            return 1;
+        }
+        lua_pushboolean(L, true);
+        return 1;
+    }
+    lua_pushboolean(L, false);
+    return 1;
+}
 
 static char *escape_buf;
 static size_t escape_buf_len;
 
-static int lrealescapestring(lua_State *L){
+static int lreal_escape_string(lua_State *L)
+{
     if(lua_gettop(L) == 2){
-        MYSQL *conn = (MYSQL *)lua_touserdata(L, 1);
-        if(conn == NULL){
-            LOG_ERROR("disconnect");
+        MySql *sql = (MySql *)luaL_checkudata(L, 1, "MySqlMetatable");
+        if(sql == NULL){
+            LOG_ERROR("checkuserdata fail");
             return 0;
         }
         size_t str_len;
@@ -170,44 +230,69 @@ static int lrealescapestring(lua_State *L){
             escape_buf = (char *)malloc(str_len * 2);
             if(escape_buf == NULL){
                 LOG_ERROR("malloc fail");
-                return 0;
+                lua_pushboolean(L, false);
+                return 1;
             }
             escape_buf_len = str_len * 2;
         }
-        int len = mysql_real_escape_string(conn, escape_buf, str, str_len);
+        int len = mysql_real_escape_string(sql->conn, escape_buf, str, str_len);
         lua_pushlstring(L, escape_buf, len);
         return 1;
     }
-    return 0;
+    lua_pushboolean(L, false);
+    return 1;
 }
 
 
-static int lclose(lua_State *L){
+static int lclose(lua_State *L)
+{
     if(lua_gettop(L) == 1){
-        MYSQL *conn = (MYSQL *)lua_touserdata(L, 1);
-        if(!conn){
-            LOG_ERROR("disconnect");
+        MySql *sql = (MySql *)luaL_checkudata(L, 1, "MySqlMetatable");
+        if(sql == NULL){
+            LOG_ERROR("checkuserdata fail");
             return 0;
         }
-        mysql_close(conn);
-        lua_pushboolean(L, 1);
+        if(sql->conn){
+            mysql_close(sql->conn);
+            sql->conn = NULL;
+        }
+        lua_pushboolean(L, true);
         return 1;
     }
-    return 0;
+    lua_pushboolean(L, false);
+    return 1;
 }
 
-static luaL_Reg lua_lib[] = {
-    {"connect", lconnect},
-    {"select", lselect},
-    {"command", lcommand},
-    {"affectedrows", laffectedrows},
-    {"escape", lrealescapestring},
-    {"close", lclose},
+
+
+static luaL_Reg lua_lib[] = 
+{
+    {"create", lcreate},
     {NULL, NULL}
 };
 
-int luaopen_mysql(lua_State *L){
-	luaL_register(L, "Mysql", (luaL_Reg*)lua_lib);
-    return 1;
+static luaL_Reg lua_metatable[] = 
+{
+    {"connect", lconnect},
+    {"select", lselect},
+    {"command", lcommand},
+    {"affected_rows", laffected_rows},
+    {"e", lreal_escape_string},
+    {"close", lclose},
+    {"ping", lping},
+    {"__gc", lclose},
+    {NULL, NULL}
+};
+
+
+int luaopen_mysql(lua_State *L)
+{
+	luaL_register(L, "mysql", (luaL_Reg*)lua_lib);
+    luaL_newmetatable(L, "MySqlMetatable");
+    lua_pushstring(L, "__index");
+    lua_pushvalue(L, -2);
+    lua_settable(L, -3);
+    luaL_register(L, NULL, (luaL_Reg*)lua_metatable);
+    return 0;
 }
 

@@ -1,0 +1,28 @@
+
+table {
+    font-size:12px;
+}
+
+html {
+    font-size:12px;
+}
+
+#topbar {
+}
+
+#srvtable {
+}
+#srvtable td {
+    margin: 5px 5px 5px 5px;
+    padding:10px 10px 10px 10px;
+    background-color:#eeeeee;
+}
+
+#browser {
+    width:200px;
+    border-color: #eeeeee;
+    border-style: solid; 
+    border-width: 3px;
+    float:left;
+    margin : 10px 15px 15px 5px;
+}

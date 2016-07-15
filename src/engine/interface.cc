@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Fri Jul 15 13:39:31 2016.
+** Generated automatically by tolua++-1.0.92 on Fri Jul 15 16:35:12 2016.
 */
 
 #ifndef __cplusplus
@@ -6906,6 +6906,33 @@ return File::basename(L);
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* function: File::extname */
+#ifndef TOLUA_DISABLE_tolua_neox_File_extname00
+static int tolua_neox_File_extname00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     false
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  lua_State* L =  tolua_S;
+  {
+return File::extname(L);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'extname'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* function: File::dirname */
 #ifndef TOLUA_DISABLE_tolua_neox_File_dirname00
 static int tolua_neox_File_dirname00(lua_State* tolua_S)
@@ -7339,6 +7366,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"remove",tolua_neox_File_remove00);
    tolua_function(tolua_S,"rename",tolua_neox_File_rename00);
    tolua_function(tolua_S,"basename",tolua_neox_File_basename00);
+   tolua_function(tolua_S,"extname",tolua_neox_File_extname00);
    tolua_function(tolua_S,"dirname",tolua_neox_File_dirname00);
    tolua_function(tolua_S,"listdir",tolua_neox_File_listdir00);
    tolua_function(tolua_S,"cdself",tolua_neox_File_cdself00);
@@ -7402,7 +7430,25 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
     101,110,116,105,116,121, 10,101,110,100, 10, 80, 79, 83, 84,
      32, 61, 32,102,117,110, 99,116,105,111,110, 40, 46, 46, 46,
      41, 10,109,121,115,114,118, 58,112,111,115,116, 40, 46, 46,
-     46, 41, 10,101,110,100,32
+     46, 41, 10,101,110,100, 10,102,117,110, 99,116,105,111,110,
+     32,105,109,112,111,114,116, 95,112,114,111,116,111, 40,100,
+    105,114, 41, 10, 80, 98,108,117, 97, 46,109, 97,112,112, 97,
+    116,104, 40, 39, 39, 44, 32,100,105,114, 41, 10,108,111, 99,
+     97,108, 32,102,105,108,101,115, 32, 61, 32, 70,105,108,101,
+     46,108,105,115,116,100,105,114, 40,100,105,114, 41, 10,102,
+    111,114, 32, 95, 44, 32,102,105,108,101, 32,105,110, 32,112,
+     97,105,114,115, 40,102,105,108,101,115, 41, 32,100,111, 10,
+    105,102, 32,102,105,108,101, 46,116,121,112,101, 32, 61, 61,
+     32, 70,105,108,101, 46, 84, 89, 80, 69, 95, 70, 73, 76, 69,
+     32, 97,110,100, 32,115,116,114,105,110,103, 46,102,105,110,
+    100, 40,102,105,108,101, 46,110, 97,109,101, 44, 32, 39, 46,
+    112,114,111,116,111, 36, 39, 41, 32,116,104,101,110, 10, 76,
+    111,103, 46,105,110,102,111, 40,115,116,114,105,110,103, 46,
+    102,111,114,109, 97,116, 40, 39,108,111, 97,100, 32,112,114,
+    111,116,111, 40, 37,115, 41, 39, 44, 32,102,105,108,101, 46,
+    110, 97,109,101, 41, 41, 10, 80, 98,108,117, 97, 46,105,109,
+    112,111,114,116, 40,102,105,108,101, 46,110, 97,109,101, 41,
+     10,101,110,100, 10,101,110,100, 10,101,110,100,32
    };
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua embedded: data/lib.lua");
    lua_settop(tolua_S, top);

@@ -137,6 +137,25 @@ const char* dirname(const char* path)
     }
 }
 
+int extname(lua_State* L)
+{
+    char *name;
+    size_t str_len = 0;
+    name = (char *)lua_tolstring(L, 1, &str_len);
+    int startpos = 0;
+    for (int i = str_len - 1; i >= 0; i--) 
+    {
+        if (name[i] == '.') 
+        {
+            startpos = i + 1;
+            break;
+        }
+    }
+    int endpos = str_len - 1;
+    lua_pushlstring(L, name + startpos, endpos - startpos + 1);
+    return 1;
+}
+
 int basename(lua_State* L)
 {
     char *name;

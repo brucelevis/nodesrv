@@ -1,0 +1,16 @@
+
+<div>
+    <table id='srvtable'>
+        <tr><td>id</td><td>名字</td><td>地址</td><td>端口</td><td>进程id</td><td>操作</td></tr>
+        #{for _, conf in pairs(Config.srvlist) do}#
+        <tr>
+            <td>#{=conf.nodeid}#</td>
+            <td>#{=conf.srvname}#</td>
+            <td>#{=conf.host}#</td>
+            <td>#{=conf.port}#</td>
+            <td>pid</td>
+            <td><a href=''>启动</a><a href=''>关闭</a></td>
+        </tr>
+        #{end}#
+    </table>
+</div>

@@ -218,9 +218,10 @@ function render_static_file(filepath)
     local str = file:read('*a')
     file:close()
     --找出文件后缀
-    local ext = string.match(filepath, '%w+%.(%w+)')
+    local ext = File.extname(filepath)
     local content_type = ext_conf[ext]
     content_type = content_type or 'image/png'
     set_content_type(content_type)
     echo(str)
 end
+

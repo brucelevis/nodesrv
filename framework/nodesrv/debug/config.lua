@@ -89,5 +89,9 @@ Config =
             --['/%w+%.css'] = '',
         },
     },
+
+    mydbconf = {
+        test = { host = '127.0.0.1', user = 'root', port = 3306, password = '0987abc123'},
+    }
 }
 

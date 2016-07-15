@@ -92,8 +92,8 @@ for _, v in pairs(Config.loglevel) do
     Log.openlevel(Log[v])
 end
 
-Pblua.import_dir(string.format('%s/proto', Config.asset_dir))
-Pblua.import_dir(string.format('%s/dbproto', Config.asset_dir))
+import_proto(string.format('%s/proto', Config.asset_dir))
+import_proto(string.format('%s/dbproto', Config.asset_dir))
 
 --进入游戏
 require(node_conf.mainfile)
