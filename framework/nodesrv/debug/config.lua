@@ -11,18 +11,19 @@ Config =
     --拓扑结构
     srvgrap = 
     {
-        [1] = {4},
-        [4] = {1, 3},
-        [3] = {4},
+        [1] = {300},
+        [100] = {300},
+        [200] = {300},
+        [300] = {100, 200, 1},
     },
 
     --服务列表
     srvlist = 
     {
-        [0] = {nodeid = 0, srvname = 'test',       bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9089,    mainfile = 'test/main'},
-        [1] = {nodeid = 1, srvname = 'gatesrv1',   bin = 'bin/gatesrv',    host = '127.0.0.1', port = 9090,    mainfile = 'gatesrv/main'},
-        [3] = {nodeid = 3, srvname = 'dbsrv1',     bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9092,    mainfile = 'dbsrv/main'},
-        [4] = {nodeid = 4, srvname = 'localsrv',   bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9093,    mainfile = 'localsrv/main'},
+        [1] =   {nodeid = 1,    srvname = 'adminsrv',   bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9089,    mainfile = 'adminsrv/main'},
+        [100] = {nodeid = 100,  srvname = 'gatesrv1',   bin = 'bin/gatesrv',    host = '127.0.0.1', port = 9090,    mainfile = 'gatesrv/main'},
+        [200] = {nodeid = 200,  srvname = 'dbsrv1',     bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9092,    mainfile = 'dbsrv/main'},
+        [300] = {nodeid = 300,  srvname = 'localsrv',   bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9093,    mainfile = 'localsrv/main'},
     },
     test = {host = '127.0.0.1', port = 12341},
 
@@ -87,7 +88,7 @@ Config =
         --路由
         route = {
             ['/static'] = '/home/ljw/neox/framework/nodesrv/debug/asset/script/gatesrv',
-            ['/static'] = '/Users/lujingwei/Documents/nodesrv2/framework/nodesrv/debug/asset/script/gatesrv',
+--            ['/static'] = '/Users/lujingwei/Documents/nodesrv2/framework/nodesrv/debug/asset/script/gatesrv',
             --['/%w+%.css'] = '',
         },
     },

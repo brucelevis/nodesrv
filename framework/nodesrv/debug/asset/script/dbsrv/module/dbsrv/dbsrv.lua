@@ -29,11 +29,13 @@ end
 local function select_from_mysql(uid, table_name)
     local conn = select_mysql_connection(uid)
     if not conn then
+        logerr('mysql not connect')
         return false
     end
     local sql_str = string.format('SELECT * FROM %s where uid=%d', table_name, uid)
-    local cursor = Mysql.select(conn, sql_str)
+    local cursor = conn:select(sql_str)
     if not cursor then
+        logerr('table is not data')
         return false
     end
     local result = cursor[1] and cursor[1] or nil
@@ -209,9 +211,9 @@ function set_to_mysql(srvid, uid, callback, ...)
         loginfo(string.format('set_to_mysql uid(%d).%s', uid, table_name))
         if pb_class.binary then
             local table_bin = msg:tostring()
-            local sql_str = string.format("replace into %s (uid, bin, updatetime) VALUES (%d, '%s', %d)", table_name, uid, Mysql.escape(conn, table_bin), timenow)
+            local sql_str = string.format("replace into %s (uid, bin, updatetime) VALUES (%d, '%s', %d)", table_name, uid, conn:escape(table_bin), timenow)
             loginfo(sql_str)
-            if not Mysql.command(conn, sql_str) then
+            if not conn:command(sql_str) then
                 logerr('%s replace fail', table_name)
                 return
             end
@@ -230,15 +232,15 @@ function set_to_mysql(srvid, uid, callback, ...)
                 if field.type == 'int' then
                     sql_str = sql_str..value..','
                 elseif field.type == 'string' then
-                    sql_str = sql_str..'\''..Mysql.escape(conn, value)..'\','
+                    sql_str = sql_str..'\''..conn:escape(value)..'\','
                 elseif field.type == 'message' then
                     print(field_name, value)
-                    sql_str = sql_str..'\''..Mysql.escape(conn, value:tostring())..'\','
+                    sql_str = sql_str..'\''..conn:escape(value:tostring())..'\','
                 end
             end
             sql_str = sql_str..timenow..')'
             loginfo(sql_str)
-            if not Mysql.command(conn, sql_str) then
+            if not conn:command(sql_str) then
                 logerr('%s expand fail', table_name)
                 return
             end

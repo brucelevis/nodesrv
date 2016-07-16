@@ -23,11 +23,16 @@ function clearpid()
 end
 
 function recordpid()
-    --if File.exists('pid') then
-        --loginfo('pid file exists')
-        --os.exit(1)
-        --return
-    --end
+    if File.exists('pid') then
+        local file = io.open('pid', 'r')
+        local pid = file:read()
+        file:close()
+        if File.exists(string.format('/proc/%s', pid)) then
+            loginfo('pid file exists')
+            os.exit(1)
+        end
+    end
+
     local pid = System.getpid()
     local file = io.open('pid', 'w+')
     file:write(pid)
@@ -85,6 +90,7 @@ if is_daemon then
     local d = os.date('*t')
     Log.stdout2file(string.format('%s_%04d%02d%02d', Config.srvname, d.year, d.month, d.day))
 end
+
 recordpid()
 
 Log.closealllevel()

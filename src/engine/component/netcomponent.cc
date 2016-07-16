@@ -194,7 +194,11 @@ int NetComponent::dispatch(int sockfd, char* data, size_t datalen)
     msg->sockfd = sockfd;
     msg->data = data;
     msg->datalen = datalen;
+    //为了LUA的pushstring
+    char lastc = msg->data[msg->datalen];
+    msg->data[msg->datalen] = 0;
     int ir = this->entity->recv(msg);
+    msg->data[msg->datalen] = lastc;
     return ir;
 }
 
@@ -270,7 +274,7 @@ int NetComponent::send(int sockfd, const void* data, size_t size)
     {
         return 0;
     }
-    //LOG_DEBUG("entity[%d] send %ld to sockfd(%d)\n", this->entity->id, size, sockfd);
+    LOG_DEBUG("entity[%d] send %ld to sockfd(%d)\n", this->entity->id, size, sockfd);
     memcpy(buf, data, size);
     Sendbuf::flush(sockfd, buf, size);
     this->create_file_event(sockfd, AE_WRITABLE, _ev_writable, this);
@@ -280,6 +284,11 @@ int NetComponent::send(int sockfd, const void* data, size_t size)
 
 int NetComponent::send_str(int sockfd, const char* data)
 {
+    if (data == NULL)
+    {
+        LOG_ERROR("data is nil");
+        return 0;
+    }
     return send(sockfd, data, strlen(data));
 }
 

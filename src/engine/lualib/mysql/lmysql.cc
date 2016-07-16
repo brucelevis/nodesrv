@@ -277,7 +277,7 @@ static luaL_Reg lua_metatable[] =
     {"select", lselect},
     {"command", lcommand},
     {"affected_rows", laffected_rows},
-    {"e", lreal_escape_string},
+    {"escape", lreal_escape_string},
     {"close", lclose},
     {"ping", lping},
     {"__gc", lclose},

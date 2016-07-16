@@ -62,13 +62,16 @@ int ScriptComponent::recv(Message* msg)
     lua_pushfunction(funcname);
     tolua_pushusertype(L, this, "ScriptComponent");
     tolua_pushusertype(L, msg, "Message");
-    if (lua_pcall(L, 2, 0, 0) != 0)
+    if (lua_pcall(L, 2, 1, 0) != 0)
     {
         printf("ScriptComponent %s recv error %s\n", this->modname, lua_tostring(L, -1));
         lua_printstack();
+        return 0;
+    } else 
+    {
+        int result = (int)lua_tonumber(L, -1);
+        lua_pop(L, lua_gettop(L));
+        return result;
     }
-    lua_pop(L, lua_gettop(L));
-    return 0;
 }
-
 

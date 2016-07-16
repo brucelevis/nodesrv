@@ -32,6 +32,7 @@ loginfo = function(format, ...) Log.info(string.format('[%s]'..format, _NAME or 
 logwarn = function(format, ...) Log.info(string.format('[%s]'..format, _NAME or '', ...)) end
 logerr = function(format, ...) Log.info(string.format('[%s]'..format, _NAME or '', ...)) end
 logmsg = function(format, ...) Log.msg(string.format('[%s]'..format, _NAME or '', ...)) end
+logdebug = function(format, ...) Log.debug(string.format('[%s]'..format, _NAME or '', ...)) end
 
 --print('Config = ')
 --print(Json.encode(Config))

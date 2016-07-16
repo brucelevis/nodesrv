@@ -801,7 +801,7 @@ int Node::post(lua_State* L)
     Entity* entity = find_entity(0);
     if(!entity)
     {
-        LOG_ERROR("entity 0 not found");
+        LOG_ERROR("entity 0 not found, rpc need entity 0");
         return 0;
     }
     RPCComponent* rpc = dynamic_cast<RPCComponent *>(entity->get_component(RPCComponent::type));

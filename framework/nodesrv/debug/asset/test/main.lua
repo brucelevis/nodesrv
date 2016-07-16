@@ -1,10 +1,10 @@
 
-table.insert(Mod.search_path, string.format('%s/test/module', Config.asset_dir))
 package.path = string.format('%s;%s/test/module/?.lua', package.path, Config.asset_dir)
 
 require('test/entity/client')
-
-mysrv:create_entity_local('ClientEntity')
+require('test/module/login/main')
+require('test/module/player/main')
+require('test/module/scene/main')
 
 local function run_func(mod_name, func_name)
     local mod = _G[string.cap(mod_name)]
@@ -31,18 +31,6 @@ if url then
     func_name = pats[2]
 end
 
-local root_dir = string.format('%s/test/module', Config.asset_dir)
-local files = File.listdir(root_dir)
-if not files then
-    print(string.format('dir(%s) not exists', root_dir))
-    os.exit(1)
-end
---加载模块
-for _, file in pairs(files) do
-    if file.type == File.TYPE_DIR then
-        import(file.name)
-    end
-end
 --执行函数
 run_func(mod_name, func_name)
 os.exit(0)

@@ -36,7 +36,6 @@ end
 --功能:登陆成功
 --@player
 function player_login(player)
-    local msg = Pblua.msgnew('login.LOGIN')
     local uid = player.uid
     local user = player.playerdata.user
     local last_login_time = user.last_login_time
@@ -45,6 +44,9 @@ function player_login(player)
         loginfo(err)
     end
     user.last_login_time = os.time()
+
+    local msg = Pblua.msgnew('login.LOGIN')
+    msg.uid = uid
     Player.reply(player, msg)
 end
 

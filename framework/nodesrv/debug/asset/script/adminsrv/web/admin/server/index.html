@@ -1,0 +1,22 @@
+
+<div>
+    <table id='srvtable'>
+        <tr><td>id</td><td>名字</td><td>地址</td><td>端口</td><td>进程id</td><td>操作</td></tr>
+        #{for _, srv in pairs(srvlist) do}#
+        <tr>
+            <td>#{=srv.nodeid}#</td>
+            <td>#{=srv.srvname}#</td>
+            <td>#{=srv.host}#</td>
+            <td>#{=srv.port}#</td>
+            <td>#{=srv.pid or ''}#</td>
+            <td>
+                #{if srv.pid then}#
+                <a href=''>关闭</a>
+                #{else}#
+                <a href=''>启动</a>
+                #{end}#
+            </td>
+        </tr>
+        #{end}#
+    </table>
+</div>

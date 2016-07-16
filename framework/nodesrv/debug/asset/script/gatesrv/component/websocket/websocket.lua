@@ -31,29 +31,28 @@ function recv_close_session(self, msg)
 end
 
 function recv_net_packet(self, msg)
-    logmsg('recv %s', msg.payload:get_buffer())
-    --local msgname = msg.payload:read_utf8()
-    --loginfo('RECV NET PACKET %s', msgname)
+    local msgname = msg.payload:read_utf8()
+    loginfo('RECV NET PACKET %s', msgname)
 
-    --local reply = msg.payload:read_protobuf(msgname, msg.payload:size())
-    --logmsg(reply:debug_string())
+    local reply = msg.payload:read_protobuf(msgname, msg.payload:size())
+    logmsg(reply:debug_string())
 
-    --local pats = string.split(msgname, '.')
-    --local modname = pats[1]
-    --local funcname = pats[2]
-    --local mod = _G[string.cap(modname)]
-    --if not mod then
-        --logerr('mod(%s) not found', msgname)
-        --return
-    --end
-    --local func = mod['MSG_'..funcname]
-    --if not func then
-        --logerr('func(msgname) not found', msgname)
-        --return
-    --end
-    --func(msg.sid, reply)
+    local pats = string.split(msgname, '.')
+    local modname = pats[1]
+    local funcname = pats[2]
+    local mod = _G[string.cap(modname)]
+    if not mod then
+        logerr('mod(%s) not found', msgname)
+        return
+    end
+    local func = mod['MSG_'..funcname]
+    if not func then
+        logerr('func(msgname) not found', msgname)
+        return
+    end
+    func(msg.sid, reply)
 
-    --logmsg('RECV NET PACKET %s FINISH', msgname)
+    logmsg('RECV NET PACKET %s FINISH', msgname)
 end
 
 

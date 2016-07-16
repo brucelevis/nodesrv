@@ -1,6 +1,9 @@
 
+adminsrv:
+	bin/logicsrv adminsrv
+
 test:
-	bin/logicsrv test Login.login
+	bin/test Login.login
 
 localsrv:
 	bin/logicsrv localsrv
@@ -23,3 +26,12 @@ nodesrv:
 install:
 	rm -rf bin/gatesrv
 	ln -s ../../gatesrv/gatesrv bin/gatesrv
+
+start:
+	bin/srvstartall
+
+stop:
+	bin/srvstopall
+
+list:
+	bin/srvlist
