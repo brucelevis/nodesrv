@@ -1,4 +1,0 @@
-module('Profiler', package.seeall)
-
-
-

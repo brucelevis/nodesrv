@@ -31,12 +31,6 @@ namespace Neox
     }
 
     
-    int update(long long cur_tick)
-    {
-        NodeMgr::update(cur_tick);
-        return 0;
-    }
-
     static void sig_int(int b)
     {
         LOG_INFO("sig_int\n");
@@ -118,7 +112,7 @@ namespace Neox
 
     void loop()
     {
-        NodeMgr::update(time(NULL));
+        NodeMgr::runloop();
     }
 
     int lua_openlibs(lua_State* L)

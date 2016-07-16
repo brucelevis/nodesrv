@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Tue Jul 26 16:32:03 2016.
+** Generated automatically by tolua++-1.0.92 on Sat Jul 16 23:25:37 2016.
 */
 
 #ifndef __cplusplus
@@ -168,35 +168,6 @@ static int tolua_neox_Neox_main00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'main'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* function: Neox::update */
-#ifndef TOLUA_DISABLE_tolua_neox_Neox_update00
-static int tolua_neox_Neox_update00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isnumber(tolua_S,1,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  long long cur_tick = ((long long)  tolua_tonumber(tolua_S,1,0));
-  {
-   int tolua_ret = (int)  Neox::update(cur_tick);
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'update'.",&tolua_err);
  return 0;
 #endif
 }
@@ -2846,29 +2817,27 @@ static int tolua_set_Node_name(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* function: NodeMgr::update */
-#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_update00
-static int tolua_neox_NodeMgr_update00(lua_State* tolua_S)
+/* function: NodeMgr::runloop */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_runloop00
+static int tolua_neox_NodeMgr_runloop00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isnumber(tolua_S,1,0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
+     !tolua_isnoobj(tolua_S,1,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
-  long long cur_tick = ((long long)  tolua_tonumber(tolua_S,1,0));
   {
-   NodeMgr::update(cur_tick);
+   NodeMgr::runloop();
   }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'update'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'runloop'.",&tolua_err);
  return 0;
 #endif
 }
@@ -7251,7 +7220,6 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
   tolua_module(tolua_S,"Neox",0);
   tolua_beginmodule(tolua_S,"Neox");
    tolua_function(tolua_S,"main",tolua_neox_Neox_main00);
-   tolua_function(tolua_S,"update",tolua_neox_Neox_update00);
    tolua_function(tolua_S,"create_node_remote",tolua_neox_Neox_create_node_remote00);
    tolua_function(tolua_S,"create_gameobject_local",tolua_neox_Neox_create_gameobject_local00);
    tolua_function(tolua_S,"fork_daemon",tolua_neox_Neox_fork_daemon00);
@@ -7370,7 +7338,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
   tolua_module(tolua_S,"NodeMgr",0);
   tolua_beginmodule(tolua_S,"NodeMgr");
-   tolua_function(tolua_S,"update",tolua_neox_NodeMgr_update00);
+   tolua_function(tolua_S,"runloop",tolua_neox_NodeMgr_runloop00);
    tolua_function(tolua_S,"find_node",tolua_neox_NodeMgr_find_node00);
    tolua_function(tolua_S,"create_temp_node",tolua_neox_NodeMgr_create_temp_node00);
    tolua_function(tolua_S,"create_node_local",tolua_neox_NodeMgr_create_node_local00);

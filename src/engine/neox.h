@@ -44,7 +44,6 @@ extern "C" {
 namespace Neox
 {
     int main(int argc, char** argv);
-    int update(long long cur_tick);
 
     Node* create_node_remote(int nodeid);
 

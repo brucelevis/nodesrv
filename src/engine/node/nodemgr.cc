@@ -88,14 +88,25 @@ namespace NodeMgr
     {
 
     }
-    
-    void update(long long cur_tick)
+
+    static int update_proc(struct aeEventLoop *eventLoop, long long id, void *clientData)
     {
-        int usec_per_frame = 1000000 / frame_rate;
+        return 0;
+    }
+
+    void runloop()
+    {
+       // aeCreateTimeEvent(loop, 0, update_proc, NULL, NULL);
+        static int usec_per_frame = 1000000 / frame_rate;
+
         for (;;)
         {
             struct timeval t1;
             gettimeofday(&t1, NULL);
+
+            time_t cur_tick = time(NULL);
+
+            aeOnce(loop);
 
             for (int i = node_vector_.size() - 1; i >= 0; --i)
             {
@@ -103,18 +114,20 @@ namespace NodeMgr
                 //LOG_DEBUG("node[%d] addr(%lld) update", node->get_id(), (long long)node);
                 node->update(cur_tick);
             }
-            aeOnce(loop);
 
             struct timeval t2;
             gettimeofday(&t2, NULL);
             int diff = (t2.tv_sec - t1.tv_sec) * 1000000 + t2.tv_usec - t1.tv_usec;
-            //LOG_INFO("use %d sleep %d", diff, usec_per_frame - diff);
+    //        LOG_INFO("use %d sleep %d", diff, usec_per_frame - diff);
             if (diff < usec_per_frame)
             {
                 usleep(usec_per_frame - diff);
-            }
+            } 
+
+            aeOnce(loop);
         }
-    }
+    } 
+
 
     Node* create_temp_node()
     {
