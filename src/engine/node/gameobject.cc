@@ -17,6 +17,7 @@ GameObject::GameObject()
     this->data = 0;
     this->node = 0;
     this->id = 0;
+    this->name[0] = 0;
 }
 
 GameObject::~GameObject()
@@ -145,6 +146,12 @@ void GameObject::update(uint64_t cur_tick)
         Component* component = comp_vector[i];
         component->update(cur_tick);
     }
+    //处理节点
+    for (int i = children.size() - 1; i >= 0; i--)
+    {
+        GameObject* object = children[i];
+        object->update(cur_tick);
+    } 
 }
 
 int GameObject::reg_msg(uint32_t id, Component* component)
@@ -297,5 +304,29 @@ void GameObject::awake()
         component->awake();
     }
 }
+
+void GameObject::obj_dump(int deep)
+{
+    static char tab[1024];
+    tab[0] = 0;
+    for (int i = 0; i < deep; i++)
+    {
+        strcat(tab, "  ");
+    }
+    LOG_INFO("%s|-%s", tab, this->name);
+    for (uint32_t i = 0; i < comp_vector.size(); i++)
+    {
+        Component* component = comp_vector[i];
+        LOG_INFO("%s  <%s>", tab, component->get_type()->name);
+    }
+    for (uint32_t i = 0; i < children.size(); i++)
+    {
+        GameObject* obj = children[i];
+        obj->obj_dump(deep + 1);
+    }
+}
+
+
+
 
 

@@ -36,15 +36,37 @@ end
 
 function recv_net_packet(self, msg)
     --loginfo('recv_net_packet %d', msg.payload:size())
+    local sid = msg.sid
     local msgname = msg.payload:read_utf8()
     loginfo('RECV NET PACKET %s', msgname)
 
     local reply = msg.payload:read_protobuf(msgname, msg.payload:size())
+    if not reply then
+        return
+    end
     logmsg(reply:debug_string())
 
     local pats = string.split(msgname, '.')
     local modname = pats[1]
     local funcname = pats[2]
+
+    local router =  Config.gatesrv.router[modname]
+    if router then
+        if router.scenesrv then
+            local player = Login.player_session[sid]
+            if not player then
+                logerr('player not found')
+                return
+            end
+            if not player.scenesrv then
+                logerr('player is not in scenesrv')
+                return
+            end
+            POST(player.scenesrv, 'Player.RECV', player.uid, reply)
+        end
+        return
+    end
+
     local mod = _G[string.cap(modname)]
     if not mod then
         logerr('mod(%s) not found', msgname)
@@ -65,6 +87,6 @@ function reply(sid, reply)
 end
 
 function update(self)
-    loginfo('asfsaf')
+
 end
 

@@ -30,7 +30,7 @@ end
         --return
     --end
     --player.scenesrv = scenesrv
-    --local msg = Pblua.msgnew('login.ENTER')
+    --local msg = Pblua.msgnew('login.LOGIN')
     --msg.srvid = scenesrv
     --Client.reply(player.sid, msg)
 --end
@@ -68,7 +68,10 @@ function MSG_LOGIN(sid, msg)
         --加锁
         player_manager[uid] = player
         player_session[sid] = player
-        Player.reply(sid, msg)
+
+        local scenesrv = scenesrv1
+        player.scenesrv = scenesrv
+        POST(scenesrv, 'Login.PLAYER_ENTER', player.uid)
     end
 end
 
@@ -76,7 +79,7 @@ end
 function player_disconnect(sid)
     local player = player_session[sid]
     if not player then
-        logerr('player not found')
+        logerr('player not found sid(%d)', sid)
         return
     end
     player_session[player.sid] = nil

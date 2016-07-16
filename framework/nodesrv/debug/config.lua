@@ -5,9 +5,8 @@
 --部署配置
 Config = 
 {
-
-    --loglevel = {"MSG", "INFO", "ERROR", "WARN", "DEBUG"},
-    loglevel = {"MSG", "INFO", "ERROR", "WARN"},
+    loglevel = {"MSG", "INFO", "ERROR", "WARN", "DEBUG"},
+    --loglevel = {"MSG", "INFO", "ERROR", "WARN"},
     --拓扑结构
     srvgrap = 
     {
@@ -117,6 +116,12 @@ Config =
 
     mydbconf = {
         test = { dbname = 'test', host = '127.0.0.1', user = 'root', port = 3306, password = '0987abc123'},
-    }
+    },
+
+    gatesrv = {
+        router = {
+            user = {scenesrv = true },
+        },
+    },
 }
 

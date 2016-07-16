@@ -3,7 +3,7 @@ package user;
 
 //获取玩家的基础数据
 //@SEND @RECV
-message GETDATA
+message GET_USER_DATA
 {
     //元宝，钻石
     optional int32 diamond = 1[default = 0];

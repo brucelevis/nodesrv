@@ -118,7 +118,7 @@ class Node
         char ip_[64];
         unsigned short port_;
         std::map<int, GameObject*> gameobject_map_;
-        std::vector<GameObject*> gameobject_vector_;
+        GameObject* root_gameobject;
         bool is_local_;
         pthread_t tid_;
         aeEventLoop* loop_;

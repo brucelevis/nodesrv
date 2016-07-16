@@ -55,7 +55,6 @@ static void sig_int(int b)
     exit(0);
 }
 
-
 static int time_diff(struct timeval *t1, struct timeval *t2)
 {
     int usec = (t2->tv_sec - t1->tv_sec) * 1000000 + t2->tv_usec - t1->tv_usec;
@@ -89,6 +88,7 @@ Node::Node(int nodeid)
     port_ = 0;
     name[0] = 0;
     this->is_connect_ = false;
+    root_gameobject = NULL;
 }
 
 void Node::main()
@@ -126,7 +126,7 @@ void Node::ev_accept(int listenfd)
     {
         return;
     }
-    LOG_INFO("accept a new socket");
+    LOG_INFO("accept a new socket sockfd(%d)", sockfd);
     //Sendbuf::create(sockfd);
     Recvbuf::create(sockfd, 1024);
     create_file_event(sockfd, AE_READABLE, _ev_readable, this);
@@ -141,7 +141,7 @@ void Node::ev_readable(int sockfd)
         char* wptr= Recvbuf::getwptr(sockfd);
         int buflen = Recvbuf::bufremain(sockfd);
         int ir = ::recv(sockfd, wptr, buflen, 0);
-        LOG_DEBUG("node[%d] real recv %d", this->id, ir);
+        LOG_DEBUG("node[%d] real recv %d sockfd(%d)", this->id, ir, sockfd);
         if (ir == 0 || (ir == -1 && errno != EAGAIN))
         {
             real_close(sockfd, "peer close");
@@ -182,7 +182,7 @@ void Node::ev_writable(int sockfd)
     {
         if (send_msg_queue.size() <= 0)
         {
-            LOG_DEBUG("node[%d] delete write event", this->id);
+            LOG_DEBUG("node[%d] delete write event sockfd(%d)", this->id, sockfd);
             delete_file_event(sockfd, AE_WRITABLE);
             break;
         }
@@ -352,13 +352,10 @@ void Node::update(long long cur_tick)
     {
         real_connect();
     }
-
-    //处理节点
-    for (int i = gameobject_vector_.size() - 1; i >= 0; i--)
+    if (root_gameobject != NULL)
     {
-        GameObject* object = gameobject_vector_[i];
-        object->update(cur_tick);
-    } 
+        root_gameobject->update(cur_tick);
+    }
 }
 
 
@@ -446,10 +443,9 @@ void Node::recv_gameobject_msg(Message* msg)
     //广播 
     if (dst_objectid == 0)
     {
-        for (int i = gameobject_vector_.size() - 1; i >= 0; i--)
+        if (root_gameobject != NULL)
         {
-            GameObject* object = gameobject_vector_[i];
-            object->recv(msg);
+            root_gameobject->recv(msg);
         }
     } else
     {
@@ -588,7 +584,10 @@ int Node::add_gameobject(GameObject* object)
 {
     LOG_DEBUG("node[%d] add object(%d)", this->id, object->id);
     gameobject_map_[object->id] = object; 
-    gameobject_vector_.push_back(object);
+    if (root_gameobject == NULL)
+    {
+        root_gameobject = object;
+    }
     object->node= this;
     return 0;
 }

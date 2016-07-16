@@ -62,6 +62,7 @@ class GameObject
         int del_child(GameObject* obj);
         int child_index(GameObject* obj);
         GameObject* get_parent();
+        void obj_dump(int deep = 0);
 
         //保存相关
     public:

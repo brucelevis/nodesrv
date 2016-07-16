@@ -7,10 +7,10 @@ function login(player)
 
     --Player.send(player, 'login.LOGIN', {uid = player.uid, params = '3333'})
     --local reply = Player.recv(player, 'login.LOGIN')
-    Player.send(player, 'login.ENTER', {srvid = 400})
-    local reply = Player.recv(player, 'login.ENTER')
-    Player.send(player, 'login.ENTER', {srvid = 400})
-    local reply = Player.recv(player, 'login.ENTER')
+    --Player.send(player, 'login.ENTER', {srvid = 400})
+    --local reply = Player.recv(player, 'login.ENTER')
+    --Player.send(player, 'login.ENTER', {srvid = 400})
+    --local reply = Player.recv(player, 'login.ENTER')
 end
 
 function ping(player)

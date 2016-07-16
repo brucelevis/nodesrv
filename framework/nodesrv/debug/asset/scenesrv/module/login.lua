@@ -53,13 +53,13 @@ end
 --功能:登陆成功
 --@player
 function player_login(player)
-    local msg = Pblua.msgnew('login.ENTER')
     local uid = player.uid
     local user = player.playerdata.user
     local rt, err = pcall(Player.init, player)
     if not rt then
         loginfo(err)
     end
+    local msg = Pblua.msgnew('login.LOGIN')
     Player.reply(player, msg)
 end
 

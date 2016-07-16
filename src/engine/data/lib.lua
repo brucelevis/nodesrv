@@ -25,9 +25,11 @@ function instantiate(conf)
                 end
             end
         elseif k == __CHILDREN then
-            local child = instantiate(v)
-            child.name = k
-            object:add_child(child)
+            for k2, v2 in pairs(v) do
+                local child = instantiate(v2)
+                child.name = k2
+                object:add_child(child)
+            end
         else
             object[k] = v
         end
