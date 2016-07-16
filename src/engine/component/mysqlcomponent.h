@@ -2,7 +2,7 @@
 #define _MYSQL_COMPONENT_H_
 
 extern "C" {
-#include <mysql.h>
+#include <mysql/mysql.h>
 }
 #include <stdio.h>
 

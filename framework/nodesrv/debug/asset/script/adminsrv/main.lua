@@ -2,7 +2,7 @@
 require('adminsrv/entity/entity')
 require('lib/http2')
 require('lib/mydb')
-require('adminsrv/component/websocket/websocket')
+require('adminsrv/component/websocket')
 require('adminsrv/web/account/main')
 require('adminsrv/web/admin/main')
 require('adminsrv/web/admin/server/main')

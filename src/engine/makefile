@@ -2,7 +2,7 @@
 
 ROOT_PATH = ../..
 
-INCLUDE_DIRS =-I. -I$(ROOT_PATH)/3rd/protobuf/src -I$(ROOT_PATH)/3rd/lua/src -I$(ROOT_PATH)/3rd/mysql/include -I$(ROOT_PATH)/3rd/hiredis -I$(ROOT_PATH)/3rd/tolua++ -I$(ROOT_PATH)/3rd/http-parser -Ilualib 
+INCLUDE_DIRS =-I. -I$(ROOT_PATH)/include -I$(ROOT_PATH)/include/lua -I$(ROOT_PATH)/include/tolua++ -Ilualib 
 
 LIB_DIRS =
 

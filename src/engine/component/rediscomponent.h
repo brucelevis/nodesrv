@@ -2,7 +2,7 @@
 #define _REDIS_COMPONENT_H_
 
 extern "C" {
-#include <hiredis.h>
+#include <hiredis/hiredis.h>
 }
 #include <stdio.h>
 

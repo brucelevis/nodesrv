@@ -32,6 +32,13 @@ install:
 	cp -rf lua/src/liblua.a ../lib/liblua.a
 	cp -rf tolua++/tolua++.a ../lib/tolua++.a
 	cp -rf /usr/local/lib/libprotobuf.a ../lib/libprotobuf.a
+	cp -rf mysql/lib/libmysqlclient.a ../lib/libmysqlclient.a
+	rm -rf ../include
+	cp -rf /usr/local/include/google ../include
+	mkdir ../include/mysql;cp -rf mysql/include/* ../include/mysql
+	mkdir ../include/lua;cp -rf lua/src/*.h ../include/lua
+	mkdir ../include/tolua++;cp -rf tolua++/*.h ../include/tolua++
+	mkdir ../include/hiredis;cp -rf hiredis/*.h ../include/hiredis;cp -rf hiredis/adapters ../include/hiredis
 
 clean:
 	rm -rf hiredis

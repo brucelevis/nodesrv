@@ -1,0 +1,19 @@
+
+1.安装依赖库
+在3rd下执行make进行编译
+在3rd下执行make install进行安装
+
+
+2.编译引擎
+引擎目录 【src/engine】
+在目录下执行 make 进行编译
+
+
+3.框架 framework/nodesrv
+分别编译
+framework/nodesrv/gatesrv
+framework/nodesrv/logicsrv
+framework/nodesrv/scenesrv
+执行
+执行目录是，framework/nodesrv/debug
+进入这个目录

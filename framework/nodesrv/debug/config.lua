@@ -27,6 +27,8 @@ Config =
     },
     test = {host = '127.0.0.1', port = 12341},
 
+
+    --数据库初始化
     dbinit = 
     {
         mysql_conf = 
@@ -47,11 +49,13 @@ Config =
         },
     },
 
+    --本服的配置
     localsrv = {
         save_interval = 3600,
         playerdata = {'user', 'task', 'achieve', },
     },
 
+    --db服的配置
     dbsrv = 
     {
         host = '0.0.0.0', port = 1234,

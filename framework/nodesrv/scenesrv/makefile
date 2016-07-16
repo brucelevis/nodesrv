@@ -1,7 +1,7 @@
 
 ROOT_PATH = ../../..
 
-INCLUDE_DIRS=-I. -I$(ROOT_PATH)/3rd/protobuf/src -I$(ROOT_PATH)/3rd/lua/src -I$(ROOT_PATH)/3rd/mysql/include -I$(ROOT_PATH)/3rd/hiredis -I$(ROOT_PATH)/3rd/tolua++ -I$(ROOT_PATH)/src/engine
+INCLUDE_DIRS=-I. -I$(ROOT_PATH)/include -I$(ROOT_PATH)/include/lua -I$(ROOT_PATH)/include/tolua++ -I$(ROOT_PATH)/src/engine
 
 LIBS =$(ROOT_PATH)/src/engine/libneox.a $(ROOT_PATH)/lib/tolua++.a $(ROOT_PATH)/lib/liblua.a $(ROOT_PATH)/3rd/mysql/lib/libmysqlclient.a $(ROOT_PATH)/lib/libhiredis.a $(ROOT_PATH)/lib/libprotobuf.a
 
