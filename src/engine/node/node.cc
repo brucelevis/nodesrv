@@ -604,13 +604,17 @@ uint32_t Node::get_id()
 int Node::add_gameobject(GameObject* object)
 {
     LOG_DEBUG("node[%d] add object(%d)", this->id, object->id);
-    gameobject_map_[object->id] = object; 
     if (root_gameobject == NULL)
     {
         root_gameobject = object;
+        gameobject_map_[0] = object; 
     } else 
     {
         root_gameobject->add_child(object);
+        if (object->id != 0)
+        {
+            gameobject_map_[object->id] = object; 
+        }
     }
     object->node= this;
     return 0;

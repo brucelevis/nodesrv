@@ -7,7 +7,7 @@
 #include "lualib/redis/lredis.h"
 #include "lualib/json/ljson.h"
 #include "lualib/string/lstring.h"
-#include "lualib/os/los.h"
+#include "os/los.h"
 #include "lualib/srvapp/srvapp.h"
 #include "net/lsocket.h"
 
@@ -196,8 +196,8 @@ namespace Script
         luaopen_json(L);
         luaopen_cstring(L);
         luaopen_redis(L);
-        luaopen_myos(L);
         luaopen_mysql(L);
+        luaopen_myos(L);
         luaopen_srvapp(L);
         luaopen_socket(L);
     }

@@ -1,5 +1,5 @@
 
-bin/telnet 'Admin.RELOAD()'
+bin/telnet 'reload'
 
 
 

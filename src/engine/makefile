@@ -26,6 +26,7 @@ SOURCE = $(wildcard \
 		 encrypt/*.cc\
 		 unity/*.cc\
 		 date/*.cc\
+		 os/*.cc\
 		 display/*.cc\
 		 lualib/redis/*.cc\
 		 lualib/json/*.cc\
@@ -34,7 +35,6 @@ SOURCE = $(wildcard \
 		 lualib/srvapp/*.cc\
 		 lualib/bit/*.cc\
 		 lualib/pblua/*.cc\
-		 lualib/os/*.cc\
 		 lualib/mysql/*.cc\
 		 interface.cc\
 		 neox.cc\

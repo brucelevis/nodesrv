@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Thu Jul 28 20:13:45 2016.
+** Generated automatically by tolua++-1.0.92 on Sun Jul 17 02:34:51 2016.
 */
 
 #ifndef __cplusplus
@@ -31,6 +31,7 @@ TOLUA_API int  tolua_neox_open (lua_State* tolua_S);
 #include "display/transform.h"
 #include "display/vector3.h"
 #include "date/date.h"
+#include "unity/unityframe.h"
 
 /* function to release collected object via destructor */
 #ifdef __cplusplus
@@ -38,6 +39,13 @@ TOLUA_API int  tolua_neox_open (lua_State* tolua_S);
 static int tolua_collect_Type (lua_State* tolua_S)
 {
  Type* self = (Type*) tolua_tousertype(tolua_S,1,0);
+	delete self;
+	return 0;
+}
+
+static int tolua_collect_UnityFrame (lua_State* tolua_S)
+{
+ UnityFrame* self = (UnityFrame*) tolua_tousertype(tolua_S,1,0);
 	delete self;
 	return 0;
 }
@@ -146,6 +154,7 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"GameObject");
  tolua_usertype(tolua_S,"Message");
  tolua_usertype(tolua_S,"NetComponent");
+ tolua_usertype(tolua_S,"UnityFrame");
  tolua_usertype(tolua_S,"Router");
  tolua_usertype(tolua_S,"POSTComponent");
  tolua_usertype(tolua_S,"Buffer");
@@ -171,7 +180,7 @@ static int tolua_set_Neox_delta(lua_State* tolua_S)
   if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
-  Neox::delta = ((int64_t)  tolua_tonumber(tolua_S,2,0))
+  Neox::delta = ((uint64_t)  tolua_tonumber(tolua_S,2,0))
 ;
  return 0;
 }
@@ -2882,6 +2891,36 @@ static int tolua_set_Node_name(lua_State* tolua_S)
 #endif
  strncpy(self->name,tolua_tostring(tolua_S,2,0),64-1);
  return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: find_node of class  NodeMgr */
+#ifndef TOLUA_DISABLE_tolua_neox_NodeMgr_find_node00
+static int tolua_neox_NodeMgr_find_node00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"NodeMgr",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  int nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  {
+   Node* tolua_ret = (Node*)  NodeMgr::find_node(nodeid);
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'find_node'.",&tolua_err);
+ return 0;
+#endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -7096,6 +7135,368 @@ return Date::time(L);
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: new of class  UnityFrame */
+#ifndef TOLUA_DISABLE_tolua_neox_UnityFrame_new00
+static int tolua_neox_UnityFrame_new00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"UnityFrame",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   UnityFrame* tolua_ret = (UnityFrame*)  new UnityFrame();
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"UnityFrame");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  UnityFrame */
+#ifndef TOLUA_DISABLE_tolua_neox_UnityFrame_new00_local
+static int tolua_neox_UnityFrame_new00_local(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"UnityFrame",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   UnityFrame* tolua_ret = (UnityFrame*)  new UnityFrame();
+   tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"UnityFrame");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: delete of class  UnityFrame */
+#ifndef TOLUA_DISABLE_tolua_neox_UnityFrame_delete00
+static int tolua_neox_UnityFrame_delete00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UnityFrame",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UnityFrame* self = (UnityFrame*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'",NULL);
+#endif
+  delete self;
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: move of class  UnityFrame */
+#ifndef TOLUA_DISABLE_tolua_neox_UnityFrame_move00
+static int tolua_neox_UnityFrame_move00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UnityFrame",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,7,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,8,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,9,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UnityFrame* self = (UnityFrame*)  tolua_tousertype(tolua_S,1,0);
+  int objectid = ((int)  tolua_tonumber(tolua_S,2,0));
+  float src_x = ((float)  tolua_tonumber(tolua_S,3,0));
+  float src_y = ((float)  tolua_tonumber(tolua_S,4,0));
+  float src_z = ((float)  tolua_tonumber(tolua_S,5,0));
+  float dst_x = ((float)  tolua_tonumber(tolua_S,6,0));
+  float dst_y = ((float)  tolua_tonumber(tolua_S,7,0));
+  float dst_z = ((float)  tolua_tonumber(tolua_S,8,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'move'",NULL);
+#endif
+  {
+   self->move(objectid,src_x,src_y,src_z,dst_x,dst_y,dst_z);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'move'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: scale of class  UnityFrame */
+#ifndef TOLUA_DISABLE_tolua_neox_UnityFrame_scale00
+static int tolua_neox_UnityFrame_scale00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UnityFrame",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,7,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,8,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,9,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UnityFrame* self = (UnityFrame*)  tolua_tousertype(tolua_S,1,0);
+  int objectid = ((int)  tolua_tonumber(tolua_S,2,0));
+  float src_x = ((float)  tolua_tonumber(tolua_S,3,0));
+  float src_y = ((float)  tolua_tonumber(tolua_S,4,0));
+  float src_z = ((float)  tolua_tonumber(tolua_S,5,0));
+  float dst_x = ((float)  tolua_tonumber(tolua_S,6,0));
+  float dst_y = ((float)  tolua_tonumber(tolua_S,7,0));
+  float dst_z = ((float)  tolua_tonumber(tolua_S,8,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'scale'",NULL);
+#endif
+  {
+   self->scale(objectid,src_x,src_y,src_z,dst_x,dst_y,dst_z);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'scale'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: rorate of class  UnityFrame */
+#ifndef TOLUA_DISABLE_tolua_neox_UnityFrame_rorate00
+static int tolua_neox_UnityFrame_rorate00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UnityFrame",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,5,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,7,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,8,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,9,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UnityFrame* self = (UnityFrame*)  tolua_tousertype(tolua_S,1,0);
+  int objectid = ((int)  tolua_tonumber(tolua_S,2,0));
+  float src_x = ((float)  tolua_tonumber(tolua_S,3,0));
+  float src_y = ((float)  tolua_tonumber(tolua_S,4,0));
+  float src_z = ((float)  tolua_tonumber(tolua_S,5,0));
+  float dst_x = ((float)  tolua_tonumber(tolua_S,6,0));
+  float dst_y = ((float)  tolua_tonumber(tolua_S,7,0));
+  float dst_z = ((float)  tolua_tonumber(tolua_S,8,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'rorate'",NULL);
+#endif
+  {
+   self->rorate(objectid,src_x,src_y,src_z,dst_x,dst_y,dst_z);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'rorate'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: instantiate of class  UnityFrame */
+#ifndef TOLUA_DISABLE_tolua_neox_UnityFrame_instantiate00
+static int tolua_neox_UnityFrame_instantiate00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UnityFrame",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,4,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UnityFrame* self = (UnityFrame*)  tolua_tousertype(tolua_S,1,0);
+  const char* prefab = ((const char*)  tolua_tostring(tolua_S,2,0));
+  int objectid = ((int)  tolua_tonumber(tolua_S,3,0));
+  const char* objname = ((const char*)  tolua_tostring(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'instantiate'",NULL);
+#endif
+  {
+   self->instantiate(prefab,objectid,objname);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'instantiate'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: destroy of class  UnityFrame */
+#ifndef TOLUA_DISABLE_tolua_neox_UnityFrame_destroy00
+static int tolua_neox_UnityFrame_destroy00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UnityFrame",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UnityFrame* self = (UnityFrame*)  tolua_tousertype(tolua_S,1,0);
+  int objectid = ((int)  tolua_tonumber(tolua_S,2,0));
+  int delay = ((int)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroy'",NULL);
+#endif
+  {
+   self->destroy(objectid,delay);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'destroy'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: play_anim of class  UnityFrame */
+#ifndef TOLUA_DISABLE_tolua_neox_UnityFrame_play_anim00
+static int tolua_neox_UnityFrame_play_anim00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UnityFrame",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UnityFrame* self = (UnityFrame*)  tolua_tousertype(tolua_S,1,0);
+  int objectid = ((int)  tolua_tonumber(tolua_S,2,0));
+  const char* animname = ((const char*)  tolua_tostring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'play_anim'",NULL);
+#endif
+  {
+   self->play_anim(objectid,animname);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'play_anim'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: stop_anim of class  UnityFrame */
+#ifndef TOLUA_DISABLE_tolua_neox_UnityFrame_stop_anim00
+static int tolua_neox_UnityFrame_stop_anim00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"UnityFrame",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  UnityFrame* self = (UnityFrame*)  tolua_tousertype(tolua_S,1,0);
+  int objectid = ((int)  tolua_tonumber(tolua_S,2,0));
+  const char* animname = ((const char*)  tolua_tostring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'stop_anim'",NULL);
+#endif
+  {
+   self->stop_anim(objectid,animname);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'stop_anim'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* Open function */
 TOLUA_API int tolua_neox_open (lua_State* tolua_S)
 {
@@ -7226,6 +7627,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"NodeMgr","NodeMgr","",NULL);
   tolua_beginmodule(tolua_S,"NodeMgr");
+   tolua_function(tolua_S,"find_node",tolua_neox_NodeMgr_find_node00);
    tolua_function(tolua_S,"create_node_local",tolua_neox_NodeMgr_create_node_local00);
    tolua_function(tolua_S,"create_node_remote",tolua_neox_NodeMgr_create_node_remote00);
   tolua_endmodule(tolua_S);
@@ -7468,6 +7870,24 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"issameweek",tolua_neox_Date_issameweek00);
    tolua_function(tolua_S,"strftime",tolua_neox_Date_strftime00);
    tolua_function(tolua_S,"time",tolua_neox_Date_time00);
+  tolua_endmodule(tolua_S);
+  #ifdef __cplusplus
+  tolua_cclass(tolua_S,"UnityFrame","UnityFrame","",tolua_collect_UnityFrame);
+  #else
+  tolua_cclass(tolua_S,"UnityFrame","UnityFrame","",NULL);
+  #endif
+  tolua_beginmodule(tolua_S,"UnityFrame");
+   tolua_function(tolua_S,"new",tolua_neox_UnityFrame_new00);
+   tolua_function(tolua_S,"new_local",tolua_neox_UnityFrame_new00_local);
+   tolua_function(tolua_S,".call",tolua_neox_UnityFrame_new00_local);
+   tolua_function(tolua_S,"delete",tolua_neox_UnityFrame_delete00);
+   tolua_function(tolua_S,"move",tolua_neox_UnityFrame_move00);
+   tolua_function(tolua_S,"scale",tolua_neox_UnityFrame_scale00);
+   tolua_function(tolua_S,"rorate",tolua_neox_UnityFrame_rorate00);
+   tolua_function(tolua_S,"instantiate",tolua_neox_UnityFrame_instantiate00);
+   tolua_function(tolua_S,"destroy",tolua_neox_UnityFrame_destroy00);
+   tolua_function(tolua_S,"play_anim",tolua_neox_UnityFrame_play_anim00);
+   tolua_function(tolua_S,"stop_anim",tolua_neox_UnityFrame_stop_anim00);
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */

@@ -17,6 +17,7 @@ $cfile "file/file.h"
 $cfile "display/transform.h"
 $cfile "display/vector3.h"
 $cfile "date/date.h"
+$cfile "unity/unityframe.h"
 
 $lfile "data/lib.lua"
 

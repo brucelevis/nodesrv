@@ -39,7 +39,7 @@ public:
     /*
      * 查找节点
      */
-    static Node* find_node(int nodeid);
+    static Node* find_node(int nodeid);//tolua_export
 
     /*
      * 创建节点

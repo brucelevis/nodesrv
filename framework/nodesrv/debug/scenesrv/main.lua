@@ -10,5 +10,9 @@ function main()
     local root = mynode:create_gameobject_local('RootGameObject')
     mynode:create_gameobject_local('TankGameObject')
     root:obj_dump()
+
+    --同步帧
+    local frame = UnityFrame:new_local()
+    frame:play_anim(1, 'attack')
 end
 

@@ -74,6 +74,7 @@ loginfo('running dir(%s)', File.getcwd())
 
 --本地节点
 NodeMgr:create_node_local(Config.nodeid)
+_G[node_conf.srvname] = node_conf.nodeid
 if is_daemon then
     mynode:run_background()
     local d = os.date('*t')

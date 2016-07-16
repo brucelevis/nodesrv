@@ -3,7 +3,6 @@
 #include "lualib/json/json.h"
 #include "lualib/json/ljson.h"
 #include "lualib/srvapp/srvapp.h"
-#include "lualib/os/los.h"
 #include "lualib/string/lstring.h"
 #include "lualib/port/pb_port.h"
 #include "lualib/port/rmi_port.h"
@@ -11,6 +10,7 @@
 #include "lualib/redis/lredis.h"
 #include "lualib/mysql/lmysql.h"
 
+#include "os/los.h"
 #include "net/ae.h"
 #include "net/lae.h"
 #include "net/port.h"
