@@ -1,65 +1,71 @@
 module('Login', package.seeall)
 
+tmp_player_manager = tmp_player_manager or {}
 player_manager = player_manager or {
     --[uid] = player
 }
 player_count = player_count or 0
 
-function PLAYER_ENTER(localsrv, gatesrv, uid)
-    local player = player_manager[uid] 
-    if player then
-        player.gatesrv = gatesrv
-        return
-    end
-    player = {
-        gatesrv = gatesrv,
-        uid = uid
-    }
-    player_manager[uid] = player
-    POST(datasrv1, 'DbSrv.GET', uid, 'Login.msg_db_srv_get_playerdata', unpack(Config.scenesrv.playerdata))
+function PLAYER_ENTER(gatesrv, uid)
+    tmp_player_manager[uid] = gatesrv 
+    loginfo('player enter uid(%d)', uid)
+    POST(localsrv, 'Login.PLAYER_ENTER', uid)
 end
 
 function PLAYER_EXIT(localsrv, uid)
-    local player = player_manager[uid] 
-    if not player then
-        logerr('player not found')
-        return
-    end
-    player_exit(player)
-end
-
---功能:读取数据返回
-function msg_db_srv_get_playerdata(dbsrv, uid, result, ...) 
-    --如果没有锁住
+    loginfo('player exit uid(%d)', uid)
     local player = player_manager[uid]
     if not player then
-        logerr('player is exit')
+        logerr('player out found uid(%d)', uid)
+        POST(localsrv, 'Login.PLAYER_EXIT', uid)
         return
     end
-    if result == 0 then
-        logerr('load playerdata fail uid(%d)', uid)
+    player_logout(player)
+end
+
+--功能：可以上线
+function PLAYER_PASS(sockfd, uid)
+    local player = player_manager[uid]
+    if player then
+        logerr('player had online uid(%d)', uid)
         return
     end
-    local playerdata = {}
-    local args = {...}
-    for index, varname in pairs(Config.localsrv.playerdata) do
-        playerdata[varname] = args[index]
+    --开始加载数据
+    POST(datasrv1, 'DbSrv.GET', uid, 'Login.msg_db_srv_get_playerdata', unpack(Config.scenesrv.playerdata))
+end
+
+--功能:被顶号
+function PLAYER_INSTEAD(gatesrv, uid)
+    loginfo('player exit uid(%d)', uid)
+    --解锁
+    --tmp_player_manager[uid] = nil
+    local player = player_manager[uid]
+    if not player then
+        logerr('player out found uid(%d)', uid)
+        return
     end
-    POST(localsrv, 'Login.PLAYER_ENTER', uid)
-    loginfo( '加载数据成功')
-    --建立session
-    player.playerdata = playerdata
-    player.last_save_time = os.time()
-    player_count = player_count + 1
+    local msg = Pblua.msgnew('login.DISCONNECT') 
+    msg.errno = 15
+    Player.reply(player, msg)
+    player_logout(player)
+end
+
+--功能:登陆成功
+--@player
+function player_login(player)
+    local msg = Pblua.msgnew('login.ENTER')
+    local uid = player.uid
+    local user = player.playerdata.user
     local rt, err = pcall(Player.init, player)
     if not rt then
-        logerr(err)
-        player_exit(player)
+        loginfo(err)
     end
+    Player.reply(player, msg)
 end
 
 --功能:下线
-function player_exit(player)
+--player
+function player_logout(player)
     local uid = player.uid
     local rt, err = pcall(Player.close, player)
     if not rt then
@@ -79,6 +85,50 @@ function player_exit(player)
         end
     end
     POST(datasrv1, 'DbSrv.SET', uid, 'Login.msg_db_srv_set_playerdata', unpack(args)) 
+end
+
+--功能:读取数据返回
+function msg_db_srv_get_playerdata(dbsrv, uid, result, ...) 
+    --如果没有锁住
+    local gatesrv = tmp_player_manager[uid]
+    if not gatesrv then
+        POST(localsrv, 'Login.PLAYER_EXIT', uid)
+        logerr('player is disconnect')
+        return
+    end
+    local player = player_manager[uid]
+    if player then
+        player.gatesrv = gatesrv 
+        logerr('player is online yet')
+        return
+    end
+    if result == 0 then
+        POST(localsrv, 'Login.PLAYER_EXIT', uid)
+        logerr('load playerdata fail uid(%d)', uid)
+        return
+    end
+    local playerdata = {}
+    local args = {...}
+    for index, varname in pairs(Config.localsrv.playerdata) do
+        playerdata[varname] = args[index]
+    end
+    --POST(gatesrv, 'Login.PLAYER_ENTER', uid)
+    loginfo( '加载数据成功')
+    --建立session
+    local player = {
+        gatesrv = gatesrv, 
+        uid = uid,
+        playerdata = playerdata,
+        last_save_time = os.time(),
+    }
+    player_manager[uid] = player
+    tmp_player_manager[uid] = nil
+    player_count = player_count + 1
+    local rt, err = pcall(player_login, player)
+    if not rt then
+        logerr(err)
+        player_logout(player)
+    end
 end
 
 --功能:保存数据dv_srv返回

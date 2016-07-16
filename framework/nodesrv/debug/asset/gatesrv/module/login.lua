@@ -17,22 +17,23 @@ function MSG_ENTER(sid, msg)
         logerr('player not found')
         return
     end
-    local srvid = msg.srvid
-    POST(localsrv, 'Login.ENTER_SRV', player.uid, msg.srvid)
+    local scenesrv = msg.srvid
+    player.scenesrv = scenesrv
+    POST(scenesrv, 'Login.PLAYER_ENTER', player.uid)
 end
 
 --进入场景
-function PLAYER_ENTER(localsrv, uid, scenesrv)
-    local player = player_manager[uid]
-    if not player then
-        logerr('player is offline uid(%d)', uid)
-        return
-    end
-    player.scenesrv = scenesrv
-    local msg = Pblua.msgnew('login.ENTER')
-    msg.srvid = scenesrv
-    Client.reply(player.sid, msg)
-end
+--function PLAYER_ENTER(scenesrv, uid)
+    --local player = player_manager[uid]
+    --if not player then
+        --logerr('player is offline uid(%d)', uid)
+        --return
+    --end
+    --player.scenesrv = scenesrv
+    --local msg = Pblua.msgnew('login.ENTER')
+    --msg.srvid = scenesrv
+    --Client.reply(player.sid, msg)
+--end
 
 --退出场景
 function PLAYER_EXIT(localsrv, uid)
@@ -42,27 +43,6 @@ function PLAYER_EXIT(localsrv, uid)
         return
     end
     player.scenesrv = nil
-end
-
---玩家上线
-function PLAYER_LOGIN(localsrv, uid)
-    local player = player_manager[uid]
-    if not player then
-        logerr('tmp player not found uid(%d)', uid)
-        return
-    end
-    local msg = Pblua.msgnew('login.LOGIN')
-    msg.uid = uid
-    Player.reply(player.sid, msg)
-end
-
---玩家下线
-function PLAYER_LOGOUT(localsrv, uid)
-    local player = player_manager[uid]
-    if not player_manager[uid] then
-        logerr('player not found')
-        return
-    end
 end
 
 --功能:登陆
@@ -88,7 +68,7 @@ function MSG_LOGIN(sid, msg)
         --加锁
         player_manager[uid] = player
         player_session[sid] = player
-        POST(localsrv, 'Login.PLAYER_LOGIN', player.uid)
+        Player.reply(sid, msg)
     end
 end
 
@@ -101,7 +81,9 @@ function player_disconnect(sid)
     end
     player_session[player.sid] = nil
     player_manager[player.uid] = nil
-    POST(localsrv, 'Login.PLAYER_LOGOUT', player.uid)
+    if player.scenesrv then
+        POST(player.scenesrv, 'Login.PLAYER_EXIT', player.uid)
+    end
 end
 
 function check_login_token(uid, params)
