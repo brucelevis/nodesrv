@@ -6,7 +6,7 @@ test:
 	bin/test Login.login
 
 localsrv:
-	bin/logicsrv localsrv
+	bin/logicsrv localsrv  
 
 gatesrv:
 	bin/gatesrv gatesrv1

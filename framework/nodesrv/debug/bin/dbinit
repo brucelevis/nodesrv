@@ -100,8 +100,9 @@ function command(conn, sql)
 end
 
 function main()
-    for dbname, mysql_conf in pairs(Config.dbinit.mysql_conf) do
+    for _, mysql_conf in pairs(Config.dbinit.mysql_conf) do
         import_proto(mysql_conf.dbproto_dir)
+        local dbname = mysql_conf.dbname
         print(string.format('test db(%s)', dbname))
         local conn = mysql.create()
         if not conn:connect(mysql_conf.host, '', mysql_conf.user, mysql_conf.password) then

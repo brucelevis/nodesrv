@@ -34,17 +34,26 @@ Config =
     {
         mysql_conf = 
         {
-            test = 
+            account = 
             {
                 dbproto_dir = 'asset/dbproto',
-                host = '127.0.0.1', user = 'root', password = '0987abc123',
+                host = '127.0.0.1', user = 'root', password = '0987abc123', dbname = 'test',
+                tables = 
+                {
+                    account = {class = 'dbproto.AccountData'},
+                },
+            },
+
+            actor = 
+            {
+                dbproto_dir = 'asset/dbproto',
+                host = '127.0.0.1', user = 'root', password = '0987abc123', dbname = 'test',
                 tables = 
                 {
                     user = {class = 'dbproto.UserData'},
                     task = {class = 'dbproto.TaskData', binary = true},
                     achieve = {class = 'dbproto.AchieveData', binary = true},
                     friend = {class = 'dbproto.FriendData', binary = true},
-                    cms_menu = {class = 'dbproto.CmsMenuData'},
                 },
             },
         },
@@ -92,14 +101,14 @@ Config =
         template_dir = '',
         --路由
         route = {
-            ['/static'] = '/home/ljw/neox/framework/nodesrv/debug/asset/script/gatesrv',
---            ['/static'] = '/Users/lujingwei/Documents/nodesrv2/framework/nodesrv/debug/asset/script/gatesrv',
+            ['/static'] = '/home/ljw/neox/framework/nodesrv/debug/asset/adminsrv',
+--            ['/static'] = '/Users/lujingwei/Documents/nodesrv2/framework/nodesrv/debug/asset/adminsrv',
             --['/%w+%.css'] = '',
         },
     },
 
     mydbconf = {
-        test = { host = '127.0.0.1', user = 'root', port = 3306, password = '0987abc123'},
+        test = { dbname = 'test', host = '127.0.0.1', user = 'root', port = 3306, password = '0987abc123'},
     }
 }
 

@@ -11,34 +11,43 @@ function main()
 end
 
 --进入场景
-function MSG_ENTER(sid, msg)
-    local player = player_session[sid]
-    if not player then
-        logerr('player not found')
-        return
-    end
-    local srvid = msg.srvid
-    POST(localsrv, 'Login.PLAYER_ENTER', player.uid, msg.srvid)
-end
+--function MSG_ENTER(sid, msg)
+    --local player = player_session[sid]
+    --if not player then
+        --logerr('player not found')
+        --return
+    --end
+    --local srvid = msg.srvid
+    --POST(localsrv, 'Login.PLAYER_ENTER', player.uid, msg.srvid)
+--end
 
 --进入场景
-function PLAYER_ENTER(localsrv, uid, srvid)
-    local player = player_manager[uid]
-    if not player then
-        logerr('player is offline uid(%d)', uid)
-        return
-    end
-    player.srvid = srvid
-end
+--function PLAYER_ENTER(localsrv, uid, srvid)
+    --local player = player_manager[uid]
+    --if not player then
+        --logerr('player is offline uid(%d)', uid)
+        --return
+    --end
+    --player.srvid = srvid
+--end
 
 --退出场景
-function PLAYER_EXIT(localsrv, uid)
+--function PLAYER_EXIT(localsrv, uid)
+    --local player = player_manager[uid]
+    --if not player then
+        --logerr('player is offline uid(%d)', uid)
+        --return
+    --end
+    --player.srvid = nil
+--end
+
+--玩家上线
+function PLAYER_LOGIN(localsrv, uid)
     local player = player_manager[uid]
     if not player then
-        logerr('player is offline uid(%d)', uid)
+        logerr('tmp player not found uid(%d)', uid)
         return
     end
-    player.srvid = nil
 end
 
 --玩家下线
@@ -48,8 +57,6 @@ function PLAYER_LOGOUT(localsrv, uid)
         logerr('player not found')
         return
     end
-    player_session[player.sid] = nil
-    player_manager[player.uid] = nil
 end
 
 --功能:登陆
@@ -61,26 +68,20 @@ function MSG_LOGIN(sid, msg)
         Player.reply(msg)
         return
     end
-    local player = player_manager[uid]
-    if player and player.sid ~= sid then
-        --不同会话
-        player_session[player.sid] = nil
-        player_session[sid] = player
-        Player.disconnect(player.sid)
-        player.sid = sid
-    elseif player and player.sid == sid then
+    local player = player_session[sid]
+    if player then
         --同一个会话
         loginfo('relogin sid(%d) uid(%d)', sid, uid)
     else
-        --加锁
         local player = {
-            sid = sid;
+            sid = sid,
             uid = uid,
             packet_counter = 0,
             last_check_packet_time = 0,
         }
-        player_session[sid] = player
+        --加锁
         player_manager[uid] = player
+        player_session[sid] = player
         POST(localsrv, 'Login.PLAYER_LOGIN', player.uid)
     end
 end
@@ -89,11 +90,11 @@ end
 function player_disconnect(sid)
     local player = player_session[sid]
     if not player then
-        logerr('player not found sid(%d)', sid)
+        logerr('player not found')
         return
     end
-    --player_manager[player.uid] = nil
-    --player_session[sid] = nil
+    player_session[player.sid] = nil
+    player_manager[player.uid] = nil
     POST(localsrv, 'Login.PLAYER_LOGOUT', player.uid)
 end
 
@@ -133,8 +134,4 @@ function check_login_token(uid, params)
         return false
     end
     return true
-end
-
-function MSG_PING(player, msg)
-    log('hello')
 end

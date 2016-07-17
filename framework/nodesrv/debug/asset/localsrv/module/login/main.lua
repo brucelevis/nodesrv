@@ -1,38 +1,43 @@
 module('Login', package.seeall)
 
 --临时
-tmp_player_manager = tmp_player_manager or {}
-player_manager = player_manager or {}
-onlinenum = onlinenum or 0
+tmp_player_manager = tmp_player_manager or {
+    --[uid] = gatesrv
+}
+player_manager = player_manager or {
+    --[uid] = player
+}
+
+player_count = player_count or 0
 
 --功能:进入服务器
-function PLAYER_LOGIN(srvid, uid)
+function PLAYER_LOGIN(gatesrv, uid)
+    loginfo('player enter uid(%d)', uid)
+    tmp_player_manager[uid] = gatesrv 
     local player = player_manager[uid]
     if player then
         logerr('player online yet uid(%d)', uid)
+        player_logout(player)
         return
     end
-    tmp_player_manager[uid] = srvid 
-    loginfo('player enter uid(%d)', uid)
-    --开始加载数据
-    POST(dbsrv1, 'DbSrv.GET', uid, 'Login.msg_db_srv_get_playerdata', unpack(Config.localsrv.playerdata))
+    player_login(uid)
 end
 
 --功能:退出服务器
-function PLAYER_LOGOUT(srvid, uid)
+function PLAYER_LOGOUT(gatesrv, uid)
     loginfo('player exit uid(%d)', uid)
     tmp_player_manager[uid] = nil
     local player = player_manager[uid]
     if not player then
         logerr('player out found uid(%d)', uid)
+        POST(gatesrv, 'Login.PLAYER_LOGOUT', uid)
         return
     end
     player_logout(player)
 end
 
 --功能:登陆成功
---@player
-function player_login(player)
+function player_online(player)
     local uid = player.uid
     local user = player.playerdata.user
     local last_login_time = user.last_login_time
@@ -40,14 +45,17 @@ function player_login(player)
     if not rt then
         loginfo(err)
     end
-    --user.last_login_time = os.time()
     local msg = Pblua.msgnew('login.LOGIN')
     msg.uid = uid
     Player.reply(player, msg)
 end
 
+function player_login(uid)
+    --开始加载数据
+    POST(dbsrv1, 'DbSrv.GET', uid, 'Login.msg_db_srv_get_playerdata', unpack(Config.localsrv.playerdata))
+end
+
 --功能:下线
---player
 function player_logout(player)
     local uid = player.uid
     local rt, err = pcall(Player.close, player)
@@ -72,7 +80,7 @@ end
 
 --功能:保存数据dv_srv返回
 --@msg db_srv.SET_REPLY
-function msg_db_srv_set_playerdata(srvid, uid, result, ...)
+function msg_db_srv_set_playerdata(dbsrv, uid, result, ...)
     local player = player_manager[uid]
     if not player then
         logerr('player offline yet')
@@ -96,21 +104,20 @@ function msg_db_srv_set_playerdata(srvid, uid, result, ...)
     player.playerdata = nil
     --释放数据
     player_manager[uid] = nil
-    onlinenum = onlinenum - 1
-    POST(srvid, 'Login.PLAYER_LOGOUT', uid)
+    player_count = player_count - 1
+    POST(player.gatesrv, 'Login.PLAYER_LOGOUT', uid)
+
+    if tmp_player_manager[uid] then
+        player_login(uid)
+    end
 end
 
-
 --功能:读取数据返回
---@uid 
---@user_tables {table_name = msg}
---@argback string
-function msg_db_srv_get_playerdata(srvid, uid, result, ...) 
+function msg_db_srv_get_playerdata(dbsrv, uid, result, ...) 
     --如果没有锁住
-    local srvid = tmp_player_manager[uid]
-    if not srvid then
-        POST(srvid, 'Login.PLAYER_LOGOUT', uid)
-        logerr('player is disconnect')
+    local gatesrv = tmp_player_manager[uid]
+    if not gatesrv then
+        logerr('tmp player is disconnect')
         return
     end
     local player = player_manager[uid]
@@ -119,7 +126,7 @@ function msg_db_srv_get_playerdata(srvid, uid, result, ...)
         return
     end
     if result == 0 then
-        POST(srvid, 'Login.PLAYER_LOGOUT', uid)
+        POST(gatesrv, 'Login.PLAYER_LOGOUT', uid)
         logerr('load playerdata fail uid(%d)', uid)
         return
     end
@@ -128,18 +135,19 @@ function msg_db_srv_get_playerdata(srvid, uid, result, ...)
     for index, varname in pairs(Config.localsrv.playerdata) do
         playerdata[varname] = args[index]
     end
+    POST(gatesrv, 'Login.PLAYER_LOGIN', uid)
     loginfo( '加载数据成功')
     --建立session
     local player = {
-        srvid = srvid, 
+        gatesrv = gatesrv, 
         uid = uid,
         playerdata = playerdata,
         last_save_time = os.time(),
     }
     player_manager[uid] = player
     tmp_player_manager[uid] = nil
-    onlinenum = onlinenum + 1
-    local rt, err = pcall(player_login, player)
+    player_count = player_count + 1
+    local rt, err = pcall(player_online, player)
     if not rt then
         logerr(err)
         player_logout(player)

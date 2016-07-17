@@ -1,34 +1,34 @@
-#include "dbsrv.h"
+#include "datasrv.h"
 #include "stdafx.h"
 #include <stdio.h>
 
-IMPLEMENT(DbSrv)
+IMPLEMENT(DataSrv)
 
 extern "C" 
 { 
-    int luaopen_dbsrv (lua_State* tolua_S); 
+    int luaopen_datasrv (lua_State* tolua_S); 
 }
 
 int luamain(lua_State* L)
 {
-    luaopen_dbsrv(L);
+    luaopen_datasrv(L);
     return 0;
 }
 
 
-DbSrv::DbSrv()
+DataSrv::DataSrv()
 {
 
 }
 
-DbSrv::~DbSrv()
+DataSrv::~DataSrv()
 {
 
 }
 
-void DbSrv::awake()
+void DataSrv::awake()
 {
-    Log::log("DbSrv::awake");
+    Log::info("DataSrv::awake");
     NetComponent* net_component = get_component<NetComponent>();
     if (!net_component)
     {

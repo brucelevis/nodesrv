@@ -92,7 +92,7 @@ int NetComponent::listen(const char* host, unsigned short port)
 	error = ::bind(sockfd,(struct sockaddr *)&addr,sizeof(addr));
 	if(error < 0){		
         ::close(sockfd);
-        LOG_ERROR("bind error\n");
+        LOG_ERROR("bind error port(%d) %s\n", port, strerror(errno));
 		return 3;	
     }
 	error = ::listen(sockfd, 5);	

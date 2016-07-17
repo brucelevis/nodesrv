@@ -15,7 +15,7 @@ local mydb_meta = {
                 logerr('conf not found db(%s)', dbname)
                 return
             end
-            if conn:connect(conf.host, dbname, conf.user, conf.password) then
+            if conn:connect(conf.host, conf.dbname, conf.user, conf.password) then
                 loginfo('success connect mysql host(%s) dbname(%s) user(%s)', conf.host, dbname, conf.user)
             else
                 loginfo('fail connect mysql host(%s) dbname(%s) user(%s)', conf.host, dbname, conf.user)

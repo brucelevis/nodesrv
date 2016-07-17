@@ -1,19 +1,19 @@
-#ifndef _DBSRV_H_
-#define _DBSRV_H_
+#ifndef _DATASRV_H_
+#define _DATASRV_H_
 
 #include "component/component.h"
 #include <map>
 
 //tolua_begin
-class DbSrv: public Component
+class DataSrv: public Component
 {
     public:
-        DbSrv();
-        virtual ~DbSrv();
+        DataSrv();
+        virtual ~DataSrv();
         virtual void awake();
 //tolua_end
 
-DECLAR(DbSrv);
+DECLAR(DataSrv);
 
 };//tolua_export
 

@@ -2,11 +2,6 @@ module('DbSrv', package.seeall)
 
 descriptors = {}
 
-function TEST(srvid, callback, a1, a2, a3, msg)
-    print(srvid, callback, a1, a2, a3, msg:debug_string())
-    POST(srvid, callback, a1, a2, a3)
-end
-
 function main()
     --构建descriptor
     for table_name, table_conf in pairs(Config.dbsrv.table_conf) do

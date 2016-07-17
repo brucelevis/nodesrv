@@ -1,18 +1,21 @@
 
-目录
+资源目录
+
 【adminsrv】 后台管理(http)
 
 【config】 配置
 
-【proto】 协议
-
 【dbproto】数据层
+
+【dbsrv】 数据库
 
 【gatesrv】网关
 
-【lib】
+【lib】lua库
 
 【localsrv】 本服
+
+【proto】 协议
 
 【scenesrv】 场景服
 

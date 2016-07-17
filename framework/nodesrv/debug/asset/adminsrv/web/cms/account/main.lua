@@ -1,6 +1,5 @@
 module('Cms.Account', package.seeall)
 
-
 function action_login()
     cookie_set('uid', '333')
     cookie_set('uname', 'ljw')

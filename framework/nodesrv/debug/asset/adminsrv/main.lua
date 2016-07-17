@@ -10,8 +10,8 @@ require('adminsrv/web/cms/account/main')
 require('adminsrv/web/cms/default/main')
 require('adminsrv/web/cms/default/model')
 
-Config.httpsrv.template_dir = string.format('%s/script/adminsrv/web/', Config.asset_dir)
-Config.httpsrv.static_dir = string.format('%s/script/adminsrv/static/', Config.asset_dir)
+Config.httpsrv.template_dir = string.format('%s/adminsrv/web/', Config.asset_dir)
+Config.httpsrv.static_dir = string.format('%s/adminsrv/static/', Config.asset_dir)
 
 function main()
     mydb.connect(Config.mydbconf)
@@ -19,4 +19,3 @@ function main()
     --print(Json.encode(r))
     mysrv:create_entity_local('MainEntity')
 end
-
