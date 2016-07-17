@@ -1,6 +1,7 @@
 module('WebSocket', package.seeall)
 
 http_component = http_component or nil 
+net_component = net_component or nil 
 
 function awake(self)
     loginfo('awake')
@@ -8,6 +9,7 @@ function awake(self)
     self:reg_msg(MSG_CLOSE_SESSION)
     self:reg_msg(MSG_NET_PACKET)
     http_component = self:get_component('HttpComponent')
+    net_component = self:get_component('NetComponent')
 end
 
 function recv(self, msg)
@@ -54,7 +56,6 @@ function recv_net_packet(self, msg)
 
     logmsg('RECV NET PACKET %s FINISH', msgname)
 end
-
 
 function reply(sid, reply)
     local buffer = Buffer:new_local()

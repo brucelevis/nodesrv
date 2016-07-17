@@ -1,0 +1,19 @@
+
+目录
+【adminsrv】 后台管理(http)
+
+【config】 配置
+
+【proto】 协议
+
+【dbproto】数据层
+
+【gatesrv】网关
+
+【lib】
+
+【localsrv】 本服
+
+【scenesrv】 场景服
+
+【test】协议测试

@@ -2,6 +2,7 @@
 require('scenesrv/entity/scenesrv')
 require('scenesrv/module/login/login')
 
-
-mynode:create_entity_local('SceneSrvEntity')
+function main()
+    mynode:create_entity_local('SceneSrvEntity')
+end
 

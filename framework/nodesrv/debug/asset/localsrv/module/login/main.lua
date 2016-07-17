@@ -5,10 +5,6 @@ tmp_player_manager = tmp_player_manager or {}
 player_manager = player_manager or {}
 onlinenum = onlinenum or 0
 
-function main()
---    PLAYER_ENTER(1, 333)
-end
-
 --功能:进入服务器
 function PLAYER_LOGIN(srvid, uid)
     local player = player_manager[uid]
@@ -25,6 +21,7 @@ end
 --功能:退出服务器
 function PLAYER_LOGOUT(srvid, uid)
     loginfo('player exit uid(%d)', uid)
+    tmp_player_manager[uid] = nil
     local player = player_manager[uid]
     if not player then
         logerr('player out found uid(%d)', uid)
@@ -43,8 +40,7 @@ function player_login(player)
     if not rt then
         loginfo(err)
     end
-    user.last_login_time = os.time()
-
+    --user.last_login_time = os.time()
     local msg = Pblua.msgnew('login.LOGIN')
     msg.uid = uid
     Player.reply(player, msg)
@@ -101,6 +97,7 @@ function msg_db_srv_set_playerdata(srvid, uid, result, ...)
     --释放数据
     player_manager[uid] = nil
     onlinenum = onlinenum - 1
+    POST(srvid, 'Login.PLAYER_LOGOUT', uid)
 end
 
 
@@ -112,18 +109,17 @@ function msg_db_srv_get_playerdata(srvid, uid, result, ...)
     --如果没有锁住
     local srvid = tmp_player_manager[uid]
     if not srvid then
-        POST(CenterSrvSockfd, 'Login.PLAYER_EXIT', Config.srvid, uid)
+        POST(srvid, 'Login.PLAYER_LOGOUT', uid)
         logerr('player is disconnect')
         return
     end
     local player = player_manager[uid]
     if player then
-        player.srvid = srvid 
         logerr('player is online yet')
         return
     end
     if result == 0 then
-        POST(CenterSrvSockfd, 'Login.PLAYER_EXIT', Config.srvid, uid)
+        POST(srvid, 'Login.PLAYER_LOGOUT', uid)
         logerr('load playerdata fail uid(%d)', uid)
         return
     end
@@ -152,23 +148,23 @@ end
 
 
 --功能:定时保存玩家数据
-function timer_check()
-    local timenow = os.time()
-    for uid, player in pairs(player_manager) do
-        local playerdata = player.playerdata
-        if timenow - player.last_save_time > Config.localsrv.save_interval then
-            local args = {}
-            for table_name, msg in pairs(playerdata) do
-                if true or msg:isdirty() then
-                    loginfo('uid(%d).%s is dirty', uid, table_name)
-                    table.insert(args, table_name)
-                    table.insert(args, msg)
-                else
-                    loginfo('uid(%d).%s is clean', table_name)
-                end
-            end
-            POST(dbsrv1, 'DbSrv.SET', uid, 'Login.msg_db_srv_set_playerdata', unpack(args)) 
-            player.last_save_time = timenow
-        end
-    end
-end
+--function timer_check()
+    --local timenow = os.time()
+    --for uid, player in pairs(player_manager) do
+        --local playerdata = player.playerdata
+        --if timenow - player.last_save_time > Config.localsrv.save_interval then
+            --local args = {}
+            --for table_name, msg in pairs(playerdata) do
+                --if true or msg:isdirty() then
+                    --loginfo('uid(%d).%s is dirty', uid, table_name)
+                    --table.insert(args, table_name)
+                    --table.insert(args, msg)
+                --else
+                    --loginfo('uid(%d).%s is clean', table_name)
+                --end
+            --end
+            --POST(dbsrv1, 'DbSrv.SET', uid, 'Login.msg_db_srv_set_playerdata', unpack(args)) 
+            --player.last_save_time = timenow
+        --end
+    --end
+--end

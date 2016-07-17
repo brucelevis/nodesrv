@@ -102,5 +102,8 @@ import_proto(string.format('%s/proto', Config.asset_dir))
 import_proto(string.format('%s/dbproto', Config.asset_dir))
 
 --进入游戏
+loginfo('====================%s=======================================', Config.srvname)
 require(node_conf.mainfile)
+main()
+
 

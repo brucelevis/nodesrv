@@ -1,7 +1,6 @@
 
 
-
-GateSrvEntity = {
+MainEntity = {
     [__COMPONENTS] = {
         RPCComponent = {},
         HttpComponent = {},

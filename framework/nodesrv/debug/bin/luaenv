@@ -25,14 +25,23 @@ end
 
 package.path = string.format('%s;%s/?.lua', package.path, root_path)
 package.path = string.format('%s;%s/?.lua', package.path, Config.asset_dir)
-package.path = string.format('%s;%s/script/?.lua', package.path, Config.asset_dir)
-package.path = string.format('%s;%s/script/lib/?.lua', package.path, Config.asset_dir)
 
 loginfo = function(format, ...) Log.info(string.format('[%s]'..format, _NAME or '', ...)) end
 logwarn = function(format, ...) Log.info(string.format('[%s]'..format, _NAME or '', ...)) end
 logerr = function(format, ...) Log.info(string.format('[%s]'..format, _NAME or '', ...)) end
 logmsg = function(format, ...) Log.msg(string.format('[%s]'..format, _NAME or '', ...)) end
 logdebug = function(format, ...) Log.debug(string.format('[%s]'..format, _NAME or '', ...)) end
+
+local _require = require
+require = function(filepath) 
+    if package.loaded[filepath] then
+        package.loaded[filepath] = nil
+        loginfo('reload script %s', filepath)
+    else
+        loginfo('load script %s', filepath)
+    end
+     _require(filepath)
+end
 
 --print('Config = ')
 --print(Json.encode(Config))

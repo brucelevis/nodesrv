@@ -78,7 +78,7 @@ void RPCMethod::invoke(Component* component, int dst_nodeid, int dst_entityid)
     Message *msg = component->alloc_msg();
     msg->header.id = MSG_RPC;
     //结束
-    buffer.write_int8(NULL);
+    buffer.write_int8(0);
     msg->payload.write(&buffer);
     msg->option.cache = true;
     component->send_entity_msg(dst_nodeid, dst_entityid, msg);
