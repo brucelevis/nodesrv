@@ -1,18 +1,18 @@
 
-#include "node/entityroute.h"
+#include "node/objectmgr.h"
 #include "node/node.h"
 
-namespace EntityRoute
+namespace ObjectMgr
 {
-    std::map<int, Node*> entity_map_;
+    std::map<int, Node*> object_map_;
 
     Node* center_node_;
 
-    Node* find_route(int entityid)
+    Node* find_route(int objid)
     {
         std::map<int, Node*>::iterator it;
-        it = entity_map_.find(entityid);
-        if (it != entity_map_.end())
+        it = object_map_.find(objid);
+        if (it != object_map_.end())
         {
             Node* node = it->second;
             if (node->is_disconnect())
@@ -24,19 +24,19 @@ namespace EntityRoute
         return center_node_;
     }
 
-    Node* where(int entityid)
+    Node* where(int objid)
     {
         std::map<int, Node*>::iterator it;
-        it = entity_map_.find(entityid);
-        if (it != entity_map_.end())
+        it = object_map_.find(objid);
+        if (it != object_map_.end())
         {
             return it->second;
         }
         return NULL;
     }
 
-    void update_route(Node* node, int entityid, int expire_time)
+    void update_route(Node* node, int objid, int expire_time)
     {
-        entity_map_[entityid] = node;
+        object_map_[objid] = node;
     }
 };

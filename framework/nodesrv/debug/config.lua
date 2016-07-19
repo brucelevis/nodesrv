@@ -6,8 +6,8 @@
 Config = 
 {
 
-    --loglevel = {"MSG", "INFO", "ERROR", "WARN", "DEBUG"},
-    loglevel = {"MSG", "INFO", "ERROR", "WARN"},
+    loglevel = {"MSG", "INFO", "ERROR", "WARN", "DEBUG"},
+    --loglevel = {"MSG", "INFO", "ERROR", "WARN"},
     --拓扑结构
     srvgrap = 
     {

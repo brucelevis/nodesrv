@@ -7,7 +7,7 @@ IMPLEMENT(Component)
 
 Component::Component()
 {
-    this->entity = 0;
+    this->gameobject = NULL;
 }
 
 Component::~Component()
@@ -41,44 +41,44 @@ int Component::unreach(Message* msg)
     return 0;
 }
 
-void Component::set_entity(Entity* entity)
+void Component::set_gameobject(GameObject* object)
 {
-    this->entity = entity;
+    this->gameobject = object;
 }
 
-Entity* Component::get_entity()
+GameObject* Component::get_gameobject()
 {
-    return this->entity;
+    return this->gameobject;
 }
 
 int Component::create_file_event(int fd, int mask, aeFileProc* proc, void* clientData)
 {
-    return this->entity->node->create_file_event(fd, mask, proc, clientData);
+    return this->gameobject->node->create_file_event(fd, mask, proc, clientData);
 }
 
 void Component::delete_file_event(int fd, int mask)
 {
-    this->entity->node->delete_file_event(fd, mask);
+    this->gameobject->node->delete_file_event(fd, mask);
 }
 
 int64_t Component::lua_getnumber(const char *fieldname)
 {
-    return this->entity->node->lua_getnumber(fieldname);
+    return this->gameobject->node->lua_getnumber(fieldname);
 }
 
 const char* Component::lua_getstring(const char *fieldname)
 {
-    return this->entity->node->lua_getstring(fieldname);
+    return this->gameobject->node->lua_getstring(fieldname);
 }
 
 int Component::lua_pushfunction(const char *func)
 {
-    return this->entity->node->lua_pushfunction(func);
+    return this->gameobject->node->lua_pushfunction(func);
 }
 
 int Component::lua_printstack()
 {
-    return this->entity->node->lua_printstack();
+    return this->gameobject->node->lua_printstack();
 } 
 
 lua_State* Component::get_lua_state()
@@ -88,41 +88,41 @@ lua_State* Component::get_lua_state()
 
 Node* Component::get_node()
 {
-    if (!entity)
+    if (!gameobject)
     {
         return NULL;
     }
-    return entity->node;
+    return gameobject->node;
 }
 
-void Component::send_entity_msg(int dst_nodeid, int dst_entityid, Message* msg)
+void Component::send_gameobject_msg(int dst_nodeid, int dst_objectid, Message* msg)
 {
-    entity->node->send_entity_msg(this->entity, dst_nodeid, dst_entityid, msg);
+    gameobject->node->send_gameobject_msg(this->gameobject, dst_nodeid, dst_objectid, msg);
 }
 
 
 int Component::reg_msg(unsigned int id)
 {
-    return this->entity->reg_msg(id, this);
+    return this->gameobject->reg_msg(id, this);
 }
 
 int Component::unreg_msg(unsigned int id)
 {
-    return this->entity->unreg_msg(id, this);
+    return this->gameobject->unreg_msg(id, this);
 }
 
 
 int Component::get_component(lua_State* L)
 {
-    return this->entity->get_component(L);
+    return this->gameobject->get_component(L);
 }
 
 Component* Component::get_component(const char* name)
 {
-    return this->entity->get_component(name);
+    return this->gameobject->get_component(name);
 }
 
 Message* Component::alloc_msg()
 {
-    return this->entity->node->alloc_msg();
+    return this->gameobject->node->alloc_msg();
 }

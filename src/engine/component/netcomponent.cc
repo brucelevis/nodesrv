@@ -1,6 +1,6 @@
 #include "netcomponent.h"
 
-#include "node/entity.h"
+#include "node/gameobject.h"
 #include "node/node.h"
 #include "net/sendbuf.h"
 #include "net/recvbuf.h"
@@ -186,10 +186,10 @@ void NetComponent::ev_readable(int sockfd)
 int NetComponent::dispatch(int sockfd, char* data, size_t datalen)
 {
     Message* msg = alloc_msg();
-    msg->header.src_srvid = 0;
-    msg->header.src_objid = 0;
-    msg->header.dst_objid = 0;
-    msg->header.dst_srvid  = 0;
+    msg->header.src_nodeid = 0;
+    msg->header.src_objectid = 0;
+    msg->header.dst_objectid = 0;
+    msg->header.dst_nodeid  = 0;
     msg->header.id = MSG_NET_RAW_DATA;
     msg->sockfd = sockfd;
     msg->data = data;
@@ -197,7 +197,7 @@ int NetComponent::dispatch(int sockfd, char* data, size_t datalen)
     //为了LUA的pushstring
     char lastc = msg->data[msg->datalen];
     msg->data[msg->datalen] = 0;
-    int ir = this->entity->recv(msg);
+    int ir = this->gameobject->recv(msg);
     msg->data[msg->datalen] = lastc;
     return ir;
 }
@@ -225,14 +225,14 @@ void NetComponent::ev_accept(int listenfd)
     Recvbuf::create(sockfd, 1024);
 
     Message* msg = alloc_msg();
-    msg->header.src_srvid = 0;
-    msg->header.src_objid = 0;
-    msg->header.dst_objid = 0;
-    msg->header.dst_srvid = 0;
+    msg->header.src_nodeid = 0;
+    msg->header.src_objectid = 0;
+    msg->header.dst_objectid = 0;
+    msg->header.dst_nodeid = 0;
     msg->header.id = MSG_NEW_CONNECTION;
 
     msg->sockfd = sockfd;
-    this->entity->recv(msg);
+    this->gameobject->recv(msg);
 }
 
 
@@ -244,14 +244,14 @@ void NetComponent::real_close(int sockfd, const char* reason)
     this->delete_file_event(sockfd, AE_WRITABLE | AE_READABLE);
 
     Message* msg = alloc_msg();
-    msg->header.src_srvid = 0;
-    msg->header.src_objid = 0;
-    msg->header.dst_objid = 0;
-    msg->header.dst_srvid = 0;
+    msg->header.src_nodeid = 0;
+    msg->header.src_objectid = 0;
+    msg->header.dst_objectid = 0;
+    msg->header.dst_nodeid = 0;
     msg->header.id = MSG_CLOSE_CONNECTION;
 
     msg->sockfd = sockfd;
-    this->entity->recv(msg);
+    this->gameobject->recv(msg);
 }
 
 char* NetComponent::alloc_send_buf(int sockfd, size_t size)
@@ -274,7 +274,7 @@ int NetComponent::send(int sockfd, const void* data, size_t size)
     {
         return 0;
     }
-    LOG_DEBUG("entity[%d] send %ld to sockfd(%d)\n", this->entity->id, size, sockfd);
+    LOG_DEBUG("gameobject[%d] send %ld to sockfd(%d)\n", this->gameobject->id, size, sockfd);
     memcpy(buf, data, size);
     Sendbuf::flush(sockfd, buf, size);
     this->create_file_event(sockfd, AE_WRITABLE, _ev_writable, this);

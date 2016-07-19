@@ -8,7 +8,7 @@ require('localsrv/module/login/main')
 require('localsrv/module/player/main')
 
 function main()
-    mysrv:create_entity_local('MainObject')
+    mynode:create_gameobject_local('MainObject')
 end
 
 

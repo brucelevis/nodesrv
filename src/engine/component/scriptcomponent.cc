@@ -1,6 +1,6 @@
 
 #include "component/scriptcomponent.h"
-#include "node/entity.h"
+#include "node/gameobject.h"
 #include "node/node.h"
 #include "log/log.h"
 

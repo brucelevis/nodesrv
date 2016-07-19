@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #include "msg/msg.h"
-#include "node/entity.h"
+#include "node/gameobject.h"
 #include "type/type.h"
 #include "net/ae.h"
 
@@ -15,7 +15,7 @@ extern "C" {
 }
 
 
-class Entity;
+class GameObject;
 class Node;
 
 //tolua_begin
@@ -35,8 +35,8 @@ class Component
         const char* lua_getstring(const char *fieldname);
         int64_t lua_getnumber(const char *fieldname);
 
-        Entity *get_entity();
-        void set_entity(Entity* entity);
+        GameObject *get_gameobject();
+        void set_gameobject(GameObject* object);
         Node* get_node();
 
         int create_file_event(int fd, int mask, aeFileProc* proc, void* clientData);
@@ -44,12 +44,12 @@ class Component
 
         int reg_msg(unsigned int id);
         int unreg_msg(unsigned int id);
-        void send_entity_msg(int dst_nodeid, int dst_entityid, Message* msg);
+        void send_gameobject_msg(int dst_nodeid, int dst_objectid, Message* msg);
         int get_component(lua_State* L);
         Message* alloc_msg();
         Component* get_component(const char* name);
     public:
-        Entity* entity;
+        GameObject* gameobject;
 //tolua_end
     public:
         template<class T>
@@ -59,10 +59,9 @@ class Component
     DECLAR(Component)
 };//tolua_export
 
-template<class T>
-T* Component::get_component()
+template<class T>T* Component::get_component()
 {
-    return (T*)this->entity->get_component(T::type);
+    return (T*)this->gameobject->get_component(T::type);
 }
 
 #endif

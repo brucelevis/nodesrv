@@ -1,8 +1,8 @@
 #include "node.h"
 
 #include "msg/msg.h"
-#include "node/entity.h"
-#include "node/entityroute.h"
+#include "node/gameobject.h"
+#include "node/objectmgr.h"
 #include "net/sendbuf.h"
 #include "net/recvbuf.h"
 #include "node/nodemgr.h"
@@ -80,9 +80,9 @@ static void _ev_readable(struct aeEventLoop *eventLoop, int sockfd, void *client
     node->ev_readable(sockfd);
 }
 
-Node::Node(int srvid)
+Node::Node(int nodeid)
 {
-    this->id = srvid;
+    this->id = nodeid;
     sockfd_ = -1;
     listenfd_ = -1;
     ip_[0] = 0;
@@ -96,7 +96,7 @@ void Node::main()
     lua_State* L = NodeMgr::L;
     //将自己注册到lua
     tolua_pushusertype(L, (void*)this, "Node");
-    lua_setglobal(L, "mysrv");
+    lua_setglobal(L, "mynode");
     //创建事件
     //loop_ = aeCreateEventLoop(10240);
     //if (mainfile[0] != 0)
@@ -354,17 +354,17 @@ void Node::update(long long cur_tick)
     }
 
     //处理节点
-    for (int i = entity_vector_.size() - 1; i >= 0; i--)
+    for (int i = gameobject_vector_.size() - 1; i >= 0; i--)
     {
-        Entity* entity = entity_vector_[i];
-        entity->update(cur_tick);
+        GameObject* object = gameobject_vector_[i];
+        object->update(cur_tick);
     } 
 }
 
 
 void Node::recv(Message* msg)
 {
-    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d)", this->id, msg->header.id, msg->header.src_srvid, msg->header.src_objid, msg->header.len);
+    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_objectid, msg->header.len);
     struct timeval t1;
     gettimeofday(&t1, NULL);
     //不可靠的消息传输
@@ -375,20 +375,20 @@ void Node::recv(Message* msg)
                 recv_node_reg(msg);
             }
             break;
-        case MSG_CREATE_ENTITY:
+        case MSG_CREATE_GAMEOBJECT:
             {
-                recv_create_entity(msg);
+                recv_create_gameobject(msg);
             };
             break;
         default:
             {
-                recv_entity_msg(msg);
+                recv_gameobject_msg(msg);
             }
             break;
     }
     struct timeval t2;
     gettimeofday(&t2, NULL);
-    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d) usec(%d)", this->id, msg->header.id, msg->header.src_srvid, msg->header.src_objid, msg->header.len, time_diff(&t1, &t2));
+    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d) usec(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_objectid, msg->header.len, time_diff(&t1, &t2));
 }
 
 int Node::dispatch(char* data, size_t datalen)
@@ -424,103 +424,103 @@ int Node::dispatch(char* data, size_t datalen)
     return sizeof(magic_code) + header->len + sizeof(magic_code2);
 }
 
-void Node::forward_entity_msg(Message* msg)
+void Node::forward_gameobject_msg(Message* msg)
 {
     //先发给本地实体
-    Entity* entity = find_entity(msg->header.dst_objid);
-    if (entity)
+    GameObject* object = find_gameobject(msg->header.dst_objectid);
+    if (object)
     {
-        entity->recv(msg);
+        object->recv(msg);
         return;
     }
     if (is_disconnect())
     {
         return;
     }
-    send_entity_msg(NULL, msg);
+    send_gameobject_msg(NULL, msg);
 }
 
-void Node::recv_entity_msg(Message* msg)
+void Node::recv_gameobject_msg(Message* msg)
 {
-    int dst_objid = msg->header.dst_objid;
+    int dst_objectid = msg->header.dst_objectid;
     //广播 
-    if (dst_objid == 0)
+    if (dst_objectid == 0)
     {
-        for (int i = entity_vector_.size() - 1; i >= 0; i--)
+        for (int i = gameobject_vector_.size() - 1; i >= 0; i--)
         {
-            Entity* entity = entity_vector_[i];
-            entity->recv(msg);
+            GameObject* object = gameobject_vector_[i];
+            object->recv(msg);
         }
     } else
     {
-        Entity* entity = find_entity(dst_objid);
-        if(entity)
+        GameObject* object = find_gameobject(dst_objectid);
+        if(object)
         {
-            entity->recv(msg);
+            object->recv(msg);
         } else
         {
             //转发到中心节点
-            Node* center_node = EntityRoute::center_node_;
+            Node* center_node = ObjectMgr::center_node_;
             if (center_node == this)
             {
                 return;
             }
             if (center_node)
             {
-                center_node->forward_entity_msg(msg);
+                center_node->forward_gameobject_msg(msg);
             }
         }
     }
 }
 
-void Node::send_entity_msg(Entity* src_entity, int dst_srvid, int dst_objid, Message* msg)
+void Node::send_gameobject_msg(GameObject* src_object, int dst_nodeid, int dst_objectid, Message* msg)
 {
-    if (!src_entity)
+    if (!src_object)
     {
-        LOG_ERROR("src_entity not found");
+        LOG_ERROR("src_object not found");
         return;
     }
-    Node* src_node = src_entity->node;
+    Node* src_node = src_object->node;
     if (!src_node)
     {
         LOG_ERROR("src_node not found");
         return;
     }
-    Node* node = NodeMgr::find_node(dst_srvid);
+    Node* node = NodeMgr::find_node(dst_nodeid);
     if (!node)
     {
-        LOG_ERROR("dst_node(%d) not found", dst_srvid);
+        LOG_ERROR("dst_node(%d) not found", dst_nodeid);
         return;
     }
-    msg->header.src_objid = src_entity->id;
-    msg->header.src_srvid = src_node->id;
-    msg->header.dst_srvid = dst_srvid;
-    msg->header.dst_objid = dst_objid;
-    node->send_entity_msg(src_entity, msg);
+    msg->header.src_objectid = src_object->id;
+    msg->header.src_nodeid = src_node->id;
+    msg->header.dst_nodeid = dst_nodeid;
+    msg->header.dst_objectid = dst_objectid;
+    node->send_gameobject_msg(src_object, msg);
 }
 
-void Node::send_entity_msg(Entity* src_entity, Message* msg)
+void Node::send_gameobject_msg(GameObject* src_object, Message* msg)
 {
-    if (src_entity)
+    if (src_object)
     {
-        msg->header.src_objid = src_entity->id;
-        msg->header.src_srvid = src_entity->node->id;
+        msg->header.src_objectid = src_object->id;
+        msg->header.src_nodeid = src_object->node->id;
     }
     //发给本地实体
-    Entity* dst_entity = find_entity(msg->header.dst_objid);
-    if (dst_entity)
+    GameObject* dst_object = find_gameobject(msg->header.dst_objectid);
+    if (dst_object)
     {
-        dst_entity->recv(msg);
+        dst_object->recv(msg);
         destory_msg(msg);
     } 
     else if (is_disconnect())
     {
         LOG_WARN("node[%d] is disconnect", get_id());
-        int src_objid = msg->header.src_objid;
-        Entity* src_entity = find_entity(src_objid);
-        if (src_entity)
+        int src_objectid = msg->header.src_objectid;
+        GameObject* src_object = find_gameobject(src_objectid);
+        if (src_object)
         {
-            src_entity->unreach(msg);
+            src_object->unreach(msg);
         } 
         if (msg->option.cache)
         {
@@ -545,26 +545,26 @@ void Node::send_entity_msg(Entity* src_entity, Message* msg)
     }
 }
 
-void Node::send_entity_msg(Entity* src_entity, int dst_objid, int msgid, const Buffer* buffer)
+void Node::send_gameobject_msg(GameObject* src_object, int dst_objectid, int msgid, const Buffer* buffer)
 {
-    LOG_INFO("node[%d] send entity msg(%d)", this->id, msgid);
-    Node* src_node = src_entity->node;
+    LOG_INFO("node[%d] send object msg(%d)", this->id, msgid);
+    Node* src_node = src_object->node;
     if (!src_node)
     {
         return;
     }
     Message* msg = alloc_msg();
     MessageHeader& header = msg->header;
-    header.src_srvid = src_node->get_id();
-    header.src_objid = src_entity->id;
-    header.dst_objid = dst_objid;
-    header.dst_srvid = this->id;
+    header.src_nodeid = src_node->get_id();
+    header.src_objectid = src_object->id;
+    header.dst_objectid = dst_objectid;
+    header.dst_nodeid = this->id;
     header.id = msgid;
 
     msg->payload.reset();
     msg->payload.write(buffer);
 
-    send_entity_msg(src_entity, msg);
+    send_gameobject_msg(src_object, msg);
 }
 
 
@@ -584,21 +584,21 @@ int Node::get_id()
 }
 
 
-int Node::add_entity(Entity* entity)
+int Node::add_gameobject(GameObject* object)
 {
-    LOG_DEBUG("node[%d] add entity(%d)", this->id, entity->id);
-    entity_map_[entity->id] = entity; 
-    entity_vector_.push_back(entity);
-    entity->node = this;
+    LOG_DEBUG("node[%d] add object(%d)", this->id, object->id);
+    gameobject_map_[object->id] = object; 
+    gameobject_vector_.push_back(object);
+    object->node= this;
     return 0;
 }
 
 
-Entity* Node::find_entity(int objid)
+GameObject* Node::find_gameobject(int objectid)
 {
-    std::map<int, Entity*>::iterator it;
-    it = entity_map_.find(objid);
-    if (it != entity_map_.end())
+    std::map<int, GameObject*>::iterator it;
+    it = gameobject_map_.find(objectid);
+    if (it != gameobject_map_.end())
     {
         return it->second;
     }
@@ -629,7 +629,7 @@ bool Node::is_disconnect()
 
 void Node::recv_node_reg(Message* msg)
 {
-    LOG_DEBUG("node[%d] recv node[%d] reg", this->id, msg->header.src_srvid);
+    LOG_DEBUG("node[%d] recv node[%d] reg", this->id, msg->header.src_nodeid);
 }
 
 void Node::send_node_reg()
@@ -637,35 +637,35 @@ void Node::send_node_reg()
     LOG_DEBUG("node[%d] send node reg", this->id);
     Message* msg = alloc_msg();
     MessageHeader& header = msg->header;
-    header.src_srvid = this->id;
-    header.src_objid = 0;
-    header.dst_objid = 0;
-    header.dst_srvid = this->id;
+    header.src_nodeid = this->id;
+    header.src_objectid = 0;
+    header.dst_objectid = 0;
+    header.dst_nodeid = this->id;
     header.id = MSG_NODE_REG;
-    send_entity_msg(NULL, msg);
+    send_gameobject_msg(NULL, msg);
 }
 
 
-void Node::recv_create_entity(Message* msg)
+void Node::recv_create_gameobject(Message* msg)
 {
     const char* filepath = msg->payload.read_utf8();
-    LOG_DEBUG("node[%d] recv create entity %s", this->id, filepath);
-    create_entity_local(filepath);
+    LOG_DEBUG("node[%d] recv create object %s", this->id, filepath);
+    create_gameobject_local(filepath);
 }
 
-void Node::create_entity_remote(Entity* src_entity, const char* filepath)
+void Node::create_gameobject_remote(GameObject* src_object, const char* filepath)
 {
-    LOG_DEBUG("node[%d] send create entity %s", this->id, filepath);
+    LOG_DEBUG("node[%d] send create object %s", this->id, filepath);
 
-    Node* src_node = src_entity->node;
+    Node* src_node = src_object->node;
 
     Message* msg = alloc_msg();
     MessageHeader& header = msg->header;
-    header.src_srvid = src_node->id;
-    header.src_objid = src_entity->id;
-    header.dst_objid = 0;
-    header.dst_srvid = this->id;
-    header.id = MSG_CREATE_ENTITY;
+    header.src_nodeid = src_node->id;
+    header.src_objectid = src_object->id;
+    header.dst_objectid = 0;
+    header.dst_nodeid = this->id;
+    header.id = MSG_CREATE_GAMEOBJECT;
     msg->payload.write_utf8(filepath);
 
     if (is_local())
@@ -674,7 +674,7 @@ void Node::create_entity_remote(Entity* src_entity, const char* filepath)
         destory_msg(msg);
     } else
     {
-        send_entity_msg(NULL, msg);
+        send_gameobject_msg(NULL, msg);
     }
 }
 
@@ -690,14 +690,14 @@ void Node::delete_file_event(int fd, int mask)
 }
 
 
-Entity* Node::create_entity_local(const char* filepath)
+GameObject* Node::create_gameobject_local(const char* filepath)
 {
     lua_State* L = NodeMgr::L;
-    LOG_DEBUG("node[%d] create entity local %s", this->id, filepath);
-    Entity* entity = NULL;
+    LOG_DEBUG("node[%d] create object local %s", this->id, filepath);
+    GameObject* object = NULL;
     if (filepath == NULL)
     {
-        entity = new Entity();
+        object = new GameObject();
     } 
     else 
     {
@@ -706,29 +706,31 @@ Entity* Node::create_entity_local(const char* filepath)
         lua_getglobal(L, filepath);
         if (lua_pcall(L, 1, 1, 0) != 0)
         {
-            LOG_DEBUG("node[%d] create entity local error %s", this->id, lua_tostring(L, -1));
+            LOG_DEBUG("node[%d] create object local error %s", this->id, lua_tostring(L, -1));
             lua_printstack();
         }
         tolua_Error tolua_err;
-        if(!tolua_isusertype(L, -1, "Entity", 0, &tolua_err))
+        if(!tolua_isusertype(L, -1, "GameObject", 0, &tolua_err))
         {
+            LOG_ERROR("object is nil");
             lua_pop(L, lua_gettop(L));
             return NULL;
         }
-        entity = (Entity*)tolua_tousertype(L, -1, 0);
+        object = (GameObject*)tolua_tousertype(L, -1, 0);
         lua_pop(L, lua_gettop(L));
     }
-    if (entity == NULL)
+    if (object == NULL)
     {
+        LOG_ERROR("object is nil");
         return NULL;
     }
-    this->add_entity(entity);
-    entity->awake();
-    return entity;
+    this->add_gameobject(object);
+    object->awake();
+    return object;
 }
 
 
-void Node::transfer_entity(Entity* src_entity)
+void Node::transfer_gameobject(GameObject* src_object)
 {
 
 } 
@@ -798,13 +800,13 @@ void Node::destory_msg(Message* msg)
 
 int Node::post(lua_State* L)
 {
-    Entity* entity = find_entity(0);
-    if(!entity)
+    GameObject* object = find_gameobject(0);
+    if(!object)
     {
-        LOG_ERROR("entity 0 not found, rpc need entity 0");
+        LOG_ERROR("object 0 not found, rpc need object 0");
         return 0;
     }
-    RPCComponent* rpc = dynamic_cast<RPCComponent *>(entity->get_component(RPCComponent::type));
+    RPCComponent* rpc = dynamic_cast<RPCComponent *>(object->get_component(RPCComponent::type));
     if (!rpc)
     {
         LOG_ERROR("rpc component not found");

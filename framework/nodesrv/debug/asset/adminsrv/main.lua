@@ -1,5 +1,5 @@
 
-require('adminsrv/entity/entity')
+require('adminsrv/object/rootobject')
 require('lib/http2')
 require('lib/mydb')
 require('adminsrv/component/websocket')
@@ -17,5 +17,5 @@ function main()
     mydb.connect(Config.mydbconf)
     --local r = mydb.test:select('select * from user')
     --print(Json.encode(r))
-    mysrv:create_entity_local('MainEntity')
+    mynode:create_gameobject_local('RootGameObject')
 end

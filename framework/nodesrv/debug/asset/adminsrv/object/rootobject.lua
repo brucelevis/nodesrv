@@ -1,6 +1,6 @@
 
 
-MainEntity = {
+RootGameObject = {
     [__COMPONENTS] = {
         RPCComponent = {},
         HttpComponent = {},

@@ -1,5 +1,5 @@
 #include "node/nodemgr.h"
-#include "node/entity.h"
+#include "node/gameobject.h"
 #include "log/log.h"
 #include "script/script.h"
 
@@ -52,7 +52,7 @@ namespace NodeMgr
         if (find_node(nodeid))
         {
             return 0;
-        }
+       }
         Node *node = new Node(nodeid);
         if (node)
         {
@@ -62,7 +62,6 @@ namespace NodeMgr
         node_map_[node->get_id()] = node;
         node_vector_.push_back(node);
         return node;
-        return NULL;
     }
 
 
@@ -72,7 +71,7 @@ namespace NodeMgr
         {
             return 0;
         }
-        Node *node = new Node(nodeid);
+        Node *node= new Node(nodeid);
         if (node)
         {
             node->set_local(true);
@@ -117,7 +116,7 @@ namespace NodeMgr
         return NULL;
     }
 
-    void create_entity_remote(Entity* src_entity, int dst_nodeid, const char* filepath)
+    void create_gameobject_remote(GameObject* src_object, int dst_nodeid, const char* filepath)
     {
         Node* node = find_node(dst_nodeid);
         if (!node)
@@ -125,17 +124,17 @@ namespace NodeMgr
             LOG_ERROR("node[%d] not found", dst_nodeid);
             return;
         }
-        node->create_entity_remote(src_entity, filepath);
+        node->create_gameobject_remote(src_object, filepath);
     }
 
-    void transfer_entity(Entity* src_entity, int dst_nodeid)
+    void transfer_gameobject(GameObject* src_object, int dst_nodeid)
     {
         Node* node = find_node(dst_nodeid);
         if (!node)
         {
             return;
         }
-        node->transfer_entity(src_entity);
+        node->transfer_gameobject(src_object);
     }
 
     void lua_dofile(const char* filepath)

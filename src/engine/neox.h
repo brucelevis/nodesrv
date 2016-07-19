@@ -17,8 +17,8 @@
 #include "net/lport.h"
 #include "net/httpclient.h"
 #include "msg/msg.h"
-#include "node/entity.h"
-#include "node/entityroute.h"
+#include "node/gameobject.h"
+#include "node/objectmgr.h"
 #include "node/node.h"
 #include "node/nodemgr.h"
 #include "log/log.h"
@@ -48,7 +48,7 @@ namespace Neox
     Node* create_node_remote(int nodeid);
 
     // 在本地服务器上创建实体
-    Entity* create_entity_local(int nodeid, const char* filepath = "");
+    GameObject* create_gameobject_local(int nodeid, const char* filepath = "");
 
     // 守护进程模型
     void fork_daemon();

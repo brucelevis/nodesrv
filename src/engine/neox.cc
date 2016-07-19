@@ -19,14 +19,14 @@ namespace Neox
         return NodeMgr::create_node_remote(nodeid);
     }
 
-    Entity* create_entity_local(int nodeid, const char* filepath)
+    GameObject* create_gameobject_local(int nodeid, const char* filepath)
     {
         Node* node = NodeMgr::find_node(nodeid);
         if (!node)
         {
             return NULL;
         }
-        return node->create_entity_local(filepath);
+        return node->create_gameobject_local(filepath);
     }
 
     

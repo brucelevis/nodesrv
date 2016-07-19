@@ -1,5 +1,5 @@
-#ifndef _ENTITY_H_
-#define _ENTITY_H_
+#ifndef _GAMEOBJECT_H_
+#define _GAMEOBJECT_H_
 
 #include "msg/msg.h"
 #include "type/type.h"
@@ -23,11 +23,11 @@ class Component;
 class ScriptComponent;
 
 //tolua_begin
-class Entity
+class GameObject 
 {
     public:
-        Entity();
-        virtual ~Entity();
+        GameObject();
+        virtual ~GameObject();
         int test();
         
         //虚函数
@@ -56,12 +56,12 @@ class Entity
         int unreg_msg(uint32_t id, Component* component);
         
         //子对象相关
-        Entity* get_child(int index);
-        int add_child(Entity* entity);
+        GameObject* get_child(int index);
+        int add_child(GameObject* obj);
         int del_child(int index);
-        int del_child(Entity* entity);
-        int child_index(Entity* entity);
-        Entity* get_parent();
+        int del_child(GameObject* obj);
+        int child_index(GameObject* obj);
+        GameObject* get_parent();
 
         //保存相关
     public:
@@ -71,8 +71,8 @@ class Entity
         char name[64];
 //tolua_end
     private:
-        Entity* parent;
-        std::vector<Entity*> children;
+        GameObject* parent;
+        std::vector<GameObject*> children;
         std::vector<Component*> comp_vector;
         std::map<uint32_t, Component*> msg_map;
         std::map<std::string, Component*> comp_map;

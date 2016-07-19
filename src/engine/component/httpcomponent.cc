@@ -1,6 +1,6 @@
 #include "httpcomponent.h"
 
-#include "node/entity.h"
+#include "node/gameobject.h"
 #include "log/log.h"
 #include "net/http.h"
 #include "node/node.h"
@@ -128,13 +128,13 @@ int HttpComponent::recv_new_connection(Message* msg)
     int sid = session_init(sockfd);
 
     Message* msg2 = alloc_msg();
-    msg2->header.src_srvid = 0;
-    msg2->header.src_objid = 0;
-    msg2->header.dst_objid = 0;
-    msg2->header.dst_srvid = 0;
+    msg2->header.src_nodeid = 0;
+    msg2->header.src_objectid = 0;
+    msg2->header.dst_objectid = 0;
+    msg2->header.dst_nodeid = 0;
     msg2->header.id = MSG_NEW_SESSION;
     msg2->sid = sid;
-    this->entity->recv(msg2);
+    this->gameobject->recv(msg2);
     return 0;
 }
 
@@ -148,13 +148,13 @@ int HttpComponent::recv_close_connection(Message* msg)
         return 0;
     }
     Message* msg2 = alloc_msg();
-    msg2->header.src_srvid = 0;
-    msg2->header.src_objid = 0;
-    msg2->header.dst_objid = 0;
-    msg2->header.dst_srvid = 0;
+    msg2->header.src_nodeid = 0;
+    msg2->header.src_objectid = 0;
+    msg2->header.dst_objectid = 0;
+    msg2->header.dst_nodeid = 0;
     msg2->header.id = MSG_CLOSE_SESSION;
     msg2->sid = session->sid;
-    this->entity->recv(msg2);
+    this->gameobject->recv(msg2);
     session_destory(sockfd);
     return 0;
 }
@@ -165,16 +165,16 @@ int HttpComponent::dispatch_frame(int sockfd, http_frame_request& frame)
     frame_header* header = &(frame.header);
     LOG_MSG("HttpComponent dispatch a frame sid(%d) opcode(%d) framelen(%ld)", session->sid, header->opcode, frame.frame_len);
     Message* msg = alloc_msg();
-    msg->header.src_srvid = 0;
-    msg->header.src_objid = 0;
-    msg->header.dst_objid = 0;
-    msg->header.dst_srvid = 0;
+    msg->header.src_nodeid = 0;
+    msg->header.src_objectid = 0;
+    msg->header.dst_objectid = 0;
+    msg->header.dst_nodeid = 0;
     msg->header.id = MSG_NET_PACKET;
     msg->sockfd = sockfd;
     msg->sid = session->sid;
     msg->payload.reset();
     msg->payload.write_buf(frame.payload, frame.payload_len);
-    this->entity->recv(msg);
+    this->gameobject->recv(msg);
     return 0;
 }
 
@@ -385,10 +385,10 @@ int HttpComponent::recv_net_raw_data(Message* msg)
 
 void HttpComponent::awake()
 {
-    this->net_component = (NetComponent*)this->entity->get_component("NetComponent");
-    this->entity->reg_msg(MSG_NEW_CONNECTION, this);
-    this->entity->reg_msg(MSG_CLOSE_CONNECTION, this);
-    this->entity->reg_msg(MSG_NET_RAW_DATA, this);
+    this->net_component = (NetComponent*)this->gameobject->get_component("NetComponent");
+    this->gameobject->reg_msg(MSG_NEW_CONNECTION, this);
+    this->gameobject->reg_msg(MSG_CLOSE_CONNECTION, this);
+    this->gameobject->reg_msg(MSG_NET_RAW_DATA, this);
 }
 
 int HttpComponent::send_binary_frame(int sid, Buffer* buffer)

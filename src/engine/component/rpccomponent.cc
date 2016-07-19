@@ -69,7 +69,7 @@ void RPCMethod::reset()
     buffer.reset();
 }
 
-void RPCMethod::invoke(Component* component, int dst_srvid, int dst_objid)
+void RPCMethod::invoke(Component* component, int dst_nodeid, int dst_objectid)
 {
     if (!component)
     {
@@ -81,7 +81,7 @@ void RPCMethod::invoke(Component* component, int dst_srvid, int dst_objid)
     buffer.write_int8(0);
     msg->payload.write(&buffer);
     msg->option.cache = true;
-    component->send_entity_msg(dst_srvid, dst_objid, msg);
+    component->send_gameobject_msg(dst_nodeid, dst_objectid, msg);
 }
 
 RPCComponent::RPCComponent()
@@ -96,7 +96,7 @@ RPCComponent::~RPCComponent()
 void RPCComponent::awake()
 {
     LOG_DEBUG("RPCComponent::awake");
-    this->entity->reg_msg(MSG_RPC, this);
+    this->gameobject->reg_msg(MSG_RPC, this);
 }
 
 int RPCComponent::recv_rpc(Message* msg)
@@ -118,7 +118,7 @@ int RPCComponent::recv_rpc(Message* msg)
         return 1;
     }
     LOG_MSG("RECV POST func(%s)", funcname);
-    lua_pushnumber(L, msg->header.src_srvid);
+    lua_pushnumber(L, msg->header.src_nodeid);
     while(msg->payload.size() >= 1)
     {
         arg_type = msg->payload.read_int8();
@@ -229,11 +229,11 @@ int RPCComponent::post(lua_State* L)
         LOG_ERROR("arg error");
         return 0;
     }
-    int dst_srvid = (int)lua_tonumber(L, 2);
-    int dst_objid = 0;
+    int dst_nodeid = (int)lua_tonumber(L, 2);
+    int dst_objectid = 0;
     const char* func = (const char*)lua_tostring(L, 3);
 
-    LOG_MSG("POST %s TO %d %d", func, dst_srvid, dst_objid);
+    LOG_MSG("POST %s TO %d %d", func, dst_nodeid, dst_objectid);
     method.reset();
     method << func;
     int arg_count = lua_gettop(L);
@@ -285,8 +285,8 @@ int RPCComponent::post(lua_State* L)
             free(val);
         }
     }
-    method.invoke(this, dst_srvid, dst_objid);
-    LOG_MSG("POST %s TO %d %d FINISH", func, dst_srvid, dst_objid);
+    method.invoke(this, dst_nodeid, dst_objectid);
+    LOG_MSG("POST %s TO %d %d FINISH", func, dst_nodeid, dst_objectid);
     lua_pushboolean(L, 1);
     return 1;
 }

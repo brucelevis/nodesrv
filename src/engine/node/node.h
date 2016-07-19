@@ -19,14 +19,14 @@ extern "C" {
 #include "msg/msg.h"
 #include "container/buffer.h"
 
-class Entity;
+class GameObject;
 
 //节点
 //tolua_begin
 class Node
 {
     public:
-        Node(int srvid);
+        Node(int nodeid);
         virtual ~Node();
         /*
          * 入口
@@ -49,12 +49,12 @@ class Node
         /*
          * 查找实体
          */
-        Entity* find_entity(int objid);
+        GameObject* find_gameobject(int objid);
 
         /*
          * 插入实体
          */
-        int add_entity(Entity* entity);
+        int add_gameobject(GameObject* object);
 
         /*
          * 返回节点id
@@ -63,21 +63,21 @@ class Node
         bool is_local();
         void set_local(bool v);
         bool is_disconnect();
-        Entity* create_entity_local(const char* filepath = NULL);
-        void create_entity_remote(Entity* src_entity, const char* filepath);
+        GameObject* create_gameobject_local(const char* filepath = NULL);
+        void create_gameobject_remote(GameObject* src_object, const char* filepath);
 
         Message* alloc_msg();
         void destory_msg(Message* msg);
 
         void recv(Message* msg);
-        void recv_entity_msg(Message* msg);
+        void recv_gameobject_msg(Message* msg);
         void recv_node_reg(Message* msg);
-        void recv_create_entity(Message* msg);
+        void recv_create_gameobject(Message* msg);
 
-        void send_entity_msg(Entity* src_entity, int dst_objid, int msgid, const Buffer* buffer);
-        void send_entity_msg(Entity* src_entity, int dst_srvid, int dst_objid, Message* msg);
-        void send_entity_msg(Entity* src_entity, Message* msg);
-        void forward_entity_msg(Message* msg);
+        void send_gameobject_msg(GameObject* src_object, int dst_objid, int msgid, const Buffer* buffer);
+        void send_gameobject_msg(GameObject* src_object, int dst_nodeid, int dst_objid, Message* msg);
+        void send_gameobject_msg(GameObject* src_object, Message* msg);
+        void forward_gameobject_msg(Message* msg);
         //兼容之前的post协议
         int post(lua_State* L);
         void run_background();
@@ -90,7 +90,7 @@ class Node
         void send_node_reg();
         int create_file_event(int fd, int mask, aeFileProc* proc, void* clientData);
         void delete_file_event(int fd, int mask);
-        void transfer_entity(Entity* src_entity); 
+        void transfer_gameobject(GameObject* src_object); 
 
 
         void ev_accept(int sockfd);
@@ -117,8 +117,8 @@ class Node
         int listenfd_;
         char ip_[64];
         unsigned short port_;
-        std::map<int, Entity*> entity_map_;
-        std::vector<Entity*> entity_vector_;
+        std::map<int, GameObject*> gameobject_map_;
+        std::vector<GameObject*> gameobject_vector_;
         bool is_local_;
         pthread_t tid_;
         aeEventLoop* loop_;

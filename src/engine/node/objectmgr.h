@@ -1,13 +1,13 @@
-#ifndef _ENTITY_ROUTE_H_
-#define _ENTITY_ROUTE_H_
+#ifndef _OBJECT_MGR_H_
+#define _OBJECT_MGR_H_
 
 #include <map>
 
 class Node;
 //实体路由表
-namespace EntityRoute
+namespace ObjectMgr
 {
-    extern std::map<int, Node*> entity_map_;
+    extern std::map<int, Node*> object_map_;
 
     /*
      * 中心节点
@@ -18,20 +18,20 @@ namespace EntityRoute
     /*
      * 查找一个可到达实体的节点
      */
-    Node* find_route(int entityid);
+    Node* find_route(int objid);
 
     /*
      * 根据实体id查找实体所在的节点
      */
-    Node* where(int entityid);
+    Node* where(int objid);
 
     /*
      * 更新节点
      * node         节点
-     * entityid     实体id
+     * objid 实体id
      * expire_time  过期时间 
      */
-    void update_route(Node* node, int entityid, int expire_time = 0);
+    void update_route(Node* node, int objid, int expire_time = 0);
 };
 
 #endif

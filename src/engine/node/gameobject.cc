@@ -1,25 +1,25 @@
 
-#include "node/entity.h"
+#include "node/gameobject.h"
 #include "component/component.h"
 #include "component/scriptcomponent.h"
 #include "log/log.h"
 
 #include <string.h>
 
-Entity::Entity()
+GameObject::GameObject()
 {
     this->data = 0;
     this->node = 0;
     this->id = 0;
 }
 
-Entity::~Entity()
+GameObject::~GameObject()
 {
     destory();
     for(int i = 0; i < (int)children.size(); i++)
     {
-        Entity* entity = children[i];
-        delete entity;
+        GameObject* object = children[i];
+        delete object;
     }
     for (int i = comp_vector.size() - 1; i >= 0; i--)
     {
@@ -28,14 +28,14 @@ Entity::~Entity()
     }
 }
 
-void Entity::create()
+void GameObject::create()
 {
 
 }
 
-int Entity::unreach(Message* msg)
+int GameObject::unreach(Message* msg)
 {
-    LOG_DEBUG("entity[%d] unreach datalen(%ld)", msg->header.id, msg->payload.size());
+    LOG_DEBUG("object[%d] unreach datalen(%ld)", msg->header.id, msg->payload.size());
     std::map<unsigned int, Component*>::iterator it;
     it = msg_map.find(msg->header.id);
     if (it != msg_map.end())
@@ -47,9 +47,9 @@ int Entity::unreach(Message* msg)
 }
 
 
-int Entity::recv(Message* msg)
+int GameObject::recv(Message* msg)
 {
-    LOG_DEBUG("entity[%d] recv msg", this->id);
+    LOG_DEBUG("object[%d] recv msg", this->id);
     std::map<unsigned int, Component*>::iterator it;
     it = msg_map.find(msg->header.id);
     if (it != msg_map.end())
@@ -61,9 +61,9 @@ int Entity::recv(Message* msg)
     return 0;
 }
 
-//int Entity::recv(MsgHeader* header, const void* data, size_t datalen)
+//int GameObject::recv(MsgHeader* header, const void* data, size_t datalen)
 //{
-    //LOG_DEBUG("entity[%d] recv datalen(%ld)", id, datalen);
+    //LOG_DEBUG("object[%d] recv datalen(%ld)", id, datalen);
     //std::map<unsigned int, Component*>::iterator it;
     //it = msg_map.find(header->id);
     //if (it != msg_map.end())
@@ -74,32 +74,32 @@ int Entity::recv(Message* msg)
     //return 0;
 //}
 
-int Entity::save()
+int GameObject::save()
 {
     return 0;
 }
 
 
-ScriptComponent* Entity::add_script(const char* scriptname)
+ScriptComponent* GameObject::add_script(const char* scriptname)
 {
-    LOG_DEBUG("entity[%d] add script %s", this->id, scriptname);
+    LOG_DEBUG("object[%d] add script %s", this->id, scriptname);
     ScriptComponent* component = new ScriptComponent(scriptname);
     comp_vector.push_back(component);
     comp_map[scriptname] = component;
-    component->set_entity(this);
+    component->set_gameobject(this);
     return component;
 }
 
-int Entity::add_component(Component* component)
+int GameObject::add_component(Component* component)
 {
-    LOG_DEBUG("entity[%d] add component %s", this->id, component->get_type_name());
+    LOG_DEBUG("object[%d] add component %s", this->id, component->get_type_name());
     comp_vector.push_back(component);
     comp_map[component->get_type_name()] = component;
-    component->set_entity(this);
+    component->set_gameobject(this);
     return 0;
 }
 
-int Entity::del_component(Component* component)
+int GameObject::del_component(Component* component)
 {
     std::map<std::string, Component*>::iterator it = comp_map.begin();
     for (; it != comp_map.end(); it++)
@@ -124,9 +124,9 @@ int Entity::del_component(Component* component)
     return 0;
 }
 
-void Entity::update(uint64_t cur_tick)
+void GameObject::update(uint64_t cur_tick)
 {
-//    LOG_INFO("entity[%d] update %d", this->id, comp_vector.size());
+//    LOG_INFO("object[%d] update %d", this->id, comp_vector.size());
     for (int i = comp_vector.size() - 1; i >= 0; i--)
     {
         Component* component = comp_vector[i];
@@ -134,13 +134,13 @@ void Entity::update(uint64_t cur_tick)
     }
 }
 
-int Entity::reg_msg(uint32_t id, Component* component)
+int GameObject::reg_msg(uint32_t id, Component* component)
 {
     msg_map[id] = component;
     return 0;
 }
 
-int Entity::unreg_msg(uint32_t id, Component* component)
+int GameObject::unreg_msg(uint32_t id, Component* component)
 {
     std::map<unsigned int, Component*>::iterator it;
     it = msg_map.find(id);
@@ -152,13 +152,13 @@ int Entity::unreg_msg(uint32_t id, Component* component)
     return 1;
 }
 
-int Entity::test()
+int GameObject::test()
 {
-    printf("entity[%d] test\n", this->id);
+    printf("object[%d] test\n", this->id);
     return 0;
 }
 
-Entity* Entity::get_child(int index)
+GameObject* GameObject::get_child(int index)
 {
     if (index < 0 || index >= (int)children.size())
     {
@@ -167,23 +167,23 @@ Entity* Entity::get_child(int index)
     return children[index];
 }
 
-int Entity::add_child(Entity* entity)
+int GameObject::add_child(GameObject* object)
 {
-    children.push_back(entity);
-    entity->parent = this;
+    children.push_back(object);
+    object->parent = this;
     return children.size() - 1;
 }
 
-Entity* Entity::get_parent()
+GameObject* GameObject::get_parent()
 {
     return this->parent;
 }
 
-int Entity::child_index(Entity* entity)
+int GameObject::child_index(GameObject* object)
 {
     for(int i = 0; i < (int)children.size(); i++)
     {
-        if (children[i] == entity)
+        if (children[i] == object)
         {
             return i;
         }
@@ -191,11 +191,11 @@ int Entity::child_index(Entity* entity)
     return -1;
 }
 
-int Entity::del_child(Entity* entity)
+int GameObject::del_child(GameObject* object)
 {
     for(int i = 0; i < (int)children.size(); i++)
     {
-        if (children[i] == entity)
+        if (children[i] == object)
         {
             children[i] = children[children.size() - 1];
             children.pop_back();
@@ -205,7 +205,7 @@ int Entity::del_child(Entity* entity)
     return -1;
 }
 
-int Entity::del_child(int index)
+int GameObject::del_child(int index)
 {
     if (index < 0 || index >= (int)children.size())
     {
@@ -216,7 +216,7 @@ int Entity::del_child(int index)
     return 0; 
 }
 
-Component* Entity::get_component(Type* type)
+Component* GameObject::get_component(Type* type)
 {
     for (int i = comp_vector.size() - 1; i >= 0; i--)
     {
@@ -229,7 +229,7 @@ Component* Entity::get_component(Type* type)
     return NULL;
 }
 
-Component* Entity::get_component(const char* name)
+Component* GameObject::get_component(const char* name)
 {
     std::map<std::string, Component*>::iterator it;
     it = comp_map.find(name);
@@ -240,7 +240,7 @@ Component* Entity::get_component(const char* name)
     return it->second;
 }
 
-int Entity::get_component(lua_State* L)
+int GameObject::get_component(lua_State* L)
 {
     const char* classname = ((const char*)  tolua_tostring(L, 2, 0));
     Component* component = get_component(classname);
@@ -253,7 +253,7 @@ int Entity::get_component(lua_State* L)
     return 1;
 }
 
-ScriptComponent* Entity::get_script(const char* classname)
+ScriptComponent* GameObject::get_script(const char* classname)
 {
     Component* component = get_component(classname);
     if (component == NULL)
@@ -267,7 +267,7 @@ ScriptComponent* Entity::get_script(const char* classname)
     return (ScriptComponent*)component;
 }
 
-void Entity::destory()
+void GameObject::destory()
 {
     for (int i = 0; i < (int)comp_vector.size(); i++)
     {
@@ -276,7 +276,7 @@ void Entity::destory()
     }
 }
 
-void Entity::awake()
+void GameObject::awake()
 {
     for (int i = 0; i < (int)comp_vector.size(); i++)
     {

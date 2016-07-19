@@ -72,7 +72,7 @@ loginfo('running dir(%s)', File.getcwd())
 
 --本地节点
 NodeMgr.create_node_local(Config.nodeid)
-mysrv:listen(Config.host, Config.port)
+mynode:listen(Config.host, Config.port)
 --远程节点
 local srvlist = Config.srvgrap[Config.nodeid]
 if srvlist then
@@ -86,7 +86,7 @@ end
 
 
 if is_daemon then
-    mysrv:run_background()
+    mynode:run_background()
     local d = os.date('*t')
     Log.stdout2file(string.format('%s_%04d%02d%02d', Config.srvname, d.year, d.month, d.day))
 end

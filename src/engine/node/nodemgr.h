@@ -54,9 +54,9 @@ namespace NodeMgr
     Node* create_node_remote(int nodeid);
 
     //将实体传输到目标节点
-    void transfer_entity(Entity* src_entity, int dst_nodeid);
+    void transfer_gameobject(GameObject* src_object, int dst_nodeid);
 
-    void create_entity_remote(Entity* src_entity, int dst_nodeid, const char* filepath);
+    void create_gameobject_remote(GameObject* src_object, int dst_nodeid, const char* filepath);
 
 };
 //tolua_end

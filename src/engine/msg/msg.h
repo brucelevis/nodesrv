@@ -11,11 +11,11 @@ class MessageHeader
 public:
     uint32_t len;
     //源实体id
-    uint32_t src_objid;
-    uint32_t src_srvid;
+    uint32_t src_objectid;
+    uint32_t src_nodeid;
     //目标实体id
-    uint32_t dst_objid;
-    uint32_t dst_srvid;
+    uint32_t dst_objectid;
+    uint32_t dst_nodeid;
     //消息id
     uint32_t id;
 };
@@ -25,11 +25,6 @@ class MessageOption
 public:
     bool cache;
 };
-/*
- * local msg = mynode:alloc_msg()
- * mynode:flush(msg)
- *
- */
 
 class Message
 {
@@ -56,7 +51,7 @@ public:
 //连接节点
 #define MSG_NODE_REG 3
 //创建实体
-#define MSG_CREATE_ENTITY 4
+#define MSG_CREATE_GAMEOBJECT 4
 //网络原始数据
 #define MSG_NET_RAW_DATA 5
 //网络数据包
@@ -73,11 +68,11 @@ public:
 #pragma pack(push, 1)
 
 //创建实体
-typedef struct tagCreateEntityMsg
+typedef struct tagCreateGameObjectMsg
 {
     uint16_t len;
     char filepath[64];
-} CreateEntityMsg;
+} CreateGameObjectMsg;
 
 #pragma pack(pop)
 
