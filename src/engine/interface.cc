@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Sat Jul 16 09:03:11 2016.
+** Generated automatically by tolua++-1.0.92 on Mon Jul 18 17:36:04 2016.
 */
 
 #ifndef __cplusplus
@@ -1883,9 +1883,9 @@ static int tolua_neox_Node_new00(lua_State* tolua_S)
  else
 #endif
  {
-  int nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  int srvid = ((int)  tolua_tonumber(tolua_S,2,0));
   {
-   Node* tolua_ret = (Node*)  new Node(nodeid);
+   Node* tolua_ret = (Node*)  new Node(srvid);
    tolua_pushusertype(tolua_S,(void*)tolua_ret,"Node");
   }
  }
@@ -1913,9 +1913,9 @@ static int tolua_neox_Node_new00_local(lua_State* tolua_S)
  else
 #endif
  {
-  int nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  int srvid = ((int)  tolua_tonumber(tolua_S,2,0));
   {
-   Node* tolua_ret = (Node*)  new Node(nodeid);
+   Node* tolua_ret = (Node*)  new Node(srvid);
    tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"Node");
   }
  }
@@ -2109,12 +2109,12 @@ static int tolua_neox_Node_find_entity00(lua_State* tolua_S)
 #endif
  {
   Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  int entityid = ((int)  tolua_tonumber(tolua_S,2,0));
+  int objid = ((int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'find_entity'",NULL);
 #endif
   {
-   Entity* tolua_ret = (Entity*)  self->find_entity(entityid);
+   Entity* tolua_ret = (Entity*)  self->find_entity(objid);
    tolua_pushusertype(tolua_S,(void*)tolua_ret,"Entity");
   }
  }
@@ -2576,14 +2576,14 @@ static int tolua_neox_Node_send_entity_msg00(lua_State* tolua_S)
  {
   Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
   Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
-  int dst_entityid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int dst_objid = ((int)  tolua_tonumber(tolua_S,3,0));
   int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
   const Buffer* buffer = ((const Buffer*)  tolua_tousertype(tolua_S,5,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_entity_msg'",NULL);
 #endif
   {
-   self->send_entity_msg(src_entity,dst_entityid,msgid,buffer);
+   self->send_entity_msg(src_entity,dst_objid,msgid,buffer);
   }
  }
  return 0;
@@ -2613,14 +2613,14 @@ static int tolua_neox_Node_send_entity_msg01(lua_State* tolua_S)
  {
   Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
   Entity* src_entity = ((Entity*)  tolua_tousertype(tolua_S,2,0));
-  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int dst_entityid = ((int)  tolua_tonumber(tolua_S,4,0));
+  int dst_srvid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int dst_objid = ((int)  tolua_tonumber(tolua_S,4,0));
   Message* msg = ((Message*)  tolua_tousertype(tolua_S,5,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_entity_msg'",NULL);
 #endif
   {
-   self->send_entity_msg(src_entity,dst_nodeid,dst_entityid,msg);
+   self->send_entity_msg(src_entity,dst_srvid,dst_objid,msg);
   }
  }
  return 0;
@@ -3181,7 +3181,7 @@ static int tolua_neox_Component_update00(lua_State* tolua_S)
 #endif
  {
   Component* self = (Component*)  tolua_tousertype(tolua_S,1,0);
-  long long cur_tick = ((long long)  tolua_tonumber(tolua_S,2,0));
+  uint64_t cur_tick = ((uint64_t)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'update'",NULL);
 #endif
@@ -4993,121 +4993,121 @@ static int tolua_set_MessageHeader_len(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: src_entityid of class  MessageHeader */
-#ifndef TOLUA_DISABLE_tolua_get_MessageHeader_src_entityid
-static int tolua_get_MessageHeader_src_entityid(lua_State* tolua_S)
+/* get function: src_objid of class  MessageHeader */
+#ifndef TOLUA_DISABLE_tolua_get_MessageHeader_src_objid
+static int tolua_get_MessageHeader_src_objid(lua_State* tolua_S)
 {
   MessageHeader* self = (MessageHeader*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'src_entityid'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'src_objid'",NULL);
 #endif
-  tolua_pushnumber(tolua_S,(lua_Number)self->src_entityid);
+  tolua_pushnumber(tolua_S,(lua_Number)self->src_objid);
  return 1;
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: src_entityid of class  MessageHeader */
-#ifndef TOLUA_DISABLE_tolua_set_MessageHeader_src_entityid
-static int tolua_set_MessageHeader_src_entityid(lua_State* tolua_S)
+/* set function: src_objid of class  MessageHeader */
+#ifndef TOLUA_DISABLE_tolua_set_MessageHeader_src_objid
+static int tolua_set_MessageHeader_src_objid(lua_State* tolua_S)
 {
   MessageHeader* self = (MessageHeader*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'src_entityid'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'src_objid'",NULL);
   if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
-  self->src_entityid = ((uint32_t)  tolua_tonumber(tolua_S,2,0))
+  self->src_objid = ((uint32_t)  tolua_tonumber(tolua_S,2,0))
 ;
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: src_nodeid of class  MessageHeader */
-#ifndef TOLUA_DISABLE_tolua_get_MessageHeader_src_nodeid
-static int tolua_get_MessageHeader_src_nodeid(lua_State* tolua_S)
+/* get function: src_srvid of class  MessageHeader */
+#ifndef TOLUA_DISABLE_tolua_get_MessageHeader_src_srvid
+static int tolua_get_MessageHeader_src_srvid(lua_State* tolua_S)
 {
   MessageHeader* self = (MessageHeader*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'src_nodeid'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'src_srvid'",NULL);
 #endif
-  tolua_pushnumber(tolua_S,(lua_Number)self->src_nodeid);
+  tolua_pushnumber(tolua_S,(lua_Number)self->src_srvid);
  return 1;
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: src_nodeid of class  MessageHeader */
-#ifndef TOLUA_DISABLE_tolua_set_MessageHeader_src_nodeid
-static int tolua_set_MessageHeader_src_nodeid(lua_State* tolua_S)
+/* set function: src_srvid of class  MessageHeader */
+#ifndef TOLUA_DISABLE_tolua_set_MessageHeader_src_srvid
+static int tolua_set_MessageHeader_src_srvid(lua_State* tolua_S)
 {
   MessageHeader* self = (MessageHeader*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'src_nodeid'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'src_srvid'",NULL);
   if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
-  self->src_nodeid = ((uint32_t)  tolua_tonumber(tolua_S,2,0))
+  self->src_srvid = ((uint32_t)  tolua_tonumber(tolua_S,2,0))
 ;
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: dst_entityid of class  MessageHeader */
-#ifndef TOLUA_DISABLE_tolua_get_MessageHeader_dst_entityid
-static int tolua_get_MessageHeader_dst_entityid(lua_State* tolua_S)
+/* get function: dst_objid of class  MessageHeader */
+#ifndef TOLUA_DISABLE_tolua_get_MessageHeader_dst_objid
+static int tolua_get_MessageHeader_dst_objid(lua_State* tolua_S)
 {
   MessageHeader* self = (MessageHeader*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dst_entityid'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dst_objid'",NULL);
 #endif
-  tolua_pushnumber(tolua_S,(lua_Number)self->dst_entityid);
+  tolua_pushnumber(tolua_S,(lua_Number)self->dst_objid);
  return 1;
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: dst_entityid of class  MessageHeader */
-#ifndef TOLUA_DISABLE_tolua_set_MessageHeader_dst_entityid
-static int tolua_set_MessageHeader_dst_entityid(lua_State* tolua_S)
+/* set function: dst_objid of class  MessageHeader */
+#ifndef TOLUA_DISABLE_tolua_set_MessageHeader_dst_objid
+static int tolua_set_MessageHeader_dst_objid(lua_State* tolua_S)
 {
   MessageHeader* self = (MessageHeader*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dst_entityid'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dst_objid'",NULL);
   if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
-  self->dst_entityid = ((uint32_t)  tolua_tonumber(tolua_S,2,0))
+  self->dst_objid = ((uint32_t)  tolua_tonumber(tolua_S,2,0))
 ;
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* get function: dst_nodeid of class  MessageHeader */
-#ifndef TOLUA_DISABLE_tolua_get_MessageHeader_dst_nodeid
-static int tolua_get_MessageHeader_dst_nodeid(lua_State* tolua_S)
+/* get function: dst_srvid of class  MessageHeader */
+#ifndef TOLUA_DISABLE_tolua_get_MessageHeader_dst_srvid
+static int tolua_get_MessageHeader_dst_srvid(lua_State* tolua_S)
 {
   MessageHeader* self = (MessageHeader*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dst_nodeid'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dst_srvid'",NULL);
 #endif
-  tolua_pushnumber(tolua_S,(lua_Number)self->dst_nodeid);
+  tolua_pushnumber(tolua_S,(lua_Number)self->dst_srvid);
  return 1;
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* set function: dst_nodeid of class  MessageHeader */
-#ifndef TOLUA_DISABLE_tolua_set_MessageHeader_dst_nodeid
-static int tolua_set_MessageHeader_dst_nodeid(lua_State* tolua_S)
+/* set function: dst_srvid of class  MessageHeader */
+#ifndef TOLUA_DISABLE_tolua_set_MessageHeader_dst_srvid
+static int tolua_set_MessageHeader_dst_srvid(lua_State* tolua_S)
 {
   MessageHeader* self = (MessageHeader*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   tolua_Error tolua_err;
-  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dst_nodeid'",NULL);
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dst_srvid'",NULL);
   if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
-  self->dst_nodeid = ((uint32_t)  tolua_tonumber(tolua_S,2,0))
+  self->dst_srvid = ((uint32_t)  tolua_tonumber(tolua_S,2,0))
 ;
  return 0;
 }
@@ -5509,6 +5509,23 @@ static int tolua_get_Message_data(lua_State* tolua_S)
 #endif
   tolua_pushstring(tolua_S,(const char*)self->data);
  return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: data of class  Message */
+#ifndef TOLUA_DISABLE_tolua_set_Message_data
+static int tolua_set_Message_data(lua_State* tolua_S)
+{
+  Message* self = (Message*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'data'",NULL);
+  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->data = ((char*)  tolua_tostring(tolua_S,2,0))
+;
+ return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -7264,10 +7281,10 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"MessageHeader","MessageHeader","",NULL);
   tolua_beginmodule(tolua_S,"MessageHeader");
    tolua_variable(tolua_S,"len",tolua_get_MessageHeader_len,tolua_set_MessageHeader_len);
-   tolua_variable(tolua_S,"src_entityid",tolua_get_MessageHeader_src_entityid,tolua_set_MessageHeader_src_entityid);
-   tolua_variable(tolua_S,"src_nodeid",tolua_get_MessageHeader_src_nodeid,tolua_set_MessageHeader_src_nodeid);
-   tolua_variable(tolua_S,"dst_entityid",tolua_get_MessageHeader_dst_entityid,tolua_set_MessageHeader_dst_entityid);
-   tolua_variable(tolua_S,"dst_nodeid",tolua_get_MessageHeader_dst_nodeid,tolua_set_MessageHeader_dst_nodeid);
+   tolua_variable(tolua_S,"src_objid",tolua_get_MessageHeader_src_objid,tolua_set_MessageHeader_src_objid);
+   tolua_variable(tolua_S,"src_srvid",tolua_get_MessageHeader_src_srvid,tolua_set_MessageHeader_src_srvid);
+   tolua_variable(tolua_S,"dst_objid",tolua_get_MessageHeader_dst_objid,tolua_set_MessageHeader_dst_objid);
+   tolua_variable(tolua_S,"dst_srvid",tolua_get_MessageHeader_dst_srvid,tolua_set_MessageHeader_dst_srvid);
    tolua_variable(tolua_S,"id",tolua_get_MessageHeader_id,tolua_set_MessageHeader_id);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"MessageOption","MessageOption","",NULL);
@@ -7292,7 +7309,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"sid",tolua_get_Message_sid,tolua_set_Message_sid);
    tolua_variable(tolua_S,"ref_count",tolua_get_Message_ref_count,tolua_set_Message_ref_count);
    tolua_variable(tolua_S,"payload",tolua_get_Message_payload,tolua_set_Message_payload);
-   tolua_variable(tolua_S,"data",tolua_get_Message_data,NULL);
+   tolua_variable(tolua_S,"data",tolua_get_Message_data,tolua_set_Message_data);
    tolua_variable(tolua_S,"datalen",tolua_get_Message_datalen,tolua_set_Message_datalen);
   tolua_endmodule(tolua_S);
   tolua_constant(tolua_S,"MSG_SEND",MSG_SEND);

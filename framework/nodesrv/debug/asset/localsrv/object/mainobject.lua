@@ -1,5 +1,5 @@
 
-MainEntity = 
+MainObject = 
 {
     id = 0,
     [__COMPONENTS] = 

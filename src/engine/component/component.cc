@@ -25,7 +25,7 @@ void Component::awake()
 
 }
 
-void Component::update(long long cur_tick)
+void Component::update(uint64_t cur_tick)
 {
 
 }

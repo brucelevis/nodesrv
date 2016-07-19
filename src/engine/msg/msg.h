@@ -11,11 +11,11 @@ class MessageHeader
 public:
     uint32_t len;
     //源实体id
-    uint32_t src_entityid;
-    uint32_t src_nodeid;
+    uint32_t src_objid;
+    uint32_t src_srvid;
     //目标实体id
-    uint32_t dst_entityid;
-    uint32_t dst_nodeid;
+    uint32_t dst_objid;
+    uint32_t dst_srvid;
     //消息id
     uint32_t id;
 };

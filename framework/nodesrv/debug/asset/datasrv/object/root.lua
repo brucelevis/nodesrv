@@ -1,5 +1,5 @@
 
-DbSrvEntity = 
+RootObject = 
 {
     [__COMPONENTS] = 
     {

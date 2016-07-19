@@ -126,7 +126,7 @@ int Entity::del_component(Component* component)
 
 void Entity::update(uint64_t cur_tick)
 {
-//    printf("entity[%d] update\n", this->id);
+//    LOG_INFO("entity[%d] update %d", this->id, comp_vector.size());
     for (int i = comp_vector.size() - 1; i >= 0; i--)
     {
         Component* component = comp_vector[i];

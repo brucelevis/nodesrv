@@ -14,8 +14,8 @@ gatesrv:
 scenesrv:
 	bin/scenesrv scenesrv1
 
-dbsrv:
-	bin/logicsrv dbsrv1
+datasrv:
+	bin/logicsrv datasrv1
 
 clean:
 	cd ../gatesrv;make clean

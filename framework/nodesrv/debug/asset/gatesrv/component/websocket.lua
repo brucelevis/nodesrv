@@ -63,3 +63,8 @@ function reply(sid, reply)
     buffer:write_protobuf(reply)
     http_component:send_binary_frame(sid, buffer)
 end
+
+function update(self)
+--    loginfo('update')
+end
+

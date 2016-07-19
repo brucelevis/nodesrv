@@ -128,10 +128,10 @@ int HttpComponent::recv_new_connection(Message* msg)
     int sid = session_init(sockfd);
 
     Message* msg2 = alloc_msg();
-    msg2->header.src_nodeid = 0;
-    msg2->header.src_entityid = 0;
-    msg2->header.dst_entityid = 0;
-    msg2->header.dst_nodeid = 0;
+    msg2->header.src_srvid = 0;
+    msg2->header.src_objid = 0;
+    msg2->header.dst_objid = 0;
+    msg2->header.dst_srvid = 0;
     msg2->header.id = MSG_NEW_SESSION;
     msg2->sid = sid;
     this->entity->recv(msg2);
@@ -148,10 +148,10 @@ int HttpComponent::recv_close_connection(Message* msg)
         return 0;
     }
     Message* msg2 = alloc_msg();
-    msg2->header.src_nodeid = 0;
-    msg2->header.src_entityid = 0;
-    msg2->header.dst_entityid = 0;
-    msg2->header.dst_nodeid = 0;
+    msg2->header.src_srvid = 0;
+    msg2->header.src_objid = 0;
+    msg2->header.dst_objid = 0;
+    msg2->header.dst_srvid = 0;
     msg2->header.id = MSG_CLOSE_SESSION;
     msg2->sid = session->sid;
     this->entity->recv(msg2);
@@ -165,10 +165,10 @@ int HttpComponent::dispatch_frame(int sockfd, http_frame_request& frame)
     frame_header* header = &(frame.header);
     LOG_MSG("HttpComponent dispatch a frame sid(%d) opcode(%d) framelen(%ld)", session->sid, header->opcode, frame.frame_len);
     Message* msg = alloc_msg();
-    msg->header.src_nodeid = 0;
-    msg->header.src_entityid = 0;
-    msg->header.dst_entityid = 0;
-    msg->header.dst_nodeid = 0;
+    msg->header.src_srvid = 0;
+    msg->header.src_objid = 0;
+    msg->header.dst_objid = 0;
+    msg->header.dst_srvid = 0;
     msg->header.id = MSG_NET_PACKET;
     msg->sockfd = sockfd;
     msg->sid = session->sid;

@@ -2,6 +2,7 @@
 #include "component/scriptcomponent.h"
 #include "node/entity.h"
 #include "node/node.h"
+#include "log/log.h"
 
 #include <string.h>
 
@@ -43,6 +44,7 @@ void ScriptComponent::update(uint64_t cur_tick)
     lua_State* L = get_lua_state(); 
     static char funcname[128];
     sprintf(funcname, "%s.update", modname);
+    //LOG_INFO("%s %s", __FUNCTION__, funcname);
     lua_pushfunction(funcname);
     tolua_pushusertype(L, this, "ScriptComponent");
     lua_pushnumber(L, cur_tick);

@@ -26,7 +26,7 @@ class Entity;
 class Node
 {
     public:
-        Node(int nodeid);
+        Node(int srvid);
         virtual ~Node();
         /*
          * 入口
@@ -49,7 +49,7 @@ class Node
         /*
          * 查找实体
          */
-        Entity* find_entity(int entityid);
+        Entity* find_entity(int objid);
 
         /*
          * 插入实体
@@ -74,8 +74,8 @@ class Node
         void recv_node_reg(Message* msg);
         void recv_create_entity(Message* msg);
 
-        void send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const Buffer* buffer);
-        void send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, Message* msg);
+        void send_entity_msg(Entity* src_entity, int dst_objid, int msgid, const Buffer* buffer);
+        void send_entity_msg(Entity* src_entity, int dst_srvid, int dst_objid, Message* msg);
         void send_entity_msg(Entity* src_entity, Message* msg);
         void forward_entity_msg(Message* msg);
         //兼容之前的post协议

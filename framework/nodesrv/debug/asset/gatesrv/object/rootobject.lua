@@ -1,6 +1,6 @@
 
 
-MainEntity = {
+RootObject = {
     [__COMPONENTS] = {
         RPCComponent = {},
         HttpComponent = {},

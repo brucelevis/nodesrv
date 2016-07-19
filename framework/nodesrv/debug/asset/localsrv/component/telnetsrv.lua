@@ -58,3 +58,7 @@ function reply(sockfd, reply)
     net_component:send_str(sockfd, reply)
     net_component:send_str(sockfd, '\n>')
 end
+
+function update()
+
+end

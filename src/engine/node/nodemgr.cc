@@ -98,7 +98,7 @@ namespace NodeMgr
             for (int i = node_vector_.size() - 1; i >= 0; --i)
             {
                 Node* node = node_vector_[i];
-                //         LOG_DEBUG("node[%d] addr(%lld) update", node->get_id(), (long long)node);
+                //LOG_DEBUG("node[%d] addr(%lld) update", node->get_id(), (long long)node);
                 node->update(cur_tick);
             }
         }

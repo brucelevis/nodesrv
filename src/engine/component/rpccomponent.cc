@@ -69,7 +69,7 @@ void RPCMethod::reset()
     buffer.reset();
 }
 
-void RPCMethod::invoke(Component* component, int dst_nodeid, int dst_entityid)
+void RPCMethod::invoke(Component* component, int dst_srvid, int dst_objid)
 {
     if (!component)
     {
@@ -81,7 +81,7 @@ void RPCMethod::invoke(Component* component, int dst_nodeid, int dst_entityid)
     buffer.write_int8(0);
     msg->payload.write(&buffer);
     msg->option.cache = true;
-    component->send_entity_msg(dst_nodeid, dst_entityid, msg);
+    component->send_entity_msg(dst_srvid, dst_objid, msg);
 }
 
 RPCComponent::RPCComponent()
@@ -118,7 +118,7 @@ int RPCComponent::recv_rpc(Message* msg)
         return 1;
     }
     LOG_MSG("RECV POST func(%s)", funcname);
-    lua_pushnumber(L, msg->header.src_nodeid);
+    lua_pushnumber(L, msg->header.src_srvid);
     while(msg->payload.size() >= 1)
     {
         arg_type = msg->payload.read_int8();
@@ -229,11 +229,11 @@ int RPCComponent::post(lua_State* L)
         LOG_ERROR("arg error");
         return 0;
     }
-    int dst_nodeid = (int)lua_tonumber(L, 2);
-    int dst_entityid = 0;
+    int dst_srvid = (int)lua_tonumber(L, 2);
+    int dst_objid = 0;
     const char* func = (const char*)lua_tostring(L, 3);
 
-    LOG_MSG("POST %s TO %d %d", func, dst_nodeid, dst_entityid);
+    LOG_MSG("POST %s TO %d %d", func, dst_srvid, dst_objid);
     method.reset();
     method << func;
     int arg_count = lua_gettop(L);
@@ -285,8 +285,8 @@ int RPCComponent::post(lua_State* L)
             free(val);
         }
     }
-    method.invoke(this, dst_nodeid, dst_entityid);
-    LOG_MSG("POST %s TO %d %d FINISH", func, dst_nodeid, dst_entityid);
+    method.invoke(this, dst_srvid, dst_objid);
+    LOG_MSG("POST %s TO %d %d FINISH", func, dst_srvid, dst_objid);
     lua_pushboolean(L, 1);
     return 1;
 }

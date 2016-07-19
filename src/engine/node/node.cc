@@ -80,9 +80,9 @@ static void _ev_readable(struct aeEventLoop *eventLoop, int sockfd, void *client
     node->ev_readable(sockfd);
 }
 
-Node::Node(int nodeid)
+Node::Node(int srvid)
 {
-    this->id = nodeid;
+    this->id = srvid;
     sockfd_ = -1;
     listenfd_ = -1;
     ip_[0] = 0;
@@ -364,7 +364,7 @@ void Node::update(long long cur_tick)
 
 void Node::recv(Message* msg)
 {
-    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_entityid, msg->header.len);
+    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d)", this->id, msg->header.id, msg->header.src_srvid, msg->header.src_objid, msg->header.len);
     struct timeval t1;
     gettimeofday(&t1, NULL);
     //不可靠的消息传输
@@ -388,7 +388,7 @@ void Node::recv(Message* msg)
     }
     struct timeval t2;
     gettimeofday(&t2, NULL);
-    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d) usec(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_entityid, msg->header.len, time_diff(&t1, &t2));
+    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d) usec(%d)", this->id, msg->header.id, msg->header.src_srvid, msg->header.src_objid, msg->header.len, time_diff(&t1, &t2));
 }
 
 int Node::dispatch(char* data, size_t datalen)
@@ -427,7 +427,7 @@ int Node::dispatch(char* data, size_t datalen)
 void Node::forward_entity_msg(Message* msg)
 {
     //先发给本地实体
-    Entity* entity = find_entity(msg->header.dst_entityid);
+    Entity* entity = find_entity(msg->header.dst_objid);
     if (entity)
     {
         entity->recv(msg);
@@ -442,9 +442,9 @@ void Node::forward_entity_msg(Message* msg)
 
 void Node::recv_entity_msg(Message* msg)
 {
-    int dst_entityid = msg->header.dst_entityid;
+    int dst_objid = msg->header.dst_objid;
     //广播 
-    if (dst_entityid == 0)
+    if (dst_objid == 0)
     {
         for (int i = entity_vector_.size() - 1; i >= 0; i--)
         {
@@ -453,7 +453,7 @@ void Node::recv_entity_msg(Message* msg)
         }
     } else
     {
-        Entity* entity = find_entity(dst_entityid);
+        Entity* entity = find_entity(dst_objid);
         if(entity)
         {
             entity->recv(msg);
@@ -473,7 +473,7 @@ void Node::recv_entity_msg(Message* msg)
     }
 }
 
-void Node::send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid, Message* msg)
+void Node::send_entity_msg(Entity* src_entity, int dst_srvid, int dst_objid, Message* msg)
 {
     if (!src_entity)
     {
@@ -486,16 +486,16 @@ void Node::send_entity_msg(Entity* src_entity, int dst_nodeid, int dst_entityid,
         LOG_ERROR("src_node not found");
         return;
     }
-    Node* node = NodeMgr::find_node(dst_nodeid);
+    Node* node = NodeMgr::find_node(dst_srvid);
     if (!node)
     {
-        LOG_ERROR("dst_node(%d) not found", dst_nodeid);
+        LOG_ERROR("dst_node(%d) not found", dst_srvid);
         return;
     }
-    msg->header.src_entityid = src_entity->id;
-    msg->header.src_nodeid = src_node->id;
-    msg->header.dst_nodeid = dst_nodeid;
-    msg->header.dst_entityid = dst_entityid;
+    msg->header.src_objid = src_entity->id;
+    msg->header.src_srvid = src_node->id;
+    msg->header.dst_srvid = dst_srvid;
+    msg->header.dst_objid = dst_objid;
     node->send_entity_msg(src_entity, msg);
 }
 
@@ -503,11 +503,11 @@ void Node::send_entity_msg(Entity* src_entity, Message* msg)
 {
     if (src_entity)
     {
-        msg->header.src_entityid = src_entity->id;
-        msg->header.src_nodeid = src_entity->node->id;
+        msg->header.src_objid = src_entity->id;
+        msg->header.src_srvid = src_entity->node->id;
     }
     //发给本地实体
-    Entity* dst_entity = find_entity(msg->header.dst_entityid);
+    Entity* dst_entity = find_entity(msg->header.dst_objid);
     if (dst_entity)
     {
         dst_entity->recv(msg);
@@ -516,8 +516,8 @@ void Node::send_entity_msg(Entity* src_entity, Message* msg)
     else if (is_disconnect())
     {
         LOG_WARN("node[%d] is disconnect", get_id());
-        int src_entityid = msg->header.src_entityid;
-        Entity* src_entity = find_entity(src_entityid);
+        int src_objid = msg->header.src_objid;
+        Entity* src_entity = find_entity(src_objid);
         if (src_entity)
         {
             src_entity->unreach(msg);
@@ -545,7 +545,7 @@ void Node::send_entity_msg(Entity* src_entity, Message* msg)
     }
 }
 
-void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, const Buffer* buffer)
+void Node::send_entity_msg(Entity* src_entity, int dst_objid, int msgid, const Buffer* buffer)
 {
     LOG_INFO("node[%d] send entity msg(%d)", this->id, msgid);
     Node* src_node = src_entity->node;
@@ -555,10 +555,10 @@ void Node::send_entity_msg(Entity* src_entity, int dst_entityid, int msgid, cons
     }
     Message* msg = alloc_msg();
     MessageHeader& header = msg->header;
-    header.src_nodeid = src_node->get_id();
-    header.src_entityid = src_entity->id;
-    header.dst_entityid = dst_entityid;
-    header.dst_nodeid = this->id;
+    header.src_srvid = src_node->get_id();
+    header.src_objid = src_entity->id;
+    header.dst_objid = dst_objid;
+    header.dst_srvid = this->id;
     header.id = msgid;
 
     msg->payload.reset();
@@ -594,10 +594,10 @@ int Node::add_entity(Entity* entity)
 }
 
 
-Entity* Node::find_entity(int entityid)
+Entity* Node::find_entity(int objid)
 {
     std::map<int, Entity*>::iterator it;
-    it = entity_map_.find(entityid);
+    it = entity_map_.find(objid);
     if (it != entity_map_.end())
     {
         return it->second;
@@ -629,7 +629,7 @@ bool Node::is_disconnect()
 
 void Node::recv_node_reg(Message* msg)
 {
-    LOG_DEBUG("node[%d] recv node[%d] reg", this->id, msg->header.src_nodeid);
+    LOG_DEBUG("node[%d] recv node[%d] reg", this->id, msg->header.src_srvid);
 }
 
 void Node::send_node_reg()
@@ -637,10 +637,10 @@ void Node::send_node_reg()
     LOG_DEBUG("node[%d] send node reg", this->id);
     Message* msg = alloc_msg();
     MessageHeader& header = msg->header;
-    header.src_nodeid = this->id;
-    header.src_entityid = 0;
-    header.dst_entityid = 0;
-    header.dst_nodeid = this->id;
+    header.src_srvid = this->id;
+    header.src_objid = 0;
+    header.dst_objid = 0;
+    header.dst_srvid = this->id;
     header.id = MSG_NODE_REG;
     send_entity_msg(NULL, msg);
 }
@@ -661,10 +661,10 @@ void Node::create_entity_remote(Entity* src_entity, const char* filepath)
 
     Message* msg = alloc_msg();
     MessageHeader& header = msg->header;
-    header.src_nodeid = src_node->id;
-    header.src_entityid = src_entity->id;
-    header.dst_entityid = 0;
-    header.dst_nodeid = this->id;
+    header.src_srvid = src_node->id;
+    header.src_objid = src_entity->id;
+    header.dst_objid = 0;
+    header.dst_srvid = this->id;
     header.id = MSG_CREATE_ENTITY;
     msg->payload.write_utf8(filepath);
 

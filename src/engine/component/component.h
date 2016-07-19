@@ -26,7 +26,7 @@ class Component
         virtual ~Component();
         virtual void awake();
         virtual void destory();
-        virtual void update(long long cur_tick);
+        virtual void update(uint64_t cur_tick);
         virtual int recv(Message* msg);
         virtual int unreach(Message* msg);
 

@@ -36,6 +36,6 @@ void DataSrv::awake()
         exit(1);
         return;
     }
-    net_component->listen("127.0.0.1", 9090);
+//    net_component->listen("127.0.0.1", 9090);
 }
 

@@ -186,10 +186,10 @@ void NetComponent::ev_readable(int sockfd)
 int NetComponent::dispatch(int sockfd, char* data, size_t datalen)
 {
     Message* msg = alloc_msg();
-    msg->header.src_nodeid = 0;
-    msg->header.src_entityid = 0;
-    msg->header.dst_entityid = 0;
-    msg->header.dst_nodeid = 0;
+    msg->header.src_srvid = 0;
+    msg->header.src_objid = 0;
+    msg->header.dst_objid = 0;
+    msg->header.dst_srvid  = 0;
     msg->header.id = MSG_NET_RAW_DATA;
     msg->sockfd = sockfd;
     msg->data = data;
@@ -225,10 +225,10 @@ void NetComponent::ev_accept(int listenfd)
     Recvbuf::create(sockfd, 1024);
 
     Message* msg = alloc_msg();
-    msg->header.src_nodeid = 0;
-    msg->header.src_entityid = 0;
-    msg->header.dst_entityid = 0;
-    msg->header.dst_nodeid = 0;
+    msg->header.src_srvid = 0;
+    msg->header.src_objid = 0;
+    msg->header.dst_objid = 0;
+    msg->header.dst_srvid = 0;
     msg->header.id = MSG_NEW_CONNECTION;
 
     msg->sockfd = sockfd;
@@ -244,10 +244,10 @@ void NetComponent::real_close(int sockfd, const char* reason)
     this->delete_file_event(sockfd, AE_WRITABLE | AE_READABLE);
 
     Message* msg = alloc_msg();
-    msg->header.src_nodeid = 0;
-    msg->header.src_entityid = 0;
-    msg->header.dst_entityid = 0;
-    msg->header.dst_nodeid = 0;
+    msg->header.src_srvid = 0;
+    msg->header.src_objid = 0;
+    msg->header.dst_objid = 0;
+    msg->header.dst_srvid = 0;
     msg->header.id = MSG_CLOSE_CONNECTION;
 
     msg->sockfd = sockfd;

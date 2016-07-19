@@ -52,7 +52,7 @@ end
 
 function player_login(uid)
     --开始加载数据
-    POST(dbsrv1, 'DbSrv.GET', uid, 'Login.msg_db_srv_get_playerdata', unpack(Config.localsrv.playerdata))
+    POST(datasrv1, 'DbSrv.GET', uid, 'Login.msg_db_srv_get_playerdata', unpack(Config.localsrv.playerdata))
 end
 
 --功能:下线
@@ -75,7 +75,7 @@ function player_logout(player)
             loginfo('uid(%d).%s is clean', table_name)
         end
     end
-    POST(dbsrv1, 'DbSrv.SET', uid, 'Login.msg_db_srv_set_playerdata', unpack(args)) 
+    POST(datasrv1, 'DbSrv.SET', uid, 'Login.msg_db_srv_set_playerdata', unpack(args)) 
 end
 
 --功能:保存数据dv_srv返回
@@ -171,7 +171,7 @@ end
                     --loginfo('uid(%d).%s is clean', table_name)
                 --end
             --end
-            --POST(dbsrv1, 'DbSrv.SET', uid, 'Login.msg_db_srv_set_playerdata', unpack(args)) 
+            --POST(datasrv1, 'DbSrv.SET', uid, 'Login.msg_db_srv_set_playerdata', unpack(args)) 
             --player.last_save_time = timenow
         --end
     --end

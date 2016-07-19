@@ -1,10 +1,10 @@
 
-require('gatesrv/entity/mainentity')
-require('gatesrv/component/websocket/websocket')
-require('gatesrv/module/login/main')
-require('gatesrv/module/player/main')
+require('gatesrv/object/rootobject')
+require('gatesrv/component/websocket')
+require('gatesrv/module/login')
+require('gatesrv/module/player')
 
 function main()
-    mysrv:create_entity_local('MainEntity')
+    mysrv:create_entity_local('RootObject')
 end
 
