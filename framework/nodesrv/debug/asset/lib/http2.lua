@@ -38,6 +38,10 @@ _REQUEST = function(self, sid)
     for k, v in pairs(_GET) do
         print(k, v)
     end
+    print('_POST')
+    for k, v in pairs(_POST) do
+        print(k, v)
+    end
     print('_COOKIE')
     for k, v in pairs(_COOKIE) do
         print(k, v)
@@ -106,7 +110,7 @@ _G.httpmain = function()
         local action = mod['action_'..pats[k]]
         if action then
             action()
-            break
+            return
         end
         mod = mod[string.cap(pats[k])]
         if not mod then

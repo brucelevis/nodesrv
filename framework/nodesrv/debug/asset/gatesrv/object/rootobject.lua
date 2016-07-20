@@ -2,7 +2,7 @@
 
 RootObject = {
     [__COMPONENTS] = {
-        RPCComponent = {},
+        POSTComponent = {},
         HttpComponent = {},
         GateSrv = {},
         NetComponent = {host = '0.0.0.0', port = 12341},

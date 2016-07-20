@@ -35,6 +35,31 @@ function instantiate(conf)
     return object 
 end
 
+
+NEW_POST = function(srvid)
+    local srvid = srvid
+    local modname = nil
+    local funname = nil
+    local mt = {
+        __index = function(self, k)
+            if not modname then 
+                modname = k 
+            else
+                funcname = k
+            end
+            return self
+        end,
+        __call = function(self, ...)
+            modname = nil
+            funcname = nil
+            mynode:post(srvid, modname, funcname, ...)
+        end
+    }
+    local stub  = {}
+    setmetatable(stub, mt)
+    return stub
+end
+
 --兼容以前的协议
 POST = function(...)
     mynode:post(...)

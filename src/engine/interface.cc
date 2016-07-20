@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Tue Jul 19 17:31:25 2016.
+** Generated automatically by tolua++-1.0.92 on Wed Jul 20 20:23:01 2016.
 */
 
 #ifndef __cplusplus
@@ -24,7 +24,7 @@ TOLUA_API int  tolua_neox_open (lua_State* tolua_S);
 #include "component/scriptcomponent.h"
 #include "component/netcomponent.h"
 #include "component/httpcomponent.h"
-#include "component/rpccomponent.h"
+#include "component/postcomponent.h"
 #include "msg/msg.h"
 #include "container/buffer.h"
 #include "file/file.h"
@@ -95,9 +95,9 @@ static int tolua_collect_HttpComponent (lua_State* tolua_S)
 	return 0;
 }
 
-static int tolua_collect_RPCComponent (lua_State* tolua_S)
+static int tolua_collect_POSTComponent (lua_State* tolua_S)
 {
- RPCComponent* self = (RPCComponent*) tolua_tousertype(tolua_S,1,0);
+ POSTComponent* self = (POSTComponent*) tolua_tousertype(tolua_S,1,0);
 	delete self;
 	return 0;
 }
@@ -132,9 +132,9 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"Component");
  tolua_usertype(tolua_S,"NetComponent");
  tolua_usertype(tolua_S,"HttpClient");
- tolua_usertype(tolua_S,"Type");
+ tolua_usertype(tolua_S,"POSTComponent");
  tolua_usertype(tolua_S,"HttpComponent");
- tolua_usertype(tolua_S,"RPCComponent");
+ tolua_usertype(tolua_S,"Type");
  tolua_usertype(tolua_S,"Node");
  tolua_usertype(tolua_S,"aeFileProc");
 }
@@ -4878,14 +4878,14 @@ static int tolua_neox_HttpComponent_send_buffer00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new of class  RPCComponent */
-#ifndef TOLUA_DISABLE_tolua_neox_RPCComponent_new00
-static int tolua_neox_RPCComponent_new00(lua_State* tolua_S)
+/* method: new of class  POSTComponent */
+#ifndef TOLUA_DISABLE_tolua_neox_POSTComponent_new00
+static int tolua_neox_POSTComponent_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"RPCComponent",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"POSTComponent",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -4893,8 +4893,8 @@ static int tolua_neox_RPCComponent_new00(lua_State* tolua_S)
 #endif
  {
   {
-   RPCComponent* tolua_ret = (RPCComponent*)  new RPCComponent();
-   tolua_pushusertype(tolua_S,(void*)tolua_ret,"RPCComponent");
+   POSTComponent* tolua_ret = (POSTComponent*)  new POSTComponent();
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"POSTComponent");
   }
  }
  return 1;
@@ -4906,14 +4906,14 @@ static int tolua_neox_RPCComponent_new00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new_local of class  RPCComponent */
-#ifndef TOLUA_DISABLE_tolua_neox_RPCComponent_new00_local
-static int tolua_neox_RPCComponent_new00_local(lua_State* tolua_S)
+/* method: new_local of class  POSTComponent */
+#ifndef TOLUA_DISABLE_tolua_neox_POSTComponent_new00_local
+static int tolua_neox_POSTComponent_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertable(tolua_S,1,"RPCComponent",0,&tolua_err) ||
+     !tolua_isusertable(tolua_S,1,"POSTComponent",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
@@ -4921,8 +4921,8 @@ static int tolua_neox_RPCComponent_new00_local(lua_State* tolua_S)
 #endif
  {
   {
-   RPCComponent* tolua_ret = (RPCComponent*)  new RPCComponent();
-   tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"RPCComponent");
+   POSTComponent* tolua_ret = (POSTComponent*)  new POSTComponent();
+   tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"POSTComponent");
   }
  }
  return 1;
@@ -4934,21 +4934,21 @@ static int tolua_neox_RPCComponent_new00_local(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: delete of class  RPCComponent */
-#ifndef TOLUA_DISABLE_tolua_neox_RPCComponent_delete00
-static int tolua_neox_RPCComponent_delete00(lua_State* tolua_S)
+/* method: delete of class  POSTComponent */
+#ifndef TOLUA_DISABLE_tolua_neox_POSTComponent_delete00
+static int tolua_neox_POSTComponent_delete00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
-     !tolua_isusertype(tolua_S,1,"RPCComponent",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,1,"POSTComponent",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
   goto tolua_lerror;
  else
 #endif
  {
-  RPCComponent* self = (RPCComponent*)  tolua_tousertype(tolua_S,1,0);
+  POSTComponent* self = (POSTComponent*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'",NULL);
 #endif
@@ -7268,15 +7268,15 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"send_buffer",tolua_neox_HttpComponent_send_buffer00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"RPCComponent","RPCComponent","Component",tolua_collect_RPCComponent);
+  tolua_cclass(tolua_S,"POSTComponent","POSTComponent","Component",tolua_collect_POSTComponent);
   #else
-  tolua_cclass(tolua_S,"RPCComponent","RPCComponent","Component",NULL);
+  tolua_cclass(tolua_S,"POSTComponent","POSTComponent","Component",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"RPCComponent");
-   tolua_function(tolua_S,"new",tolua_neox_RPCComponent_new00);
-   tolua_function(tolua_S,"new_local",tolua_neox_RPCComponent_new00_local);
-   tolua_function(tolua_S,".call",tolua_neox_RPCComponent_new00_local);
-   tolua_function(tolua_S,"delete",tolua_neox_RPCComponent_delete00);
+  tolua_beginmodule(tolua_S,"POSTComponent");
+   tolua_function(tolua_S,"new",tolua_neox_POSTComponent_new00);
+   tolua_function(tolua_S,"new_local",tolua_neox_POSTComponent_new00_local);
+   tolua_function(tolua_S,".call",tolua_neox_POSTComponent_new00_local);
+   tolua_function(tolua_S,"delete",tolua_neox_POSTComponent_delete00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"MessageHeader","MessageHeader","",NULL);
   tolua_beginmodule(tolua_S,"MessageHeader");
@@ -7319,7 +7319,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
   tolua_constant(tolua_S,"MSG_NET_PACKET",MSG_NET_PACKET);
   tolua_constant(tolua_S,"MSG_NEW_CONNECTION",MSG_NEW_CONNECTION);
   tolua_constant(tolua_S,"MSG_CLOSE_CONNECTION",MSG_CLOSE_CONNECTION);
-  tolua_constant(tolua_S,"MSG_RPC",MSG_RPC);
+  tolua_constant(tolua_S,"MSG_POST",MSG_POST);
   tolua_constant(tolua_S,"MSG_NEW_SESSION",MSG_NEW_SESSION);
   tolua_constant(tolua_S,"MSG_CLOSE_SESSION",MSG_CLOSE_SESSION);
   tolua_cclass(tolua_S,"CreateGameObjectMsg","CreateGameObjectMsg","",NULL);
@@ -7443,28 +7443,52 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
     104,105,108,100, 41, 10,101,108,115,101, 10,111, 98,106,101,
      99,116, 91,107, 93, 32, 61, 32,118, 10,101,110,100, 10,101,
     110,100, 10,114,101,116,117,114,110, 32,111, 98,106,101, 99,
-    116, 10,101,110,100, 10, 80, 79, 83, 84, 32, 61, 32,102,117,
-    110, 99,116,105,111,110, 40, 46, 46, 46, 41, 10,109,121,110,
-    111,100,101, 58,112,111,115,116, 40, 46, 46, 46, 41, 10,101,
-    110,100, 10,102,117,110, 99,116,105,111,110, 32,105,109,112,
-    111,114,116, 95,112,114,111,116,111, 40,100,105,114, 41, 10,
-     80, 98,108,117, 97, 46,109, 97,112,112, 97,116,104, 40, 39,
-     39, 44, 32,100,105,114, 41, 10,108,111, 99, 97,108, 32,102,
-    105,108,101,115, 32, 61, 32, 70,105,108,101, 46,108,105,115,
-    116,100,105,114, 40,100,105,114, 41, 10,102,111,114, 32, 95,
-     44, 32,102,105,108,101, 32,105,110, 32,112, 97,105,114,115,
-     40,102,105,108,101,115, 41, 32,100,111, 10,105,102, 32,102,
-    105,108,101, 46,116,121,112,101, 32, 61, 61, 32, 70,105,108,
-    101, 46, 84, 89, 80, 69, 95, 70, 73, 76, 69, 32, 97,110,100,
-     32,115,116,114,105,110,103, 46,102,105,110,100, 40,102,105,
-    108,101, 46,110, 97,109,101, 44, 32, 39, 46,112,114,111,116,
-    111, 36, 39, 41, 32,116,104,101,110, 10,108,111,103,100,101,
-     98,117,103, 40,115,116,114,105,110,103, 46,102,111,114,109,
-     97,116, 40, 39,108,111, 97,100, 32,112,114,111,116,111, 40,
-     37,115, 41, 39, 44, 32,102,105,108,101, 46,110, 97,109,101,
-     41, 41, 10, 80, 98,108,117, 97, 46,105,109,112,111,114,116,
-     40,102,105,108,101, 46,110, 97,109,101, 41, 10,101,110,100,
-     10,101,110,100, 10,101,110,100,32
+    116, 10,101,110,100, 10, 78, 69, 87, 95, 80, 79, 83, 84, 32,
+     61, 32,102,117,110, 99,116,105,111,110, 40,115,114,118,105,
+    100, 41, 10,108,111, 99, 97,108, 32,115,114,118,105,100, 32,
+     61, 32,115,114,118,105,100, 10,108,111, 99, 97,108, 32,109,
+    111,100,110, 97,109,101, 32, 61, 32,110,105,108, 10,108,111,
+     99, 97,108, 32,102,117,110,110, 97,109,101, 32, 61, 32,110,
+    105,108, 10,108,111, 99, 97,108, 32,109,116, 32, 61, 32,123,
+     10, 95, 95,105,110,100,101,120, 32, 61, 32,102,117,110, 99,
+    116,105,111,110, 40,115,101,108,102, 44, 32,107, 41, 10,105,
+    102, 32,110,111,116, 32,109,111,100,110, 97,109,101, 32,116,
+    104,101,110, 10,109,111,100,110, 97,109,101, 32, 61, 32,107,
+     10,101,108,115,101, 10,102,117,110, 99,110, 97,109,101, 32,
+     61, 32,107, 10,101,110,100, 10,114,101,116,117,114,110, 32,
+    115,101,108,102, 10,101,110,100, 44, 10, 95, 95, 99, 97,108,
+    108, 32, 61, 32,102,117,110, 99,116,105,111,110, 40,115,101,
+    108,102, 44, 32, 46, 46, 46, 41, 10,109,111,100,110, 97,109,
+    101, 32, 61, 32,110,105,108, 10,102,117,110, 99,110, 97,109,
+    101, 32, 61, 32,110,105,108, 10,109,121,110,111,100,101, 58,
+    112,111,115,116, 40,115,114,118,105,100, 44, 32,109,111,100,
+    110, 97,109,101, 44, 32,102,117,110, 99,110, 97,109,101, 44,
+     32, 46, 46, 46, 41, 10,101,110,100, 10,125, 10,108,111, 99,
+     97,108, 32,115,116,117, 98, 32, 61, 32,123,125, 10,115,101,
+    116,109,101,116, 97,116, 97, 98,108,101, 40,115,116,117, 98,
+     44, 32,109,116, 41, 10,114,101,116,117,114,110, 32,115,116,
+    117, 98, 10,101,110,100, 10, 80, 79, 83, 84, 32, 61, 32,102,
+    117,110, 99,116,105,111,110, 40, 46, 46, 46, 41, 10,109,121,
+    110,111,100,101, 58,112,111,115,116, 40, 46, 46, 46, 41, 10,
+    101,110,100, 10,102,117,110, 99,116,105,111,110, 32,105,109,
+    112,111,114,116, 95,112,114,111,116,111, 40,100,105,114, 41,
+     10, 80, 98,108,117, 97, 46,109, 97,112,112, 97,116,104, 40,
+     39, 39, 44, 32,100,105,114, 41, 10,108,111, 99, 97,108, 32,
+    102,105,108,101,115, 32, 61, 32, 70,105,108,101, 46,108,105,
+    115,116,100,105,114, 40,100,105,114, 41, 10,102,111,114, 32,
+     95, 44, 32,102,105,108,101, 32,105,110, 32,112, 97,105,114,
+    115, 40,102,105,108,101,115, 41, 32,100,111, 10,105,102, 32,
+    102,105,108,101, 46,116,121,112,101, 32, 61, 61, 32, 70,105,
+    108,101, 46, 84, 89, 80, 69, 95, 70, 73, 76, 69, 32, 97,110,
+    100, 32,115,116,114,105,110,103, 46,102,105,110,100, 40,102,
+    105,108,101, 46,110, 97,109,101, 44, 32, 39, 46,112,114,111,
+    116,111, 36, 39, 41, 32,116,104,101,110, 10,108,111,103,100,
+    101, 98,117,103, 40,115,116,114,105,110,103, 46,102,111,114,
+    109, 97,116, 40, 39,108,111, 97,100, 32,112,114,111,116,111,
+     40, 37,115, 41, 39, 44, 32,102,105,108,101, 46,110, 97,109,
+    101, 41, 41, 10, 80, 98,108,117, 97, 46,105,109,112,111,114,
+    116, 40,102,105,108,101, 46,110, 97,109,101, 41, 10,101,110,
+    100, 10,101,110,100, 10,101,110,100,32
    };
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua embedded: data/lib.lua");
    lua_settop(tolua_S, top);

@@ -202,6 +202,7 @@ int http_parse(http_request& request, char* data, int datalen, uint32_t header_l
         header.field.buf[header.field.len] = c2;
     }
     //分析header
+    //GET协议
     request.get_count = 0;
     request.get[request.get_count].field.buf = request.query_string.buf;
     for(uint32_t i = 0; i < request.query_string.len; i++)
@@ -233,8 +234,52 @@ int http_parse(http_request& request, char* data, int datalen, uint32_t header_l
         get.field.len = Http::urldecode(get.field.buf, get.field.len, get.field.buf, get.field.len);
         get.value.len = Http::urldecode(get.value.buf, get.value.len, get.value.buf, get.value.len);
     }
-
+    //POST协议
+    request.post_count = 0;
     request.body.buf = data + header_len;
     request.body.len = datalen - header_len;
     return 0;
 }
+
+int http_post_parse(http_request& request, char* data, uint32_t datalen)
+{
+    //POST协议
+    request.post_count = 0;
+    if (strncmp(request.method.buf, "POST", 4))
+    {
+        return 0;
+    }
+    request.post[request.post_count].field.buf = data;
+    for(uint32_t i = 0; i < datalen; i++)
+    {
+        if(data[i] == '=')
+        {
+            request.post[request.post_count].field.len = data + i - request.post[request.post_count].field.buf;;
+            request.post[request.post_count].value.buf = data + i + 1;
+        }
+        if(data[i] == '&')
+        {
+            request.post[request.post_count].value.len = data + i - request.post[request.post_count].value.buf;;
+            request.post_count++;
+            if (request.post_count >= MAX_HTTP_POST_COUNT)
+            {
+                break;
+            }
+            request.post[request.post_count].field.buf = data + i + 1;
+        }
+        if(i == datalen - 1)
+        {
+            request.post[request.post_count].value.len = data + i + 1 - request.post[request.post_count].value.buf;;
+            request.post_count++;
+        }
+    }
+    for (int i = 0; i < request.post_count; i++)
+    {
+        http_header& post = request.post[i];
+        post.field.len = Http::urldecode(post.field.buf, post.field.len, post.field.buf, post.field.len);
+        post.value.len = Http::urldecode(post.value.buf, post.value.len, post.value.buf, post.value.len);
+    }
+    return 0;
+}
+
+

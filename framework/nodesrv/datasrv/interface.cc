@@ -1,6 +1,6 @@
 /*
 ** Lua binding: datasrv
-** Generated automatically by tolua++-1.0.92 on Sun Jul 17 17:30:27 2016.
+** Generated automatically by tolua++-1.0.92 on Wed Jul 20 20:25:03 2016.
 */
 
 #ifndef __cplusplus

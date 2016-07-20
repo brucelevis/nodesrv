@@ -28,7 +28,7 @@
 #include "file/file.h"
 #include "script/script.h"
 #include "component/netcomponent.h"
-#include "component/rpccomponent.h"
+#include "component/postcomponent.h"
 
 #include <stdio.h>
 #include <signal.h>

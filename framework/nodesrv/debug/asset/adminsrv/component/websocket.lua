@@ -4,9 +4,9 @@ http_component = http_component or nil
 
 function awake(self)
     loginfo('awake')
-    self:reg_msg(MSG_NEW_SESSION)
-    self:reg_msg(MSG_CLOSE_SESSION)
-    self:reg_msg(MSG_NET_PACKET)
+--    self:reg_msg(MSG_NEW_SESSION)
+--    self:reg_msg(MSG_CLOSE_SESSION)
+--    self:reg_msg(MSG_NET_PACKET)
     http_component = self:get_component('HttpComponent')
 end
 
@@ -27,7 +27,7 @@ end
 
 function recv_close_session(self, msg)
     loginfo('recv_close_session %d', msg.sid)
-    Login.player_disconnect(msg.sid)
+    --Login.player_disconnect(msg.sid)
 end
 
 function recv_net_packet(self, msg)
@@ -62,3 +62,6 @@ function reply(sid, reply)
     buffer:write_protobuf(reply)
     http_component:send_binary_frame(sid, buffer)
 end
+
+--function update()
+--end

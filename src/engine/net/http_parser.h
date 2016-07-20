@@ -37,6 +37,7 @@ typedef struct http_header
 
 #define MAX_HTTP_HEADER_COUNT 32
 #define MAX_HTTP_GET_COUNT 32
+#define MAX_HTTP_POST_COUNT 32
 #define MAX_HTTP_COOKIE_COUNT 32
 typedef struct http_request
 {
@@ -50,11 +51,16 @@ typedef struct http_request
     http_string method;
     http_header get[MAX_HTTP_GET_COUNT];
     unsigned char get_count;
+    http_header post[MAX_HTTP_POST_COUNT];
+    unsigned char post_count;
     http_header cookie[MAX_HTTP_COOKIE_COUNT];
     unsigned char cookie_count;
 }http_request;
 
 int http_parse(http_request& request, char* data, int datalen, uint32_t header_len);
+
+//分析post参数
+int http_post_parse(http_request& request, char* data, uint32_t datalen);
 
 int http_frame_parse(http_frame_request& frame, char* data, size_t datalen);
 #endif

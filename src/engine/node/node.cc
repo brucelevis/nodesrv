@@ -8,7 +8,7 @@
 #include "node/nodemgr.h"
 #include "log/log.h"
 #include "script/script.h"
-#include "component/rpccomponent.h"
+#include "component/postcomponent.h"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -803,16 +803,16 @@ int Node::post(lua_State* L)
     GameObject* object = find_gameobject(0);
     if(!object)
     {
-        LOG_ERROR("object 0 not found, rpc need object 0");
+        LOG_ERROR("object 0 not found, post need object 0");
         return 0;
     }
-    RPCComponent* rpc = dynamic_cast<RPCComponent *>(object->get_component(RPCComponent::type));
-    if (!rpc)
+    POSTComponent* component = dynamic_cast<POSTComponent *>(object->get_component(POSTComponent::type));
+    if (!component)
     {
-        LOG_ERROR("rpc component not found");
+        LOG_ERROR("post component not found");
         return 0;
     }
-    return rpc->post(L);
+    return component->post(L);
 }
 
 

@@ -1,5 +1,12 @@
 #include "stdafx.h"
 
+extern "C" 
+{ 
+    int luaopen_datasrv (lua_State* tolua_S); 
+}
+
+
+
 int main(int argc, char **argv)
 {
     Neox::main(argc, argv);

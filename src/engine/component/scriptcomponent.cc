@@ -45,7 +45,12 @@ void ScriptComponent::update(uint64_t cur_tick)
     static char funcname[128];
     sprintf(funcname, "%s.update", modname);
     //LOG_INFO("%s %s", __FUNCTION__, funcname);
-    lua_pushfunction(funcname);
+    if(lua_pushfunction(funcname))
+    {
+        //LOG_ERROR("lua_pushfunction error %s.update", modname);
+        lua_pop(L, lua_gettop(L));
+        return;
+    }
     tolua_pushusertype(L, this, "ScriptComponent");
     lua_pushnumber(L, cur_tick);
     if (lua_pcall(L, 2, 0, 0) != 0)
@@ -61,13 +66,17 @@ int ScriptComponent::recv(Message* msg)
     lua_State* L = get_lua_state(); 
     static char funcname[128];
     sprintf(funcname, "%s.recv", modname);
-    lua_pushfunction(funcname);
+    if(lua_pushfunction(funcname))
+    {
+        LOG_ERROR("lua_pushfunction error %s.recv", modname);
+        return 0;
+    }
     tolua_pushusertype(L, this, "ScriptComponent");
     tolua_pushusertype(L, msg, "Message");
     if (lua_pcall(L, 2, 1, 0) != 0)
     {
-        printf("ScriptComponent %s recv error %s\n", this->modname, lua_tostring(L, -1));
-        lua_printstack();
+        LOG_ERROR("ScriptComponent %s recv error %s", this->modname, lua_tostring(L, -1));
+        lua_pop(L, lua_gettop(L));
         return 0;
     } else 
     {

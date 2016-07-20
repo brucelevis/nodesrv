@@ -4,7 +4,7 @@ RootObject =
     [__COMPONENTS] = 
     {
         LogicSrv = {},
-        RPCComponent = {},
+        POSTComponent = {},
     },
 }
 

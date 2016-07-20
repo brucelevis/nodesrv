@@ -5,7 +5,7 @@ MainObject =
     [__COMPONENTS] = 
     {
         LogicSrv = {},
-        RPCComponent = {},
+        POSTComponent = {},
         NetComponent = {host = '0.0.0.0', port = 12343},
         TelnetSrv = {__script = 'TelnetSrv'},
     },

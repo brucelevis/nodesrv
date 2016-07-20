@@ -126,7 +126,6 @@ int HttpComponent::recv_new_connection(Message* msg)
     int sockfd = msg->sockfd;
     LOG_DEBUG("HttpComponent recv_new_connection sockfd(%d)", sockfd);
     int sid = session_init(sockfd);
-
     Message* msg2 = alloc_msg();
     msg2->header.src_nodeid = 0;
     msg2->header.src_objectid = 0;
@@ -277,6 +276,19 @@ int HttpComponent::dispatch_request(int sockfd)
             lua_settable(L, -3);
         }
 
+        lua_pushnil(L);
+        lua_setglobal(L, "_POST");
+        lua_newtable(L);
+        lua_setglobal(L, "_POST");
+        lua_getglobal(L, "_POST");
+        for (int i = 0; i < request.post_count; i++)
+        {
+            http_header* post  = &request.post[i];
+            lua_pushlstring(L, post->field.buf, post->field.len);
+            lua_pushlstring(L, post->value.buf, post->value.len);
+            lua_settable(L, -3);
+        }
+
         lua_pushlstring(L, request.url.buf, request.url.len);
         lua_setglobal(L, "_REQUEST_URL");
 
@@ -365,6 +377,7 @@ int HttpComponent::recv_net_raw_data(Message* msg)
         }
         request.body.buf = data + header_len;
         request.body.len = datalen - header_len;
+        http_post_parse(request, request.body.buf, request.body.len);
         dispatch_request(sockfd);
         return header_len;
     } else 
@@ -376,6 +389,7 @@ int HttpComponent::recv_net_raw_data(Message* msg)
         http_request& request = session->request;
         request.body.buf = data;
         request.body.len = datalen;
+        http_post_parse(request, request.body.buf, request.body.len);
         dispatch_request(sockfd);
         return datalen;
     }

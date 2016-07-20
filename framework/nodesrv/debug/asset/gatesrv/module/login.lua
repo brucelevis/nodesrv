@@ -18,7 +18,7 @@ end
         --return
     --end
     --local srvid = msg.srvid
-    --POST(localsrv, 'Login.PLAYER_ENTER', player.uid, msg.srvid)
+    --localsrv.Login.PLAYER_ENTER(player.uid, msg.srvid)
 --end
 
 --进入场景
