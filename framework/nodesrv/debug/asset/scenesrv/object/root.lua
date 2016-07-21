@@ -1,0 +1,10 @@
+
+RootGameObject = 
+{
+    [__COMPONENTS] = 
+    {
+        POSTComponent = {},
+    },
+}
+
+

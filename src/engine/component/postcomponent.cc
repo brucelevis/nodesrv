@@ -162,6 +162,7 @@ int POSTComponent::recv_post(Message* msg)
                     if(msg_name == NULL)
                     {
                         LOG_ERROR("msg name error");
+                        lua_pop(L, lua_gettop(L));
                         return 0;
                     }
                     LOG_MSG("recv arg%d protobuf %s", arg_count, msg_name);
@@ -169,6 +170,7 @@ int POSTComponent::recv_post(Message* msg)
                     if(message == NULL)
                     {
                         LOG_ERROR("can not load msg %s", msg_name);
+                        lua_pop(L, lua_gettop(L));
                         return 0;
                     }
                     int32_t msg_len = msg->payload.read_int32();
@@ -176,12 +178,14 @@ int POSTComponent::recv_post(Message* msg)
                     if(message->ParseFromZeroCopyStream(&stream) == 0)
                     {
                         LOG_ERROR("parse fail size(%d) %s\n", msg->payload.size(), msg_name);
+                        lua_pop(L, lua_gettop(L));
                         return 0;
                     }    
                     LuaMessage *message_lua = (LuaMessage *)lua_newuserdata(L, sizeof(LuaMessage));
                     if(message_lua == NULL)
                     {
                         LOG_ERROR("newuserdata null %s", msg_name);
+                        lua_pop(L, lua_gettop(L));
                         return 0;
                     }
                     msg->payload.read_buf(NULL, msg_len);

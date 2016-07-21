@@ -1,6 +1,7 @@
 
-require('gatesrv/object/rootobject')
-require('gatesrv/component/websocket')
+require('gatesrv/object/root')
+--require('gatesrv/component/websocket')
+require('gatesrv/component/client')
 require('gatesrv/module/login')
 require('gatesrv/module/player')
 

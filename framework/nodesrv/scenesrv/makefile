@@ -20,7 +20,7 @@ EXE = scenesrv
 %.o:%.cc
 	g++ $(CFLAGS) -c $< -o $@ $(INCLUDE_DIRS)
 
-${EXE}:$(OBJ)
+${EXE}:$(OBJ) $(LIBS)
 	g++ -o $(EXE) $(OBJ) $(LIBS)  $(DY_LIBS)
 
 tolua:

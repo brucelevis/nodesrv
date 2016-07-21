@@ -29,13 +29,5 @@ DataSrv::~DataSrv()
 void DataSrv::awake()
 {
     Log::info("DataSrv::awake");
-    NetComponent* net_component = get_component<NetComponent>();
-    if (!net_component)
-    {
-        Log::error("net component is nil");
-        exit(1);
-        return;
-    }
-//    net_component->listen("127.0.0.1", 9090);
 }
 

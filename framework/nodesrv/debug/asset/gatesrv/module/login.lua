@@ -11,35 +11,38 @@ function main()
 end
 
 --进入场景
---function MSG_ENTER(sid, msg)
-    --local player = player_session[sid]
-    --if not player then
-        --logerr('player not found')
-        --return
-    --end
-    --local srvid = msg.srvid
-    --localsrv.Login.PLAYER_ENTER(player.uid, msg.srvid)
---end
+function MSG_ENTER(sid, msg)
+    local player = player_session[sid]
+    if not player then
+        logerr('player not found')
+        return
+    end
+    local srvid = msg.srvid
+    POST(localsrv, 'Login.ENTER_SRV', player.uid, msg.srvid)
+end
 
 --进入场景
---function PLAYER_ENTER(localsrv, uid, srvid)
-    --local player = player_manager[uid]
-    --if not player then
-        --logerr('player is offline uid(%d)', uid)
-        --return
-    --end
-    --player.srvid = srvid
---end
+function PLAYER_ENTER(localsrv, uid, scenesrv)
+    local player = player_manager[uid]
+    if not player then
+        logerr('player is offline uid(%d)', uid)
+        return
+    end
+    player.scenesrv = scenesrv
+    local msg = Pblua.msgnew('login.ENTER')
+    msg.srvid = scenesrv
+    Client.reply(player.sid, msg)
+end
 
 --退出场景
---function PLAYER_EXIT(localsrv, uid)
-    --local player = player_manager[uid]
-    --if not player then
-        --logerr('player is offline uid(%d)', uid)
-        --return
-    --end
-    --player.srvid = nil
---end
+function PLAYER_EXIT(localsrv, uid)
+    local player = player_manager[uid]
+    if not player then
+        logerr('player is offline uid(%d)', uid)
+        return
+    end
+    player.scenesrv = nil
+end
 
 --玩家上线
 function PLAYER_LOGIN(localsrv, uid)
@@ -48,6 +51,9 @@ function PLAYER_LOGIN(localsrv, uid)
         logerr('tmp player not found uid(%d)', uid)
         return
     end
+    local msg = Pblua.msgnew('login.LOGIN')
+    msg.uid = uid
+    Player.reply(player.sid, msg)
 end
 
 --玩家下线
@@ -65,7 +71,7 @@ function MSG_LOGIN(sid, msg)
     if not check_login_token(uid, msg.params) then
         logerr('token is error')
         msg.errno = 10
-        Player.reply(msg)
+        Player.reply(sid, msg)
         return
     end
     local player = player_session[sid]

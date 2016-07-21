@@ -10,6 +10,7 @@
 #include "lualib/system/lsystem.h"
 #include "lualib/date/ldate.h"
 #include "lualib/srvapp/srvapp.h"
+#include "net/lsocket.h"
 
 
 namespace Script
@@ -200,6 +201,7 @@ namespace Script
         luaopen_mysql(L);
         luaopen_date(L);
         luaopen_srvapp(L);
+        luaopen_socket(L);
     }
 };
 

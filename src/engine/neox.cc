@@ -136,6 +136,7 @@ namespace Neox
         luaopen_redis(L);
         luaopen_mysql(L);
         luaopen_srvapp(L);
+        luaopen_socket(L);
         return 0;
     }
 };

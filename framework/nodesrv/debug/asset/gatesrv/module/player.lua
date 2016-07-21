@@ -9,7 +9,7 @@ function disconnect(sid)
 end
 
 function reply(sid, msg)
-    WebSocket.reply(sid, msg)
+    Client.reply(sid, msg)
 end
 
 function REPLY(srvid, uid, msg)
@@ -18,6 +18,6 @@ function REPLY(srvid, uid, msg)
         logerr('player not found')
         return
     end
-    WebSocket.reply(player.sid, msg)
+    Client.reply(player.sid, msg)
 end
 

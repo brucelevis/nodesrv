@@ -1,6 +1,6 @@
 /*
 ** Lua binding: gatesrv
-** Generated automatically by tolua++-1.0.92 on Mon Jul 11 20:59:08 2016.
+** Generated automatically by tolua++-1.0.92 on Thu Jul 21 16:07:21 2016.
 */
 
 #ifndef __cplusplus
@@ -185,6 +185,38 @@ static int tolua_gatesrv_GateSrv_recv00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: reply of class  GateSrv */
+#ifndef TOLUA_DISABLE_tolua_gatesrv_GateSrv_reply00
+static int tolua_gatesrv_GateSrv_reply00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"GateSrv",0,&tolua_err) ||
+     false
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  GateSrv* self = (GateSrv*)  tolua_tousertype(tolua_S,1,0);
+  lua_State* L =  tolua_S;
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'reply'",NULL);
+#endif
+  {
+return self->reply(L);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'reply'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* Open function */
 TOLUA_API int tolua_gatesrv_open (lua_State* tolua_S)
 {
@@ -204,6 +236,7 @@ TOLUA_API int tolua_gatesrv_open (lua_State* tolua_S)
    tolua_function(tolua_S,"delete",tolua_gatesrv_GateSrv_delete00);
    tolua_function(tolua_S,"awake",tolua_gatesrv_GateSrv_awake00);
    tolua_function(tolua_S,"recv",tolua_gatesrv_GateSrv_recv00);
+   tolua_function(tolua_S,"reply",tolua_gatesrv_GateSrv_reply00);
   tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);
  return 1;

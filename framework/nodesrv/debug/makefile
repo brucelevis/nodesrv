@@ -3,7 +3,7 @@ adminsrv:
 	bin/logicsrv adminsrv
 
 test:
-	bin/test Login.login
+	bin/client Login.login
 
 localsrv:
 	bin/logicsrv localsrv  

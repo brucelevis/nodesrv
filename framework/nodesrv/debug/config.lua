@@ -13,8 +13,9 @@ Config =
     {
         [1] = {300},
         [100] = {300},
-        [200] = {300},
-        [300] = {100, 200, 1},
+        [200] = {300, 400},
+        [300] = {100, 200, 400, 1},
+        [400] = {100, 200, 300},
     },
 
     --服务列表
@@ -59,10 +60,14 @@ Config =
         },
     },
 
+    scenesrv = {
+        playerdata = {'user', 'task', 'achieve', },
+    },
+
     --本服的配置
     localsrv = {
         save_interval = 3600,
-        playerdata = {'user', 'task', 'achieve', },
+        playerdata = {'task'},
     },
 
     --db服的配置
