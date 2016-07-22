@@ -29,7 +29,9 @@ public:
 class Message
 {
 public:
+    static int alloc_count;
     Message();
+    ~Message();
 
     uint32_t magic_code;
     MessageHeader header;

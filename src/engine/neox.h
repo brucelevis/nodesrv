@@ -58,6 +58,7 @@ namespace Neox
     void loop();
 //tolua_end
 
+    extern int frame_rate;
     int lua_openlibs(lua_State* L);
     void lua_dofile(const char* filepath);
 //tolua_begin

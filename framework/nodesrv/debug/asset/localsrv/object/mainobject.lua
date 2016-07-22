@@ -6,7 +6,7 @@ MainObject =
     {
         LogicSrv = {},
         POSTComponent = {},
-        NetComponent = {host = '0.0.0.0', port = 12343},
+        NetComponent = {},
         TelnetSrv = {__script = 'TelnetSrv'},
     },
 }

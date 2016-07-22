@@ -6,8 +6,8 @@
 Config = 
 {
 
-    loglevel = {"MSG", "INFO", "ERROR", "WARN", "DEBUG"},
-    --loglevel = {"MSG", "INFO", "ERROR", "WARN"},
+    --loglevel = {"MSG", "INFO", "ERROR", "WARN", "DEBUG"},
+    loglevel = {"MSG", "INFO", "ERROR", "WARN"},
     --拓扑结构
     srvgrap = 
     {
@@ -68,6 +68,9 @@ Config =
     localsrv = {
         save_interval = 3600,
         playerdata = {'task'},
+        telnetsrv = {
+            host = '0.0.0.0', port = 12343,
+        }
     },
 
     --db服的配置

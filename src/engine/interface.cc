@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Wed Jul 20 20:23:01 2016.
+** Generated automatically by tolua++-1.0.92 on Fri Jul 22 18:05:40 2016.
 */
 
 #ifndef __cplusplus
@@ -3741,6 +3741,39 @@ static int tolua_neox_Component_alloc_msg00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: destory_msg of class  Component */
+#ifndef TOLUA_DISABLE_tolua_neox_Component_destory_msg00
+static int tolua_neox_Component_destory_msg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Component",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Message",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Component* self = (Component*)  tolua_tousertype(tolua_S,1,0);
+  Message* msg = ((Message*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destory_msg'",NULL);
+#endif
+  {
+   self->destory_msg(msg);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'destory_msg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: get_component of class  Component */
 #ifndef TOLUA_DISABLE_tolua_neox_Component_get_component01
 static int tolua_neox_Component_get_component01(lua_State* tolua_S)
@@ -5173,6 +5206,30 @@ static int tolua_set_MessageOption_cache(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* get function: alloc_count of class  Message */
+#ifndef TOLUA_DISABLE_tolua_get_Message_alloc_count
+static int tolua_get_Message_alloc_count(lua_State* tolua_S)
+{
+  tolua_pushnumber(tolua_S,(lua_Number)Message::alloc_count);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: alloc_count of class  Message */
+#ifndef TOLUA_DISABLE_tolua_set_Message_alloc_count
+static int tolua_set_Message_alloc_count(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  Message::alloc_count = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: new of class  Message */
 #ifndef TOLUA_DISABLE_tolua_neox_Message_new00
 static int tolua_neox_Message_new00(lua_State* tolua_S)
@@ -5224,6 +5281,35 @@ static int tolua_neox_Message_new00_local(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: delete of class  Message */
+#ifndef TOLUA_DISABLE_tolua_neox_Message_delete00
+static int tolua_neox_Message_delete00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Message",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Message* self = (Message*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'",NULL);
+#endif
+  delete self;
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
  return 0;
 #endif
 }
@@ -7198,6 +7284,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"send_gameobject_msg",tolua_neox_Component_send_gameobject_msg00);
    tolua_function(tolua_S,"get_component",tolua_neox_Component_get_component00);
    tolua_function(tolua_S,"alloc_msg",tolua_neox_Component_alloc_msg00);
+   tolua_function(tolua_S,"destory_msg",tolua_neox_Component_destory_msg00);
    tolua_function(tolua_S,"get_component",tolua_neox_Component_get_component01);
    tolua_variable(tolua_S,"gameobject",tolua_get_Component_gameobject_ptr,tolua_set_Component_gameobject_ptr);
   tolua_endmodule(tolua_S);
@@ -7297,9 +7384,11 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"Message","Message","",NULL);
   #endif
   tolua_beginmodule(tolua_S,"Message");
+   tolua_variable(tolua_S,"alloc_count",tolua_get_Message_alloc_count,tolua_set_Message_alloc_count);
    tolua_function(tolua_S,"new",tolua_neox_Message_new00);
    tolua_function(tolua_S,"new_local",tolua_neox_Message_new00_local);
    tolua_function(tolua_S,".call",tolua_neox_Message_new00_local);
+   tolua_function(tolua_S,"delete",tolua_neox_Message_delete00);
    tolua_variable(tolua_S,"magic_code",tolua_get_Message_magic_code,tolua_set_Message_magic_code);
    tolua_variable(tolua_S,"header",tolua_get_Message_header,tolua_set_Message_header);
    tolua_variable(tolua_S,"magic_code2",tolua_get_Message_magic_code2,tolua_set_Message_magic_code2);

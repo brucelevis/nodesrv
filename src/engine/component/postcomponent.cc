@@ -15,6 +15,11 @@
 
 IMPLEMENT(POSTComponent)
 
+static int time_diff(struct timeval *t1, struct timeval *t2)
+{
+    int usec = (t2->tv_sec - t1->tv_sec) * 1000000 + t2->tv_usec - t1->tv_usec;
+    return usec;
+}
 
 POSTMethod& POSTMethod::operator <<(const char* val)
 {
@@ -109,15 +114,17 @@ int POSTComponent::recv_post(Message* msg)
     //{
         //printf("%d\n", b[i]);
     //}
+    struct timeval t1;
+    gettimeofday(&t1, NULL);
     arg_type = msg->payload.read_int8();
     const char* funcname = msg->payload.read_utf8();
+    LOG_MSG("RECV POST func(%s)", funcname);
     if(lua_pushfunction(funcname))
     {
         LOG_ERROR("lua_pushfunction error %s", funcname);
         lua_pop(L, lua_gettop(L));
         return 1;
     }
-    LOG_MSG("RECV POST func(%s)", funcname);
     lua_pushnumber(L, msg->header.src_nodeid);
     while(msg->payload.size() >= 1)
     {
@@ -137,13 +144,13 @@ int POSTComponent::recv_post(Message* msg)
             case TYPE_NUMBER:
                 {
                     int32_t val = (int32_t)msg->payload.read_int32();
-                    LOG_MSG("recv arg%d number %d", arg_count, val);
+                    LOG_DEBUG("recv arg%d number %d", arg_count, val);
                     lua_pushnumber(L, val);
                 }break;
             case TYPE_STRING:
                 {
                     const char* val = (const char*)msg->payload.read_utf8();
-                    LOG_MSG("recv arg%d string %s", arg_count, val);
+                    LOG_DEBUG("recv arg%d string %s", arg_count, val);
                     lua_pushstring(L, val);
                 }break;
             case TYPE_JSON:
@@ -151,7 +158,7 @@ int POSTComponent::recv_post(Message* msg)
                     unsigned int str_len = msg->payload.read_int16();
                     char* val = msg->payload.get_buffer();
                     Json::decode(L, val);
-                    LOG_MSG("recv arg%d json %s", arg_count, val);
+                    LOG_DEBUG("recv arg%d json %s", arg_count, val);
                     msg->payload.read_buf(NULL, str_len + 1);
                 }
                 break;
@@ -165,7 +172,7 @@ int POSTComponent::recv_post(Message* msg)
                         lua_pop(L, lua_gettop(L));
                         return 0;
                     }
-                    LOG_MSG("recv arg%d protobuf %s", arg_count, msg_name);
+                    LOG_DEBUG("recv arg%d protobuf %s", arg_count, msg_name);
                     google::protobuf::Message* message = pblua_load_msg(msg_name);
                     if(message == NULL)
                     {
@@ -209,7 +216,9 @@ int POSTComponent::recv_post(Message* msg)
         lua_printstack();
     }
     lua_pop(L, lua_gettop(L));
-    LOG_MSG("RECV POST func(%s) FINISH", funcname);
+    struct timeval t2;
+    gettimeofday(&t2, NULL);
+    LOG_MSG("RECV POST usec(%d) FINISH", time_diff(&t1, &t2));
     return 0;
 }
 
@@ -233,6 +242,8 @@ int POSTComponent::post(lua_State* L)
         LOG_ERROR("arg error");
         return 0;
     }
+    struct timeval t1;
+    gettimeofday(&t1, NULL);
     int dst_nodeid = (int)lua_tonumber(L, 2);
     int dst_objectid = 0;
     const char* func = (const char*)lua_tostring(L, 3);
@@ -246,12 +257,12 @@ int POSTComponent::post(lua_State* L)
         if (lua_isnumber(L, i))
         {
             int32_t val =  (int32_t)lua_tonumber(L, i);
-            LOG_MSG("post arg%d number %d", i - 3, val);
+            LOG_DEBUG("post arg%d number %d", i - 3, val);
             method << val;
         } else if(lua_isstring(L, i))
         {
             const char* val = (const char*)lua_tostring(L, i);
-            LOG_MSG("post arg%d string %s", i - 3, val);
+            LOG_DEBUG("post arg%d string %s", i - 3, val);
             method << val;
         } else if(lua_isuserdata(L, i))
         {
@@ -281,7 +292,7 @@ int POSTComponent::post(lua_State* L)
                 return 0;
             }
             int str_len = strlen(val);
-            LOG_MSG("post arg%d json %s", i - 3, val);
+            LOG_DEBUG("post arg%d json %s", i - 3, val);
             method.buffer.write_int16(str_len);
             method.buffer.write_buf(val, str_len);
             method.buffer.write_int8(0);
@@ -290,7 +301,10 @@ int POSTComponent::post(lua_State* L)
         }
     }
     method.invoke(this, dst_nodeid, dst_objectid);
-    LOG_MSG("POST %s TO %d %d FINISH", func, dst_nodeid, dst_objectid);
+    lua_pop(L, lua_gettop(L));
+    struct timeval t2;
+    gettimeofday(&t2, NULL);
+    LOG_MSG("POST %s TO %d:%d usec(%d) FINISH", func, dst_nodeid, dst_objectid, time_diff(&t1, &t2));
     lua_pushboolean(L, 1);
     return 1;
 }

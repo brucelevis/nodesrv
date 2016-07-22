@@ -126,3 +126,9 @@ Message* Component::alloc_msg()
 {
     return this->gameobject->node->alloc_msg();
 }
+
+
+void Component::destory_msg(Message* msg)
+{
+    this->gameobject->node->destory_msg(msg);
+}

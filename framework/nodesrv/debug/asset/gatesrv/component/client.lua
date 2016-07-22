@@ -35,7 +35,7 @@ function recv_close_session(self, msg)
 end
 
 function recv_net_packet(self, msg)
-    loginfo('recv_net_packet %d', msg.payload:size())
+    --loginfo('recv_net_packet %d', msg.payload:size())
     local msgname = msg.payload:read_utf8()
     loginfo('RECV NET PACKET %s', msgname)
 
@@ -65,6 +65,6 @@ function reply(sid, reply)
 end
 
 function update(self)
---    loginfo('update')
+    loginfo('asfsaf')
 end
 

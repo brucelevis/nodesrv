@@ -6,6 +6,7 @@ extern "C"{
 
 namespace Neox
 {
+    int frame_rate = 60;
     int main(int argc, char** argv)
     {
         NodeMgr::main(argc, argv);

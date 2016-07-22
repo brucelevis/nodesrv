@@ -137,17 +137,23 @@ static int llisten(lua_State *L){
     return 1;
 }
 
-static int lrecv(lua_State *L){
+static int lrecv(lua_State *L)
+{
     int error;
     int sockfd;
-    char *buf;
+    static char buf[10240];
     int buflen;
     sockfd = (int)lua_tointeger(L, 1);
-    buf = (char *)lua_touserdata(L, 2);
-    buflen = (int)lua_tointeger(L, 3);
+    buflen = (int)lua_tointeger(L, 2);
     error = recv(sockfd, buf, buflen, 0);
+    if (error <= 0)
+    {
+        lua_pushinteger(L, error);
+        return 1;
+    }
     lua_pushinteger(L, error);
-    return 1;
+    lua_pushlstring(L, buf, error);
+    return 2;
 }
 
 static int lsend(lua_State *L){
@@ -156,8 +162,7 @@ static int lsend(lua_State *L){
     char *buf;
     size_t len;
     sockfd = (int)lua_tointeger(L, 1);
-    buf = (char *)lua_touserdata(L, 2);
-    len = (int)lua_tointeger(L, 3);
+    buf = (char *)lua_tolstring(L, 2, &len);
     error = send(sockfd, buf, len, 0);
     lua_pushinteger(L, error);
     return 1;

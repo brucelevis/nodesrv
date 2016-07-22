@@ -63,5 +63,6 @@ function reply(sid, reply)
     http_component:send_binary_frame(sid, buffer)
 end
 
---function update()
---end
+function update()
+    --print(Message.alloc_count)
+end

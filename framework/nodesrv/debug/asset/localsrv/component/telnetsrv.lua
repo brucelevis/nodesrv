@@ -15,6 +15,7 @@ function awake(self)
     self:reg_msg(MSG_CLOSE_CONNECTION)
     self:reg_msg(MSG_NET_RAW_DATA)
     net_component = self:get_component('NetComponent')
+    net_component:listen(Config.localsrv.telnetsrv.host, Config.localsrv.telnetsrv.port)
 end
 
 function recv(self, msg)

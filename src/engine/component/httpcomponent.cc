@@ -134,6 +134,7 @@ int HttpComponent::recv_new_connection(Message* msg)
     msg2->header.id = MSG_NEW_SESSION;
     msg2->sid = sid;
     this->gameobject->recv(msg2);
+    destory_msg(msg2);
     return 0;
 }
 
@@ -155,6 +156,7 @@ int HttpComponent::recv_close_connection(Message* msg)
     msg2->sid = session->sid;
     this->gameobject->recv(msg2);
     session_destory(sockfd);
+    destory_msg(msg2);
     return 0;
 }
 
@@ -174,6 +176,7 @@ int HttpComponent::dispatch_frame(int sockfd, http_frame_request& frame)
     msg->payload.reset();
     msg->payload.write_buf(frame.payload, frame.payload_len);
     this->gameobject->recv(msg);
+    destory_msg(msg);
     return 0;
 }
 

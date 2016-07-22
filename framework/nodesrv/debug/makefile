@@ -1,4 +1,7 @@
 
+reload:
+	bin/reload
+
 adminsrv:
 	bin/logicsrv adminsrv
 
@@ -35,3 +38,6 @@ stop:
 
 list:
 	bin/srvlist
+
+help:
+	@echo 'make reload'

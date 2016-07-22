@@ -199,6 +199,7 @@ int NetComponent::dispatch(int sockfd, char* data, size_t datalen)
     msg->data[msg->datalen] = 0;
     int ir = this->gameobject->recv(msg);
     msg->data[msg->datalen] = lastc;
+    destory_msg(msg);
     return ir;
 }
 
@@ -233,6 +234,7 @@ void NetComponent::ev_accept(int listenfd)
 
     msg->sockfd = sockfd;
     this->gameobject->recv(msg);
+    destory_msg(msg);
 }
 
 
@@ -252,6 +254,7 @@ void NetComponent::real_close(int sockfd, const char* reason)
 
     msg->sockfd = sockfd;
     this->gameobject->recv(msg);
+    destory_msg(msg);
 }
 
 char* NetComponent::alloc_send_buf(int sockfd, size_t size)

@@ -85,10 +85,11 @@ static int lconnect(lua_State *L){
     } 
     addr.sin_port = htons(port);        
     error = connect(sockfd, (struct sockaddr *)&addr, sizeof(addr));
-    lua_pushinteger(L, error);
     if(error < 0){
         LOG_ERROR("connect fail errno:%d:%s\n", errno, strerror(errno));
+        return 0;
     }
+    lua_pushboolean(L, true);
     return 1;
 }
 

@@ -6,6 +6,12 @@
 
 #include <string.h>
 
+static int time_diff(struct timeval *t1, struct timeval *t2)
+{
+    int usec = (t2->tv_sec - t1->tv_sec) * 1000000 + t2->tv_usec - t1->tv_usec;
+    return usec;
+}
+
 GameObject::GameObject()
 {
     this->data = 0;
@@ -49,16 +55,23 @@ int GameObject::unreach(Message* msg)
 
 int GameObject::recv(Message* msg)
 {
-    LOG_DEBUG("object[%d] recv msg", this->id);
+    MessageHeader& header = msg->header;
+    LOG_MSG("MESSAGE msgid(%d) (%d,%d)=>(%d:%d) len(%d)", header.id, header.src_nodeid, header.src_objectid, header.dst_nodeid, header.dst_objectid, header.len);
+    struct timeval t1;
+    gettimeofday(&t1, NULL);
     std::map<unsigned int, Component*>::iterator it;
-    it = msg_map.find(msg->header.id);
-    if (it != msg_map.end())
+    it = msg_map.find(header.id);
+    if (it == msg_map.end())
     {
-        Component* component = it->second;
-        return component->recv(msg);
+        LOG_DEBUG("component not found msg(%d)", header.id);
+        return 0;
     }
-    LOG_DEBUG("component not found msg(%d)", msg->header.id);
-    return 0;
+    Component* component = it->second;
+    int ir = component->recv(msg);
+    struct timeval t2;
+    gettimeofday(&t2, NULL);
+    LOG_MSG("MESSAGE msgid(%d) (%d,%d)=>(%d:%d) len(%d) usec(%d)", header.id, header.src_nodeid, header.src_objectid, header.dst_nodeid, header.dst_objectid, header.len, time_diff(&t1, &t2));
+    return ir;
 }
 
 //int GameObject::recv(MsgHeader* header, const void* data, size_t datalen)

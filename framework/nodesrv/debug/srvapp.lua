@@ -11,14 +11,17 @@ function _atexit()
 end
 
 function clearpid()
-    loginfo('clearpid')
+    local selfpid = System.getpid()
+    loginfo('exit pid(%d)', selfpid)
     --清理pid
     local file = io.open('pid', 'r')
     if file then
         local pid = file:read()
-        file:close()
-        os.remove('pid')
-        loginfo('exit pid(%d)', pid)
+        if tonumber(pid) == selfpid then
+            file:close()
+            os.remove('pid')
+            loginfo('clearpid')
+        end
     end
 end
 
@@ -28,7 +31,7 @@ function recordpid()
         local pid = file:read()
         file:close()
         if File.exists(string.format('/proc/%s', pid)) then
-            loginfo('pid file exists')
+            print('pid file exists')
             os.exit(1)
         end
     end
@@ -69,9 +72,16 @@ end
 File.chdir(running_dir)
 loginfo('running dir(%s)', File.getcwd())
 
-
 --本地节点
 NodeMgr.create_node_local(Config.nodeid)
+if is_daemon then
+    mynode:run_background()
+    local d = os.date('*t')
+    Log.stdout2file(string.format('%s_%04d%02d%02d', Config.srvname, d.year, d.month, d.day))
+end
+
+recordpid()
+
 mynode:listen(Config.host, Config.port)
 --远程节点
 local srvlist = Config.srvgrap[Config.nodeid]
@@ -83,15 +93,6 @@ if srvlist then
         _G[node_conf.srvname] = nodeid
     end
 end
-
-
-if is_daemon then
-    mynode:run_background()
-    local d = os.date('*t')
-    Log.stdout2file(string.format('%s_%04d%02d%02d', Config.srvname, d.year, d.month, d.day))
-end
-
-recordpid()
 
 Log.closealllevel()
 for _, v in pairs(Config.loglevel) do

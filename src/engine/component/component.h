@@ -47,6 +47,7 @@ class Component
         void send_gameobject_msg(int dst_nodeid, int dst_objectid, Message* msg);
         int get_component(lua_State* L);
         Message* alloc_msg();
+        void destory_msg(Message* msg);
         Component* get_component(const char* name);
     public:
         GameObject* gameobject;

@@ -7,7 +7,7 @@ IMPLEMENT(GateSrv)
 #define MAX_SOCKFD 65536
 
 #define MAX_MSG_NAME_LEN 128
-static char recv_msg_name[MAX_MSG_NAME_LEN];
+//static char recv_msg_name[MAX_MSG_NAME_LEN];
 static char msg_name[MAX_MSG_NAME_LEN];
 static int time_diff(struct timeval *t1, struct timeval *t2)
 {
@@ -16,13 +16,13 @@ static int time_diff(struct timeval *t1, struct timeval *t2)
 }
 
 
-static void XOR(char *str, int str_len)
-{
-    for(int i = 0; i < str_len; i++)
-    {
-        str[i] = str[i] ^ 0xff;
-    }
-}
+//static void XOR(char *str, int str_len)
+//{
+    //for(int i = 0; i < str_len; i++)
+    //{
+        //str[i] = str[i] ^ 0xff;
+    //}
+//}
 
 typedef struct tagSession
 {
@@ -274,7 +274,7 @@ int GateSrv::reply(lua_State *L)
     memcpy(msg_name, cmd, msg_name_len);
     msg_name[msg_name_len] = 0;
 
-    LOG_INFO("SEND %s", cmd);
+    LOG_MSG("SEND %s", cmd);
 
     int body_len = message->ByteSize();
     int plen = 4 + sizeof(int) + msg_name_len + 2  + body_len;
@@ -309,7 +309,7 @@ int GateSrv::reply(lua_State *L)
     struct timeval t2;
     gettimeofday(&t2, NULL);
 
-    LOG_INFO("SEND %s plen:%d usec:%d", cmd, plen, time_diff(&t1, &t2));
+    LOG_MSG("SEND %s plen(%d) usec(%d)", cmd, plen, time_diff(&t1, &t2));
     if(body_len < 4096)
     {
         LOG_DEBUG("%s", message->DebugString().data());

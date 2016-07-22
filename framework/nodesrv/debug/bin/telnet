@@ -1,0 +1,50 @@
+#!bin/lneox
+dofile('bin/luaenv')
+
+if not arg[1] then
+    print('arg error')
+    os.exit(0)
+end
+
+if arg[1] == '-i' then
+    --进入交互模式
+    os.execute(string.format('telnet %s %d', Config.localsrv.telnetsrv.host, Config.localsrv.telnetsrv.port))
+    return
+end
+
+if arg[1] == '-h' then
+    print([[
+usage:
+    telnet command 执行此命令,
+        例如: telnet 'Admin.RELOAD()'
+    telnet -i 进入交互模式
+    telnet -h 显示此帮助
+]])
+    return
+end
+
+local sockfd = Socket.socket(Socket.AF_INET, Socket.SOCK_STREAM, 0)
+if sockfd < 0 then
+    print('socket error')
+    os.exit(0)
+end
+if not Socket.connect(sockfd, Config.localsrv.telnetsrv.host, Config.localsrv.telnetsrv.port) then
+    print('connect error')
+    os.exit(0)
+end
+
+--local cmd = string.format("echo '%s'> /dev/tcp/%s/%d", arg[1], Config.localsrv.telnetsrv.host, Config.localsrv.telnetsrv.port)
+local cmd = arg[1]
+
+local rt = Socket.send(sockfd, cmd)
+if rt <= 0 then
+    print('send error')
+    os.exit(0)
+end
+local rt, str = Socket.recv(sockfd, 1024)
+if rt <= 0 then
+    print('recv error')
+    os.exit(0)
+end
+print(str)
+

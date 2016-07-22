@@ -364,9 +364,9 @@ void Node::update(long long cur_tick)
 
 void Node::recv(Message* msg)
 {
-    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_objectid, msg->header.len);
-    struct timeval t1;
-    gettimeofday(&t1, NULL);
+    //LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_objectid, msg->header.len);
+    //struct timeval t1;
+    //gettimeofday(&t1, NULL);
     //不可靠的消息传输
     switch(msg->header.id)
     {
@@ -386,9 +386,9 @@ void Node::recv(Message* msg)
             }
             break;
     }
-    struct timeval t2;
-    gettimeofday(&t2, NULL);
-    LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d) usec(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_objectid, msg->header.len, time_diff(&t1, &t2));
+    //struct timeval t2;
+    //gettimeofday(&t2, NULL);
+    //LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d) usec(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_objectid, msg->header.len, time_diff(&t1, &t2));
 }
 
 int Node::dispatch(char* data, size_t datalen)
@@ -792,7 +792,7 @@ void Node::destory_msg(Message* msg)
         return;
     }
     msg->ref_count--;
-    if (msg->ref_count <= 0)
+    if (msg->ref_count == 0)
     {
         delete msg;
     }

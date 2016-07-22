@@ -9,6 +9,7 @@
 namespace NodeMgr
 {
 
+    int frame_rate = 60;
     lua_State* L;
     aeEventLoop* loop;
     std::map<int, Node*> node_map_;
@@ -90,15 +91,27 @@ namespace NodeMgr
     
     void update(long long cur_tick)
     {
+        int usec_per_frame = 1000000 / frame_rate;
         for (;;)
         {
-            usleep(1000);
-            aeOnce(loop);
+            struct timeval t1;
+            gettimeofday(&t1, NULL);
+
             for (int i = node_vector_.size() - 1; i >= 0; --i)
             {
                 Node* node = node_vector_[i];
                 //LOG_DEBUG("node[%d] addr(%lld) update", node->get_id(), (long long)node);
                 node->update(cur_tick);
+            }
+            aeOnce(loop);
+
+            struct timeval t2;
+            gettimeofday(&t2, NULL);
+            int diff = (t2.tv_sec - t1.tv_sec) * 1000000 + t2.tv_usec - t1.tv_usec;
+            //LOG_INFO("use %d sleep %d", diff, usec_per_frame - diff);
+            if (diff < usec_per_frame)
+            {
+                usleep(usec_per_frame - diff);
             }
         }
     }
