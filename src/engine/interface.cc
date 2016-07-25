@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Sat Jul 16 21:09:22 2016.
+** Generated automatically by tolua++-1.0.92 on Mon Jul 25 20:00:55 2016.
 */
 
 #ifndef __cplusplus

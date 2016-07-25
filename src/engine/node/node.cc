@@ -55,11 +55,6 @@ static void sig_int(int b)
     exit(0);
 }
 
-static int time_diff(struct timeval *t1, struct timeval *t2)
-{
-    int usec = (t2->tv_sec - t1->tv_sec) * 1000000 + t2->tv_usec - t1->tv_usec;
-    return usec;
-}
 
 static void _ev_accept(struct aeEventLoop *eventLoop, int sockfd, void *clientData, int mask)
 {

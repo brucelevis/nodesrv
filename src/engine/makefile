@@ -24,6 +24,7 @@ SOURCE = $(wildcard \
 		 file/*.cc\
 		 type/*.cc\
 		 encrypt/*.cc\
+		 display/*.cc\
 		 lualib/redis/*.cc\
 		 lualib/json/*.cc\
 		 lualib/date/*.cc\
