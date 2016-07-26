@@ -2,7 +2,7 @@
 
 #include "msg/msg.h"
 #include "node/gameobject.h"
-#include "node/objectmgr.h"
+#include "node/router.h"
 #include "net/sendbuf.h"
 #include "net/recvbuf.h"
 #include "node/nodemgr.h"
@@ -23,6 +23,75 @@
 #include <errno.h>
 #include <signal.h>
 
+static int s_min_msec = 0x7fffffff;
+static int s_timer_counter = 0;
+static int s_call_lua_time = 0;
+typedef struct TimerData 
+{
+    char callback[64];
+    int msec;
+    int timerid;
+    int msgid;
+    void* userdata;
+    lua_State* L;
+}TimerData;
+
+static void timer_finalizer_proc(struct aeEventLoop *eventLoop, void *clientData) 
+{
+    TimerData *timedata = (TimerData *)clientData;
+    if (timedata) 
+    {
+        free(timedata);
+    }
+    s_timer_counter--;
+}
+
+
+/*
+ * 如果lua返回0则删除timer, 
+ * 如果n=0, 则以上次的时间再次触发
+ * 如果n>0, 则n毫秒后再次触发
+ */
+static int timer_proc(struct aeEventLoop *eventLoop, long long id, void *clientData)
+{
+    TimerData *timerdata = (TimerData *)clientData;
+    if(timerdata == NULL)
+    {
+        LOG_ERROR("timer is null");
+        return AE_NOMORE;
+    }
+    lua_State *L = timerdata->L;
+    Node* node = (Node*)timerdata->userdata;
+
+    if(node->lua_pushfunction(timerdata->callback))
+    {
+        LOG_ERROR("push func %s fail", timerdata->callback);
+        return AE_NOMORE;
+    }
+    //LOG_LOG("[TIMER_START] %s", timerdata->callback);
+    s_call_lua_time++;
+    lua_pushnumber(L, timerdata->timerid);
+    
+    if(lua_pcall(L, 1, 1, 0) != 0)
+    {
+        LOG_ERROR("%s", lua_tostring(L, -1));
+        lua_pop(L, lua_gettop(L));
+        return timerdata->msec;
+    }
+    //LOG_LOG("[TIMER_END] %s", timerdata->callback);
+    int ir = (int)lua_tointeger(L, -1);
+    lua_pop(L, lua_gettop(L));
+    if(ir == 1)
+    {
+        return timerdata->msec;
+    }else if(ir != 0)
+    {
+        return ir;
+    }else
+    {
+        return AE_NOMORE;
+    }
+} 
 
 static uint32_t MAGIC_CODE = 19860801;
 
@@ -55,6 +124,12 @@ static void sig_int(int b)
     exit(0);
 }
 
+
+static int time_diff(struct timeval *t1, struct timeval *t2)
+{
+    int usec = (t2->tv_sec - t1->tv_sec) * 1000000 + t2->tv_usec - t1->tv_usec;
+    return usec;
+}
 
 static void _ev_accept(struct aeEventLoop *eventLoop, int sockfd, void *clientData, int mask)
 {
@@ -356,10 +431,16 @@ void Node::update(long long cur_tick)
 
 void Node::recv(Message* msg)
 {
-    //LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_objectid, msg->header.len);
-    //struct timeval t1;
-    //gettimeofday(&t1, NULL);
+    MessageHeader& header = msg->header;
+    LOG_MSG("MESSAGE node[%d] msgid(%d) (%d,%d)=>(%d,%d) len(%d)", this->id, header.id, header.src_nodeid, header.src_objectid, header.dst_nodeid, header.dst_objectid, header.len);
+    struct timeval t1;
+    gettimeofday(&t1, NULL);
     //不可靠的消息传输
+    if (msg->header.dst_nodeid != this->id)
+    {
+        forward_gameobject_msg(msg);
+        return;
+    }
     switch(msg->header.id)
     {
         case MSG_NODE_REG:
@@ -378,9 +459,9 @@ void Node::recv(Message* msg)
             }
             break;
     }
-    //struct timeval t2;
-    //gettimeofday(&t2, NULL);
-    //LOG_MSG("MESSAGE node[%d] msgid(%d) src_node(%d,%d) len(%d) usec(%d)", this->id, msg->header.id, msg->header.src_nodeid, msg->header.src_objectid, msg->header.len, time_diff(&t1, &t2));
+    struct timeval t2;
+    gettimeofday(&t2, NULL);
+    LOG_MSG("MESSAGE node[%d] msgid(%d) (%d,%d)=>(%d,%d) len(%d) usec(%d)", this->id, header.id, header.src_nodeid, header.src_objectid, header.dst_nodeid, header.dst_objectid, header.len, time_diff(&t1, &t2));
 }
 
 int Node::dispatch(char* data, size_t datalen)
@@ -418,18 +499,23 @@ int Node::dispatch(char* data, size_t datalen)
 
 void Node::forward_gameobject_msg(Message* msg)
 {
-    //先发给本地实体
-    GameObject* object = find_gameobject(msg->header.dst_objectid);
-    if (object)
+    int dst_nodeid = msg->header.dst_nodeid;
+    Node* node = NodeMgr::find_node(dst_nodeid);
+    if (!node)
     {
-        object->recv(msg);
+        //转发到中心节点
+        Node* center_node = Router::center_node;
+        if (center_node != this)
+        {
+            node = center_node;
+        }
+    }
+    if (!node)
+    {
+        LOG_ERROR("dst_node(%d) not found", dst_nodeid);
         return;
     }
-    if (is_disconnect())
-    {
-        return;
-    }
-    send_gameobject_msg(NULL, msg);
+    //TODO
 }
 
 void Node::recv_gameobject_msg(Message* msg)
@@ -445,49 +531,12 @@ void Node::recv_gameobject_msg(Message* msg)
     } else
     {
         GameObject* object = find_gameobject(dst_objectid);
-        if(object)
+        if(!object)
         {
+            LOG_ERROR("gameobject(%d) not found", dst_objectid);
             object->recv(msg);
-        } else
-        {
-            //转发到中心节点
-            Node* center_node = ObjectMgr::center_node_;
-            if (center_node == this)
-            {
-                return;
-            }
-            if (center_node)
-            {
-                center_node->forward_gameobject_msg(msg);
-            }
         }
     }
-}
-
-void Node::send_gameobject_msg(GameObject* src_object, int dst_nodeid, int dst_objectid, Message* msg)
-{
-    if (!src_object)
-    {
-        LOG_ERROR("src_object not found");
-        return;
-    }
-    Node* src_node = src_object->node;
-    if (!src_node)
-    {
-        LOG_ERROR("src_node not found");
-        return;
-    }
-    Node* node = NodeMgr::find_node(dst_nodeid);
-    if (!node)
-    {
-        LOG_ERROR("dst_node(%d) not found", dst_nodeid);
-        return;
-    }
-    msg->header.src_objectid = src_object->id;
-    msg->header.src_nodeid = src_node->id;
-    msg->header.dst_nodeid = dst_nodeid;
-    msg->header.dst_objectid = dst_objectid;
-    node->send_gameobject_msg(src_object, msg);
 }
 
 void Node::send_gameobject_msg(GameObject* src_object, Message* msg)
@@ -502,7 +551,6 @@ void Node::send_gameobject_msg(GameObject* src_object, Message* msg)
     if (dst_object)
     {
         dst_object->recv(msg);
-        destory_msg(msg);
     } 
     else if (is_disconnect())
     {
@@ -519,10 +567,10 @@ void Node::send_gameobject_msg(GameObject* src_object, Message* msg)
             msg->magic_code = MAGIC_CODE;
             MAGIC_CODE += msg->header.len;
             msg->magic_code2 = MAGIC_CODE;
+            retain_msg(msg);
             this->send_msg_queue.push(msg);
         } else 
         {
-            destory_msg(msg);
         }
     }
     else 
@@ -531,33 +579,11 @@ void Node::send_gameobject_msg(GameObject* src_object, Message* msg)
         msg->magic_code = MAGIC_CODE;
         MAGIC_CODE += msg->header.len;
         msg->magic_code2 = MAGIC_CODE;
+        retain_msg(msg);
         this->send_msg_queue.push(msg);
         create_file_event(this->sockfd_, AE_WRITABLE, _ev_writable, this);
     }
 }
-
-void Node::send_gameobject_msg(GameObject* src_object, int dst_objectid, int msgid, const Buffer* buffer)
-{
-    LOG_INFO("node[%d] send object msg(%d)", this->id, msgid);
-    Node* src_node = src_object->node;
-    if (!src_node)
-    {
-        return;
-    }
-    Message* msg = alloc_msg();
-    MessageHeader& header = msg->header;
-    header.src_nodeid = src_node->get_id();
-    header.src_objectid = src_object->id;
-    header.dst_objectid = dst_objectid;
-    header.dst_nodeid = this->id;
-    header.id = msgid;
-
-    msg->payload.reset();
-    msg->payload.write(buffer);
-
-    send_gameobject_msg(src_object, msg);
-}
-
 
 bool Node::is_local()
 {
@@ -569,7 +595,7 @@ void Node::set_local(bool v)
     is_local_ = v;
 }
 
-int Node::get_id()
+uint32_t Node::get_id()
 {
     return id;
 }
@@ -665,11 +691,11 @@ void Node::create_gameobject_remote(GameObject* src_object, const char* filepath
     if (is_local())
     {
         recv(msg);
-        destory_msg(msg);
     } else
     {
         send_gameobject_msg(NULL, msg);
     }
+    destory_msg(msg);
 }
 
 
@@ -779,6 +805,15 @@ Message* Node::alloc_msg()
     return msg;
 }
 
+void Node::retain_msg(Message* msg)
+{
+    if(msg == NULL)
+    {
+        return;
+    }
+    msg->ref_count++;
+}
+
 void Node::destory_msg(Message* msg)
 {
     if(msg == NULL)
@@ -794,13 +829,12 @@ void Node::destory_msg(Message* msg)
 
 int Node::post(lua_State* L)
 {
-    GameObject* object = find_gameobject(0);
-    if(!object)
+    if(!root_gameobject)
     {
         LOG_ERROR("object 0 not found, post need object 0");
         return 0;
     }
-    POSTComponent* component = dynamic_cast<POSTComponent *>(object->get_component(POSTComponent::type));
+    POSTComponent* component = dynamic_cast<POSTComponent *>(root_gameobject->get_component(POSTComponent::type));
     if (!component)
     {
         LOG_ERROR("post component not found");
@@ -852,3 +886,35 @@ void Node::run_background()
     //ctrl-c信号
     signal(SIGINT, sig_int);
 }
+
+
+int Node::addtimer(lua_State *L)
+{
+    if (lua_gettop(L) == 3 && lua_isnumber(L, 2) && lua_isstring(L, 3)) 
+    {
+        aeEventLoop *loop = NodeMgr::loop;
+        int msec;
+        char *funcname;
+        msec = (int)lua_tonumber(L, 2);
+        funcname = (char *)lua_tostring(L, 3);
+        TimerData *timerdata = (TimerData *)malloc(sizeof(TimerData));
+        if(timerdata == NULL)
+        {
+            LOG_ERROR("malloc fail");
+            return 0;
+        }
+        timerdata->userdata = this;
+        timerdata->msec = msec;
+        timerdata->L = L;
+        s_timer_counter++;
+        strcpy(timerdata->callback, funcname);
+        if(s_min_msec > msec)s_min_msec = msec;
+        int timerid = aeCreateTimeEvent(loop, msec, timer_proc, timerdata, timer_finalizer_proc);
+        timerdata->timerid = timerid;
+        return timerid;
+    }
+    LOG_ERROR("args wrong");
+    return 0;
+}
+
+

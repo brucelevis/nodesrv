@@ -8,8 +8,8 @@ adminsrv:
 test:
 	bin/client Login.login
 
-localsrv:
-	bin/logicsrv localsrv  
+centersrv:
+	bin/logicsrv centersrv  
 
 gatesrv:
 	bin/gatesrv gatesrv1

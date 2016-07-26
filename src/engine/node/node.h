@@ -59,7 +59,7 @@ class Node
         /*
          * 返回节点id
          */
-        int get_id();
+        uint32_t get_id();
         bool is_local();
         void set_local(bool v);
         bool is_disconnect();
@@ -68,21 +68,22 @@ class Node
 
         Message* alloc_msg();
         void destory_msg(Message* msg);
+        void retain_msg(Message* msg);
 
         void recv(Message* msg);
         void recv_gameobject_msg(Message* msg);
         void recv_node_reg(Message* msg);
         void recv_create_gameobject(Message* msg);
 
-        void send_gameobject_msg(GameObject* src_object, int dst_objid, int msgid, const Buffer* buffer);
-        void send_gameobject_msg(GameObject* src_object, int dst_nodeid, int dst_objid, Message* msg);
         void send_gameobject_msg(GameObject* src_object, Message* msg);
         void forward_gameobject_msg(Message* msg);
         //兼容之前的post协议
         int post(lua_State* L);
         void run_background();
+
+        int addtimer(lua_State *L);
     public:
-        int id;
+        uint32_t id;
         char name[64];
 //tolua_end
 //

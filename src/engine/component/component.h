@@ -45,6 +45,7 @@ class Component
         int reg_msg(unsigned int id);
         int unreg_msg(unsigned int id);
         void send_gameobject_msg(int dst_nodeid, int dst_objectid, Message* msg);
+        void send_gameobject_msg(int dst_nodeid, int dst_objectid, int msgid, const Buffer* buffer);
         int get_component(lua_State* L);
         Message* alloc_msg();
         void destory_msg(Message* msg);

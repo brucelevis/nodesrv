@@ -8,10 +8,11 @@ function awake(self)
     self:reg_msg(MSG_CLOSE_SESSION)
     self:reg_msg(MSG_NET_PACKET)
     gatesrv_component = self:get_component('GateSrv')
-    if not gatesrv_component then
-        logerr('gatesrv component not found')
-        os.exit(0)
-    end
+    --self:addtimer(1000, 'Client.hello')
+end
+
+function hello(self, id)
+    return 1
 end
 
 function recv(self, msg)
@@ -87,6 +88,6 @@ function reply(sid, reply)
 end
 
 function update(self)
-
+--    loginfo('asf')
 end
 

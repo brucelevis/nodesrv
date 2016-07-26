@@ -1,7 +1,8 @@
 module('Admin', package.seeall)
 
-function test()
-    return 'affafafaf'
+function reload(srvid)
+    print('asfaf', srvid)
+    RELOAD(srvid)
 end
 
 function RELOAD(srvid)

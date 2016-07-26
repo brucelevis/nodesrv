@@ -9,15 +9,15 @@ player_count = player_count or 0
 function PLAYER_ENTER(gatesrv, uid)
     tmp_player_manager[uid] = gatesrv 
     loginfo('player enter uid(%d)', uid)
-    POST(localsrv, 'Login.PLAYER_ENTER', uid)
+    POST(centersrv, 'Login.PLAYER_ENTER', uid)
 end
 
-function PLAYER_EXIT(localsrv, uid)
+function PLAYER_EXIT(centersrv, uid)
     loginfo('player exit uid(%d)', uid)
     local player = player_manager[uid]
     if not player then
         logerr('player out found uid(%d)', uid)
-        POST(localsrv, 'Login.PLAYER_EXIT', uid)
+        POST(centersrv, 'Login.PLAYER_EXIT', uid)
         return
     end
     player_logout(player)
@@ -92,7 +92,7 @@ function msg_db_srv_get_playerdata(dbsrv, uid, result, ...)
     --如果没有锁住
     local gatesrv = tmp_player_manager[uid]
     if not gatesrv then
-        POST(localsrv, 'Login.PLAYER_EXIT', uid)
+        POST(centersrv, 'Login.PLAYER_EXIT', uid)
         logerr('player is disconnect')
         return
     end
@@ -103,13 +103,13 @@ function msg_db_srv_get_playerdata(dbsrv, uid, result, ...)
         return
     end
     if result == 0 then
-        POST(localsrv, 'Login.PLAYER_EXIT', uid)
+        POST(centersrv, 'Login.PLAYER_EXIT', uid)
         logerr('load playerdata fail uid(%d)', uid)
         return
     end
     local playerdata = {}
     local args = {...}
-    for index, varname in pairs(Config.localsrv.playerdata) do
+    for index, varname in pairs(Config.centersrv.playerdata) do
         playerdata[varname] = args[index]
     end
     --POST(gatesrv, 'Login.PLAYER_ENTER', uid)
@@ -158,7 +158,7 @@ function msg_db_srv_set_playerdata(dbsrv, uid, result, ...)
     --释放数据
     player_manager[uid] = nil
     player_count = player_count - 1
-    POST(localsrv, 'Login.PLAYER_EXIT', uid)
+    POST(centersrv, 'Login.PLAYER_EXIT', uid)
 end
 
 --功能:定时保存玩家数据
@@ -166,7 +166,7 @@ end
     --local timenow = os.time()
     --for uid, player in pairs(player_manager) do
         --local playerdata = player.playerdata
-        --if timenow - player.last_save_time > Config.localsrv.save_interval then
+        --if timenow - player.last_save_time > Config.centersrv.save_interval then
             --local args = {}
             --for table_name, msg in pairs(playerdata) do
                 --if true or msg:isdirty() then

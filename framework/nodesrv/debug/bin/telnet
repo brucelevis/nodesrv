@@ -8,7 +8,7 @@ end
 
 if arg[1] == '-i' then
     --进入交互模式
-    os.execute(string.format('telnet %s %d', Config.localsrv.telnetsrv.host, Config.localsrv.telnetsrv.port))
+    os.execute(string.format('telnet %s %d', Config.centersrv.telnetsrv.host, Config.centersrv.telnetsrv.port))
     return
 end
 
@@ -28,12 +28,12 @@ if sockfd < 0 then
     print('socket error')
     os.exit(0)
 end
-if not Socket.connect(sockfd, Config.localsrv.telnetsrv.host, Config.localsrv.telnetsrv.port) then
+if not Socket.connect(sockfd, Config.centersrv.telnetsrv.host, Config.centersrv.telnetsrv.port) then
     print('connect error')
     os.exit(0)
 end
 
---local cmd = string.format("echo '%s'> /dev/tcp/%s/%d", arg[1], Config.localsrv.telnetsrv.host, Config.localsrv.telnetsrv.port)
+--local cmd = string.format("echo '%s'> /dev/tcp/%s/%d", arg[1], Config.centersrv.telnetsrv.host, Config.centersrv.telnetsrv.port)
 local cmd = arg[1]
 
 local rt = Socket.send(sockfd, cmd)

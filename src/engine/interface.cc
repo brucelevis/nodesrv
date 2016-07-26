@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Mon Jul 25 20:00:55 2016.
+** Generated automatically by tolua++-1.0.92 on Tue Jul 26 16:32:03 2016.
 */
 
 #ifndef __cplusplus
@@ -19,6 +19,7 @@ TOLUA_API int  tolua_neox_open (lua_State* tolua_S);
 #include "node/gameobject.h"
 #include "node/node.h"
 #include "node/nodemgr.h"
+#include "node/router.h"
 #include "component/component.h"
 #include "component/testcomponent.h"
 #include "component/scriptcomponent.h"
@@ -121,22 +122,23 @@ static int tolua_collect_Type (lua_State* tolua_S)
 /* function to register type */
 static void tolua_reg_types (lua_State* tolua_S)
 {
- tolua_usertype(tolua_S,"Buffer");
  tolua_usertype(tolua_S,"TestComponent");
- tolua_usertype(tolua_S,"CreateGameObjectMsg");
  tolua_usertype(tolua_S,"MessageHeader");
- tolua_usertype(tolua_S,"ScriptComponent");
- tolua_usertype(tolua_S,"Message");
- tolua_usertype(tolua_S,"GameObject");
- tolua_usertype(tolua_S,"MessageOption");
  tolua_usertype(tolua_S,"Component");
- tolua_usertype(tolua_S,"NetComponent");
  tolua_usertype(tolua_S,"HttpClient");
- tolua_usertype(tolua_S,"POSTComponent");
  tolua_usertype(tolua_S,"HttpComponent");
- tolua_usertype(tolua_S,"Type");
- tolua_usertype(tolua_S,"Node");
  tolua_usertype(tolua_S,"aeFileProc");
+ tolua_usertype(tolua_S,"Type");
+ tolua_usertype(tolua_S,"MessageOption");
+ tolua_usertype(tolua_S,"ScriptComponent");
+ tolua_usertype(tolua_S,"GameObject");
+ tolua_usertype(tolua_S,"Message");
+ tolua_usertype(tolua_S,"NetComponent");
+ tolua_usertype(tolua_S,"Router");
+ tolua_usertype(tolua_S,"POSTComponent");
+ tolua_usertype(tolua_S,"Buffer");
+ tolua_usertype(tolua_S,"CreateGameObjectMsg");
+ tolua_usertype(tolua_S,"Node");
 }
 
 /* function: Neox::main */
@@ -2213,7 +2215,7 @@ static int tolua_neox_Node_get_id00(lua_State* tolua_S)
   if (!self) tolua_error(tolua_S,"invalid 'self' in function 'get_id'",NULL);
 #endif
   {
-   int tolua_ret = (int)  self->get_id();
+   uint32_t tolua_ret = (uint32_t)  self->get_id();
    tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
   }
  }
@@ -2457,6 +2459,39 @@ static int tolua_neox_Node_destory_msg00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: retain_msg of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_retain_msg00
+static int tolua_neox_Node_retain_msg00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,2,"Message",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  Message* msg = ((Message*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'retain_msg'",NULL);
+#endif
+  {
+   self->retain_msg(msg);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'retain_msg'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: recv of class  Node */
 #ifndef TOLUA_DISABLE_tolua_neox_Node_recv00
 static int tolua_neox_Node_recv00(lua_State* tolua_S)
@@ -2598,83 +2633,12 @@ static int tolua_neox_Node_send_gameobject_msg00(lua_State* tolua_S)
  if (
      !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
      !tolua_isusertype(tolua_S,2,"GameObject",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,5,"const Buffer",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,6,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  GameObject* src_object = ((GameObject*)  tolua_tousertype(tolua_S,2,0));
-  int dst_objid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
-  const Buffer* buffer = ((const Buffer*)  tolua_tousertype(tolua_S,5,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_gameobject_msg'",NULL);
-#endif
-  {
-   self->send_gameobject_msg(src_object,dst_objid,msgid,buffer);
-  }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'send_gameobject_msg'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: send_gameobject_msg of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_send_gameobject_msg01
-static int tolua_neox_Node_send_gameobject_msg01(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"GameObject",0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
-     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,5,"Message",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,6,&tolua_err)
- )
-  goto tolua_lerror;
- else
- {
-  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
-  GameObject* src_object = ((GameObject*)  tolua_tousertype(tolua_S,2,0));
-  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,3,0));
-  int dst_objid = ((int)  tolua_tonumber(tolua_S,4,0));
-  Message* msg = ((Message*)  tolua_tousertype(tolua_S,5,0));
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_gameobject_msg'",NULL);
-#endif
-  {
-   self->send_gameobject_msg(src_object,dst_nodeid,dst_objid,msg);
-  }
- }
- return 0;
-tolua_lerror:
- return tolua_neox_Node_send_gameobject_msg00(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: send_gameobject_msg of class  Node */
-#ifndef TOLUA_DISABLE_tolua_neox_Node_send_gameobject_msg02
-static int tolua_neox_Node_send_gameobject_msg02(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
-     !tolua_isusertype(tolua_S,2,"GameObject",0,&tolua_err) ||
      !tolua_isusertype(tolua_S,3,"Message",0,&tolua_err) ||
      !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
   goto tolua_lerror;
  else
+#endif
  {
   Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
   GameObject* src_object = ((GameObject*)  tolua_tousertype(tolua_S,2,0));
@@ -2687,8 +2651,11 @@ static int tolua_neox_Node_send_gameobject_msg02(lua_State* tolua_S)
   }
  }
  return 0;
-tolua_lerror:
- return tolua_neox_Node_send_gameobject_msg01(tolua_S);
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'send_gameobject_msg'.",&tolua_err);
+ return 0;
+#endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -2788,6 +2755,38 @@ static int tolua_neox_Node_run_background00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: addtimer of class  Node */
+#ifndef TOLUA_DISABLE_tolua_neox_Node_addtimer00
+static int tolua_neox_Node_addtimer00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Node",0,&tolua_err) ||
+     false
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Node* self = (Node*)  tolua_tousertype(tolua_S,1,0);
+  lua_State* L =  tolua_S;
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'addtimer'",NULL);
+#endif
+  {
+return self->addtimer(L);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'addtimer'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* get function: id of class  Node */
 #ifndef TOLUA_DISABLE_tolua_get_Node_id
 static int tolua_get_Node_id(lua_State* tolua_S)
@@ -2812,7 +2811,7 @@ static int tolua_set_Node_id(lua_State* tolua_S)
   if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
    tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
-  self->id = ((int)  tolua_tonumber(tolua_S,2,0))
+  self->id = ((uint32_t)  tolua_tonumber(tolua_S,2,0))
 ;
  return 0;
 }
@@ -3048,6 +3047,30 @@ static int tolua_neox_NodeMgr_create_gameobject_remote00(lua_State* tolua_S)
  tolua_error(tolua_S,"#ferror in function 'create_gameobject_remote'.",&tolua_err);
  return 0;
 #endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: center_node of class  Router */
+#ifndef TOLUA_DISABLE_tolua_get_Router_center_node_ptr
+static int tolua_get_Router_center_node_ptr(lua_State* tolua_S)
+{
+  tolua_pushusertype(tolua_S,(void*)Router::center_node,"Node");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: center_node of class  Router */
+#ifndef TOLUA_DISABLE_tolua_set_Router_center_node_ptr
+static int tolua_set_Router_center_node_ptr(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!tolua_isusertype(tolua_S,2,"Node",0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  Router::center_node = ((Node*)  tolua_tousertype(tolua_S,2,0))
+;
+ return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -3710,6 +3733,40 @@ static int tolua_neox_Component_send_gameobject_msg00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: send_gameobject_msg of class  Component */
+#ifndef TOLUA_DISABLE_tolua_neox_Component_send_gameobject_msg01
+static int tolua_neox_Component_send_gameobject_msg01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Component",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,5,"const Buffer",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,6,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  Component* self = (Component*)  tolua_tousertype(tolua_S,1,0);
+  int dst_nodeid = ((int)  tolua_tonumber(tolua_S,2,0));
+  int dst_objectid = ((int)  tolua_tonumber(tolua_S,3,0));
+  int msgid = ((int)  tolua_tonumber(tolua_S,4,0));
+  const Buffer* buffer = ((const Buffer*)  tolua_tousertype(tolua_S,5,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'send_gameobject_msg'",NULL);
+#endif
+  {
+   self->send_gameobject_msg(dst_nodeid,dst_objectid,msgid,buffer);
+  }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_neox_Component_send_gameobject_msg00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: get_component of class  Component */
 #ifndef TOLUA_DISABLE_tolua_neox_Component_get_component00
 static int tolua_neox_Component_get_component00(lua_State* tolua_S)
@@ -4165,6 +4222,38 @@ static int tolua_neox_ScriptComponent_recv00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'recv'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: addtimer of class  ScriptComponent */
+#ifndef TOLUA_DISABLE_tolua_neox_ScriptComponent_addtimer00
+static int tolua_neox_ScriptComponent_addtimer00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"ScriptComponent",0,&tolua_err) ||
+     false
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  ScriptComponent* self = (ScriptComponent*)  tolua_tousertype(tolua_S,1,0);
+  lua_State* L =  tolua_S;
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'addtimer'",NULL);
+#endif
+  {
+return self->addtimer(L);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'addtimer'.",&tolua_err);
  return 0;
 #endif
 }
@@ -7266,16 +7355,16 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"create_gameobject_remote",tolua_neox_Node_create_gameobject_remote00);
    tolua_function(tolua_S,"alloc_msg",tolua_neox_Node_alloc_msg00);
    tolua_function(tolua_S,"destory_msg",tolua_neox_Node_destory_msg00);
+   tolua_function(tolua_S,"retain_msg",tolua_neox_Node_retain_msg00);
    tolua_function(tolua_S,"recv",tolua_neox_Node_recv00);
    tolua_function(tolua_S,"recv_gameobject_msg",tolua_neox_Node_recv_gameobject_msg00);
    tolua_function(tolua_S,"recv_node_reg",tolua_neox_Node_recv_node_reg00);
    tolua_function(tolua_S,"recv_create_gameobject",tolua_neox_Node_recv_create_gameobject00);
    tolua_function(tolua_S,"send_gameobject_msg",tolua_neox_Node_send_gameobject_msg00);
-   tolua_function(tolua_S,"send_gameobject_msg",tolua_neox_Node_send_gameobject_msg01);
-   tolua_function(tolua_S,"send_gameobject_msg",tolua_neox_Node_send_gameobject_msg02);
    tolua_function(tolua_S,"forward_gameobject_msg",tolua_neox_Node_forward_gameobject_msg00);
    tolua_function(tolua_S,"post",tolua_neox_Node_post00);
    tolua_function(tolua_S,"run_background",tolua_neox_Node_run_background00);
+   tolua_function(tolua_S,"addtimer",tolua_neox_Node_addtimer00);
    tolua_variable(tolua_S,"id",tolua_get_Node_id,tolua_set_Node_id);
    tolua_variable(tolua_S,"name",tolua_get_Node_name,tolua_set_Node_name);
   tolua_endmodule(tolua_S);
@@ -7288,6 +7377,10 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"create_node_remote",tolua_neox_NodeMgr_create_node_remote00);
    tolua_function(tolua_S,"transfer_gameobject",tolua_neox_NodeMgr_transfer_gameobject00);
    tolua_function(tolua_S,"create_gameobject_remote",tolua_neox_NodeMgr_create_gameobject_remote00);
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"Router","Router","",NULL);
+  tolua_beginmodule(tolua_S,"Router");
+   tolua_variable(tolua_S,"center_node",tolua_get_Router_center_node_ptr,tolua_set_Router_center_node_ptr);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"Component","Component","",tolua_collect_Component);
@@ -7316,6 +7409,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"reg_msg",tolua_neox_Component_reg_msg00);
    tolua_function(tolua_S,"unreg_msg",tolua_neox_Component_unreg_msg00);
    tolua_function(tolua_S,"send_gameobject_msg",tolua_neox_Component_send_gameobject_msg00);
+   tolua_function(tolua_S,"send_gameobject_msg",tolua_neox_Component_send_gameobject_msg01);
    tolua_function(tolua_S,"get_component",tolua_neox_Component_get_component00);
    tolua_function(tolua_S,"alloc_msg",tolua_neox_Component_alloc_msg00);
    tolua_function(tolua_S,"destory_msg",tolua_neox_Component_destory_msg00);
@@ -7347,6 +7441,7 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"awake",tolua_neox_ScriptComponent_awake00);
    tolua_function(tolua_S,"update",tolua_neox_ScriptComponent_update00);
    tolua_function(tolua_S,"recv",tolua_neox_ScriptComponent_recv00);
+   tolua_function(tolua_S,"addtimer",tolua_neox_ScriptComponent_addtimer00);
    tolua_variable(tolua_S,"modname",tolua_get_ScriptComponent_modname,tolua_set_ScriptComponent_modname);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus

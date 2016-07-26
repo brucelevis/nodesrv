@@ -5,17 +5,13 @@ telnet 协议实现的管理后台
 
 net_component = net_component or nil 
 
-function hello()
-    return 'asfafsd'
-end
-
 function awake(self)
     loginfo('awake')
     self:reg_msg(MSG_NEW_CONNECTION)
     self:reg_msg(MSG_CLOSE_CONNECTION)
     self:reg_msg(MSG_NET_RAW_DATA)
     net_component = self:get_component('NetComponent')
-    net_component:listen(Config.localsrv.telnetsrv.host, Config.localsrv.telnetsrv.port)
+    net_component:listen(Config.centersrv.telnetsrv.host, Config.centersrv.telnetsrv.port)
 end
 
 function recv(self, msg)
@@ -40,6 +36,14 @@ end
 function recv_net_raw_data(self, msg)
     loginfo('recv_net_raw_data %d', msg.sid)
     local data = msg.data
+    if string.sub(data, -2, -1) == '\r\n' then
+        data = string.sub(data, 1, -3)
+    end
+    if data == 'reload' then
+        local pats = string.split(data, ' ')
+        print(#pats)
+        return
+    end
     local f = loadstring(data)
     if not f then
         reply(msg.sockfd, string.format('FAIL %s', data))
@@ -63,3 +67,4 @@ end
 function update()
 
 end
+

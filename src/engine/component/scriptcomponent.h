@@ -20,6 +20,7 @@ class ScriptComponent : public Component
         virtual void update(uint64_t cur_tick);
         virtual int recv(Message* msg);
 
+        int addtimer(lua_State *L);
     public:
         char modname[64];
 //tolua_end

@@ -5,8 +5,8 @@
 --部署配置
 Config = 
 {
-    --loglevel = {"MSG", "INFO", "ERROR", "WARN", "DEBUG"},
-    loglevel = {"MSG", "INFO", "ERROR", "WARN"},
+    loglevel = {"MSG", "INFO", "ERROR", "WARN", "DEBUG"},
+    --loglevel = {"MSG", "INFO", "ERROR", "WARN"},
     --拓扑结构
     srvgrap = 
     {
@@ -23,7 +23,7 @@ Config =
         [1] =   {nodeid = 1,    srvname = 'adminsrv',   bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9089,    mainfile = 'adminsrv/main'},
         [100] = {nodeid = 100,  srvname = 'gatesrv1',   bin = 'bin/gatesrv',    host = '127.0.0.1', port = 9090,    mainfile = 'gatesrv/main'},
         [200] = {nodeid = 200,  srvname = 'datasrv1',   bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9092,    mainfile = 'datasrv/main'},
-        [300] = {nodeid = 300,  srvname = 'localsrv',   bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9093,    mainfile = 'localsrv/main'},
+        [300] = {nodeid = 300,  srvname = 'centersrv',  bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9093,    mainfile = 'centersrv/main'},
         [400] = {nodeid = 400,  srvname = 'scenesrv1',  bin = 'bin/logicsrv',   host = '127.0.0.1', port = 9094,    mainfile = 'scenesrv/main'},
     },
     test = {host = '127.0.0.1', port = 12341},
@@ -64,7 +64,7 @@ Config =
     },
 
     --本服的配置
-    localsrv = {
+    centersrv = {
         save_interval = 3600,
         playerdata = {'task'},
         telnetsrv = {

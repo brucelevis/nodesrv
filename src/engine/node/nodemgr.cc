@@ -116,7 +116,6 @@ namespace NodeMgr
         }
     }
 
-
     Node* create_temp_node()
     {
         //Node *node = new Node(0);

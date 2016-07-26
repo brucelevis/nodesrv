@@ -1,7 +1,9 @@
 
 #include "component.h"
+#include "log/log.h"
 #include "node/node.h"
 #include "node/nodemgr.h"
+#include "node/router.h"
 
 IMPLEMENT(Component)
 
@@ -95,9 +97,54 @@ Node* Component::get_node()
     return gameobject->node;
 }
 
+void Component::send_gameobject_msg(int dst_nodeid, int dst_objectid, int msgid, const Buffer* buffer)
+{
+    Message* msg = alloc_msg();
+    MessageHeader& header = msg->header;
+    header.id = msgid;
+
+    msg->payload.reset();
+    msg->payload.write(buffer);
+
+    send_gameobject_msg(dst_nodeid, dst_objectid, msg);
+
+    destory_msg(msg);
+}
+
 void Component::send_gameobject_msg(int dst_nodeid, int dst_objectid, Message* msg)
 {
-    gameobject->node->send_gameobject_msg(this->gameobject, dst_nodeid, dst_objectid, msg);
+    GameObject* src_object = this->gameobject;
+    if(!src_object)
+    {
+        LOG_ERROR("src_object not found");
+        return;
+    }
+    Node* src_node = src_object->node;
+    if (!src_node)
+    {
+        LOG_ERROR("src_node not found");
+        return;
+    }
+    Node* node = NodeMgr::find_node(dst_nodeid);
+    if (!node)
+    {
+        //转发到中心节点
+        Node* center_node = Router::center_node;
+        if (center_node != src_node)
+        {
+            node = center_node;
+        }
+    }
+    if (!node)
+    {
+        LOG_ERROR("dst_node(%d) not found", dst_nodeid);
+        return;
+    }
+    msg->header.src_objectid = src_object->id;
+    msg->header.src_nodeid = src_node->id;
+    msg->header.dst_nodeid = dst_nodeid;
+    msg->header.dst_objectid = dst_objectid;
+    node->send_gameobject_msg(src_object, msg);
 }
 
 
@@ -132,3 +179,6 @@ void Component::destory_msg(Message* msg)
 {
     this->gameobject->node->destory_msg(msg);
 }
+
+
+

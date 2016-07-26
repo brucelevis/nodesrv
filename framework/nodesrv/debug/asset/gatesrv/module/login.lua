@@ -11,18 +11,17 @@ function main()
 end
 
 --进入场景
-function MSG_ENTER(sid, msg)
-    local player = player_session[sid]
-    if not player then
-        logerr('player not found')
-        return
-    end
-    local scenesrv = msg.srvid
-    player.scenesrv = scenesrv
-    POST(scenesrv, 'Login.PLAYER_ENTER', player.uid)
-end
+--function MSG_ENTER(sid, msg)
+    --local player = player_session[sid]
+    --if not player then
+        --logerr('player not found')
+        --return
+    --end
+    --local scenesrv = msg.srvid
+    --player.scenesrv = scenesrv
+    --POST(scenesrv, 'Login.PLAYER_ENTER', player.uid)
+--end
 
---进入场景
 --function PLAYER_ENTER(scenesrv, uid)
     --local player = player_manager[uid]
     --if not player then
@@ -35,15 +34,14 @@ end
     --Client.reply(player.sid, msg)
 --end
 
---退出场景
-function PLAYER_EXIT(localsrv, uid)
-    local player = player_manager[uid]
-    if not player then
-        logerr('player is offline uid(%d)', uid)
-        return
-    end
-    player.scenesrv = nil
-end
+--function PLAYER_EXIT(scenesrv, uid)
+    --local player = player_manager[uid]
+    --if not player then
+        --logerr('player is offline uid(%d)', uid)
+        --return
+    --end
+    --player.scenesrv = nil
+--end
 
 --功能:登陆
 function MSG_LOGIN(sid, msg)

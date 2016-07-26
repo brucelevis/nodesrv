@@ -27,7 +27,7 @@ namespace Script
         {
             if (lua_isstring(L, -1))
             {
-                LOG_DEBUG("dofile error %s", lua_tostring(L, -1));
+                LOG_ERROR("dofile error %s", lua_tostring(L, -1));
             }
         }
         return 0;
@@ -185,7 +185,7 @@ namespace Script
         lua_getfield(L, -1, "traceback");  
         lua_pcall(L, 0, 1, 0);   
         const char* sz = lua_tostring(L, -1);  
-        LOG_DEBUG("%s", sz);
+        LOG_ERROR("%s", sz);
         return 0;
     }
 

@@ -19,7 +19,7 @@
 #include "net/httpclient.h"
 #include "msg/msg.h"
 #include "node/gameobject.h"
-#include "node/objectmgr.h"
+#include "node/router.h"
 #include "node/node.h"
 #include "node/nodemgr.h"
 #include "log/log.h"
