@@ -1,6 +1,6 @@
 /*
 ** Lua binding: neox
-** Generated automatically by tolua++-1.0.92 on Sat Jul 16 23:25:37 2016.
+** Generated automatically by tolua++-1.0.92 on Wed Jul 27 17:52:22 2016.
 */
 
 #ifndef __cplusplus
@@ -21,7 +21,6 @@ TOLUA_API int  tolua_neox_open (lua_State* tolua_S);
 #include "node/nodemgr.h"
 #include "node/router.h"
 #include "component/component.h"
-#include "component/testcomponent.h"
 #include "component/scriptcomponent.h"
 #include "component/netcomponent.h"
 #include "component/httpcomponent.h"
@@ -29,13 +28,14 @@ TOLUA_API int  tolua_neox_open (lua_State* tolua_S);
 #include "msg/msg.h"
 #include "container/buffer.h"
 #include "file/file.h"
+#include "display/transform.h"
 
 /* function to release collected object via destructor */
 #ifdef __cplusplus
 
-static int tolua_collect_TestComponent (lua_State* tolua_S)
+static int tolua_collect_Type (lua_State* tolua_S)
 {
- TestComponent* self = (TestComponent*) tolua_tousertype(tolua_S,1,0);
+ Type* self = (Type*) tolua_tousertype(tolua_S,1,0);
 	delete self;
 	return 0;
 }
@@ -54,9 +54,9 @@ static int tolua_collect_GameObject (lua_State* tolua_S)
 	return 0;
 }
 
-static int tolua_collect_Buffer (lua_State* tolua_S)
+static int tolua_collect_Transform (lua_State* tolua_S)
 {
- Buffer* self = (Buffer*) tolua_tousertype(tolua_S,1,0);
+ Transform* self = (Transform*) tolua_tousertype(tolua_S,1,0);
 	delete self;
 	return 0;
 }
@@ -82,9 +82,9 @@ static int tolua_collect_HttpClient (lua_State* tolua_S)
 	return 0;
 }
 
-static int tolua_collect_Message (lua_State* tolua_S)
+static int tolua_collect_Buffer (lua_State* tolua_S)
 {
- Message* self = (Message*) tolua_tousertype(tolua_S,1,0);
+ Buffer* self = (Buffer*) tolua_tousertype(tolua_S,1,0);
 	delete self;
 	return 0;
 }
@@ -96,9 +96,9 @@ static int tolua_collect_HttpComponent (lua_State* tolua_S)
 	return 0;
 }
 
-static int tolua_collect_POSTComponent (lua_State* tolua_S)
+static int tolua_collect_Message (lua_State* tolua_S)
 {
- POSTComponent* self = (POSTComponent*) tolua_tousertype(tolua_S,1,0);
+ Message* self = (Message*) tolua_tousertype(tolua_S,1,0);
 	delete self;
 	return 0;
 }
@@ -110,9 +110,9 @@ static int tolua_collect_Node (lua_State* tolua_S)
 	return 0;
 }
 
-static int tolua_collect_Type (lua_State* tolua_S)
+static int tolua_collect_POSTComponent (lua_State* tolua_S)
 {
- Type* self = (Type*) tolua_tousertype(tolua_S,1,0);
+ POSTComponent* self = (POSTComponent*) tolua_tousertype(tolua_S,1,0);
 	delete self;
 	return 0;
 }
@@ -122,7 +122,7 @@ static int tolua_collect_Type (lua_State* tolua_S)
 /* function to register type */
 static void tolua_reg_types (lua_State* tolua_S)
 {
- tolua_usertype(tolua_S,"TestComponent");
+ tolua_usertype(tolua_S,"Transform");
  tolua_usertype(tolua_S,"MessageHeader");
  tolua_usertype(tolua_S,"Component");
  tolua_usertype(tolua_S,"HttpClient");
@@ -3892,123 +3892,6 @@ static int tolua_set_Component_gameobject_ptr(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: new of class  TestComponent */
-#ifndef TOLUA_DISABLE_tolua_neox_TestComponent_new00
-static int tolua_neox_TestComponent_new00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertable(tolua_S,1,"TestComponent",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  {
-   TestComponent* tolua_ret = (TestComponent*)  new TestComponent();
-   tolua_pushusertype(tolua_S,(void*)tolua_ret,"TestComponent");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: new_local of class  TestComponent */
-#ifndef TOLUA_DISABLE_tolua_neox_TestComponent_new00_local
-static int tolua_neox_TestComponent_new00_local(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertable(tolua_S,1,"TestComponent",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  {
-   TestComponent* tolua_ret = (TestComponent*)  new TestComponent();
-   tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"TestComponent");
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: delete of class  TestComponent */
-#ifndef TOLUA_DISABLE_tolua_neox_TestComponent_delete00
-static int tolua_neox_TestComponent_delete00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"TestComponent",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  TestComponent* self = (TestComponent*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'",NULL);
-#endif
-  delete self;
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: test of class  TestComponent */
-#ifndef TOLUA_DISABLE_tolua_neox_TestComponent_test00
-static int tolua_neox_TestComponent_test00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
-     !tolua_isusertype(tolua_S,1,"TestComponent",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
-  goto tolua_lerror;
- else
-#endif
- {
-  TestComponent* self = (TestComponent*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
-  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'test'",NULL);
-#endif
-  {
-   int tolua_ret = (int)  self->test();
-   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
-  }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'test'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: new of class  ScriptComponent */
 #ifndef TOLUA_DISABLE_tolua_neox_ScriptComponent_new00
 static int tolua_neox_ScriptComponent_new00(lua_State* tolua_S)
@@ -7210,6 +7093,91 @@ static int tolua_neox_File_cdself00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: new of class  Transform */
+#ifndef TOLUA_DISABLE_tolua_neox_Transform_new00
+static int tolua_neox_Transform_new00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Transform",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   Transform* tolua_ret = (Transform*)  new Transform();
+   tolua_pushusertype(tolua_S,(void*)tolua_ret,"Transform");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  Transform */
+#ifndef TOLUA_DISABLE_tolua_neox_Transform_new00_local
+static int tolua_neox_Transform_new00_local(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"Transform",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  {
+   Transform* tolua_ret = (Transform*)  new Transform();
+   tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"Transform");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: delete of class  Transform */
+#ifndef TOLUA_DISABLE_tolua_neox_Transform_delete00
+static int tolua_neox_Transform_delete00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"Transform",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  Transform* self = (Transform*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'",NULL);
+#endif
+  delete self;
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* Open function */
 TOLUA_API int tolua_neox_open (lua_State* tolua_S)
 {
@@ -7383,18 +7351,6 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"destory_msg",tolua_neox_Component_destory_msg00);
    tolua_function(tolua_S,"get_component",tolua_neox_Component_get_component01);
    tolua_variable(tolua_S,"gameobject",tolua_get_Component_gameobject_ptr,tolua_set_Component_gameobject_ptr);
-  tolua_endmodule(tolua_S);
-  #ifdef __cplusplus
-  tolua_cclass(tolua_S,"TestComponent","TestComponent","Component",tolua_collect_TestComponent);
-  #else
-  tolua_cclass(tolua_S,"TestComponent","TestComponent","Component",NULL);
-  #endif
-  tolua_beginmodule(tolua_S,"TestComponent");
-   tolua_function(tolua_S,"new",tolua_neox_TestComponent_new00);
-   tolua_function(tolua_S,"new_local",tolua_neox_TestComponent_new00_local);
-   tolua_function(tolua_S,".call",tolua_neox_TestComponent_new00_local);
-   tolua_function(tolua_S,"delete",tolua_neox_TestComponent_delete00);
-   tolua_function(tolua_S,"test",tolua_neox_TestComponent_test00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"ScriptComponent","ScriptComponent","Component",tolua_collect_ScriptComponent);
@@ -7573,6 +7529,17 @@ TOLUA_API int tolua_neox_open (lua_State* tolua_S)
    tolua_function(tolua_S,"dirname",tolua_neox_File_dirname00);
    tolua_function(tolua_S,"listdir",tolua_neox_File_listdir00);
    tolua_function(tolua_S,"cdself",tolua_neox_File_cdself00);
+  tolua_endmodule(tolua_S);
+  #ifdef __cplusplus
+  tolua_cclass(tolua_S,"Transform","Transform","Component",tolua_collect_Transform);
+  #else
+  tolua_cclass(tolua_S,"Transform","Transform","Component",NULL);
+  #endif
+  tolua_beginmodule(tolua_S,"Transform");
+   tolua_function(tolua_S,"new",tolua_neox_Transform_new00);
+   tolua_function(tolua_S,"new_local",tolua_neox_Transform_new00_local);
+   tolua_function(tolua_S,".call",tolua_neox_Transform_new00_local);
+   tolua_function(tolua_S,"delete",tolua_neox_Transform_delete00);
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */

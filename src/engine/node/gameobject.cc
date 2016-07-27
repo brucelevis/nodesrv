@@ -317,7 +317,14 @@ void GameObject::obj_dump(int deep)
     for (uint32_t i = 0; i < comp_vector.size(); i++)
     {
         Component* component = comp_vector[i];
-        LOG_INFO("%s  <%s>", tab, component->get_type()->name);
+        if (component->get_type() == ScriptComponent::type)
+        {
+            LOG_INFO("%s  <%s(%s)>", tab, component->get_type()->name, ((ScriptComponent*)component)->modname);
+        }
+        else 
+        {
+            LOG_INFO("%s  <%s>", tab, component->get_type()->name);
+        }
     }
     for (uint32_t i = 0; i < children.size(); i++)
     {

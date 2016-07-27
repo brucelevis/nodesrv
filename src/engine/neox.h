@@ -30,6 +30,7 @@
 #include "script/script.h"
 #include "component/netcomponent.h"
 #include "component/postcomponent.h"
+#include "display/transform.h"
 
 #include <stdio.h>
 #include <signal.h>

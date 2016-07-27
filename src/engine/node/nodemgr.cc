@@ -9,7 +9,7 @@
 namespace NodeMgr
 {
 
-    int frame_rate = 1000;
+    int frame_rate = 200;
     lua_State* L;
     aeEventLoop* loop;
     std::map<int, Node*> node_map_;
@@ -89,10 +89,10 @@ namespace NodeMgr
 
     }
 
-    static int update_proc(struct aeEventLoop *eventLoop, long long id, void *clientData)
-    {
-        return 0;
-    }
+    //static int update_proc(struct aeEventLoop *eventLoop, long long id, void *clientData)
+    //{
+        //return 0;
+    //}
 
     void runloop()
     {
@@ -106,6 +106,7 @@ namespace NodeMgr
 
             time_t cur_tick = time(NULL);
 
+            //收消息
             aeOnce(loop);
 
             for (int i = node_vector_.size() - 1; i >= 0; --i)
@@ -124,6 +125,7 @@ namespace NodeMgr
                 usleep(usec_per_frame - diff);
             } 
 
+            //发消息 
             aeOnce(loop);
         }
     } 

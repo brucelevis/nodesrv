@@ -4,6 +4,7 @@ require('scenesrv/object/tank')
 require('scenesrv/module/login')
 require('scenesrv/module/player/player')
 require('scenesrv/module/user/user')
+require('scenesrv/component/tankcontroller')
 
 function main()
     local root = mynode:create_gameobject_local('RootGameObject')

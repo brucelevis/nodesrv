@@ -8,7 +8,7 @@ Logger::Logger()
     tag[0] = 0;
     flag = 0xffffffff;
     this->set_tag("TAG");
-    this->set_format("[%04Y-%02M-%02D %02H:%02m:%02S %u][%T][%P][%L]%s\n");
+    this->set_format("[%04Y-%02M-%02D %02H:%02m:%02S %06u][%T][%P][%L]%s\n");
 }
 
 void Logger::fatal(const char* fmt, va_list args)

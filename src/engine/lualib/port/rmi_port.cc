@@ -297,6 +297,7 @@ static int rmi_port_proto_rmi(int sockfd, const char* data, int datalen)
     unsigned int body_len = READ_UINT32(buf, buf_len);
     //proto
     int proto = READ_UINT8(buf, buf_len);
+    LOG_INFO("proto %d", proto);
     
     char msg_name[MAX_MSG_NAME];
     char mod_name[MAX_MOD_NAME];
