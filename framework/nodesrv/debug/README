@@ -12,4 +12,22 @@
 【bin】
 脚本，执行文件目录
 
+【adminsrv】 后台管理(http)
 
+【config】 配置
+
+【dbproto】数据层
+
+【datasrv】 数据库
+
+【gatesrv】网关
+
+【lib】lua库
+
+【centersrv】 中心服
+
+【proto】 协议
+
+【scenesrv】 场景服
+
+【test】协议测试

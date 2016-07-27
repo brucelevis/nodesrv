@@ -1,0 +1,68 @@
+package unity;
+
+/*
+
+更新帧
+当前帧
+当前时间
+detal时间
+操作数组
+
+
+UNITY接口
+
+新建对象
+参数：（字符串）资源名称
+
+
+销毁对象
+参数：（字符串）对象路径
+
+设置父对象：
+参数：对象路径
+参数：目标对象路径
+
+移动对象
+参数：（字符串）对象路径
+参数：当前位置
+参数：目标位置
+
+旋转对象
+参数：（字符串）对象路径
+参数：当前角度
+参数：目标角度
+
+缩放对象
+参数：（字符串）对象路径
+参数：当前大小
+参数：目标大小
+
+*/
+
+message Vector3
+{
+
+}
+
+message Move
+{
+    optional string gameobject = 1[default = ""];
+    optional Vector3 from_position = 2;
+    optional Vector3 to_position = 3;
+}
+
+//操作
+message Action
+{
+    optional Move move = 1;
+}
+
+//更新帧
+message FRAME
+{
+    optional int32 frame = 1[default = 0];
+    optional int32 detal = 2[default = 0];
+    repeated Action actions = 3;
+}
+
+

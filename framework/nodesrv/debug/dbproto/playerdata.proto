@@ -1,0 +1,19 @@
+package dbproto;
+import "userdata.proto";
+import "taskdata.proto";
+import "achievedata.proto";
+import "frienddata.proto";
+import "itemdata.proto";
+
+message PlayerData {
+    optional int32 uid = 1[default = 0];
+
+
+    optional UserData userdata = 7;
+    optional TaskData taskdata = 8;
+    optional AchieveData achievedata = 9;
+    optional FriendData frienddata = 10;
+    optional ItemData itemdata = 11;
+}
+
+

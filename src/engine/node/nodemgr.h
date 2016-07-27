@@ -36,10 +36,8 @@ namespace NodeMgr
     void lua_reglib(int (*p)(lua_State* L));
 
 //tolua_begin
-    /*
-     * 帧函数
-     */
-    void update(long long cur_tick);
+
+    void runloop();
 
     /*
      * 查找节点

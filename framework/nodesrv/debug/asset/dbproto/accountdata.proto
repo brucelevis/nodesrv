@@ -1,8 +1,0 @@
-package dbproto;
-
-
-message AccountData
-{
-    optional int32 id = 3[default = 0];
-    optional string account = 2[default = ""];
-};

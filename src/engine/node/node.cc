@@ -608,6 +608,9 @@ int Node::add_gameobject(GameObject* object)
     if (root_gameobject == NULL)
     {
         root_gameobject = object;
+    } else 
+    {
+        root_gameobject->add_child(object);
     }
     object->node= this;
     return 0;
