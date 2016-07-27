@@ -9,7 +9,7 @@
 namespace NodeMgr
 {
 
-    int frame_rate = 60;
+    int frame_rate = 1000;
     lua_State* L;
     aeEventLoop* loop;
     std::map<int, Node*> node_map_;
