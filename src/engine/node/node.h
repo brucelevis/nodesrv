@@ -22,71 +22,67 @@ extern "C" {
 class GameObject;
 
 //节点
-//tolua_begin
-class Node
-{
+class Node {//tolua_export
     public:
-        Node(int nodeid);
-        virtual ~Node();
+        Node(int nodeid);//tolua_export
+        virtual ~Node();//tolua_export
         /*
          * 入口
          */
-        void main();
+        void main();//tolua_export
         /*
          * 帧函数
          */
-        void update(long long cur_tick);
+        void update(uint64_t cur_tick);//tolua_export
 
         /*
          * 连接
          */
-        int connect(const char *host, unsigned short port);
+        int connect(const char *host, unsigned short port);//tolua_export
         /*
          * 侦听
          */
-        int listen(const char* host, unsigned short port);
+        int listen(const char* host, unsigned short port);//tolua_export
 
         /*
          * 查找实体
          */
-        GameObject* find_gameobject(int objid);
+        GameObject* find_gameobject(int objid);//tolua_export
 
         /*
          * 插入实体
          */
-        int add_gameobject(GameObject* object);
+        int add_gameobject(GameObject* object);//tolua_export
 
         /*
          * 返回节点id
          */
-        uint32_t get_id();
-        bool is_local();
-        void set_local(bool v);
-        bool is_disconnect();
-        GameObject* create_gameobject_local(const char* filepath = NULL);
-        void create_gameobject_remote(GameObject* src_object, const char* filepath);
+        uint32_t get_id();//tolua_export
+        bool is_local();//tolua_export
+        void set_local(bool v);//tolua_export
+        bool is_disconnect();//tolua_export
+        GameObject* create_gameobject_local(const char* filepath = NULL);//tolua_export
+        void create_gameobject_remote(GameObject* src_object, const char* filepath);//tolua_export
 
-        Message* alloc_msg();
-        void destory_msg(Message* msg);
-        void retain_msg(Message* msg);
+        Message* alloc_msg();//tolua_export
+        void destory_msg(Message* msg);//tolua_export
+        void retain_msg(Message* msg);//tolua_export
 
-        void recv(Message* msg);
-        void recv_gameobject_msg(Message* msg);
-        void recv_node_reg(Message* msg);
-        void recv_create_gameobject(Message* msg);
+        void recv(Message* msg);//tolua_export
+        void recv_gameobject_msg(Message* msg);//tolua_export
+        void recv_node_reg(Message* msg);//tolua_export
+        void recv_create_gameobject(Message* msg);//tolua_export
 
-        void send_gameobject_msg(GameObject* src_object, Message* msg);
-        void forward_gameobject_msg(Message* msg);
+        void send_gameobject_msg(GameObject* src_object, Message* msg);//tolua_export
+        void forward_gameobject_msg(Message* msg);//tolua_export
         //兼容之前的post协议
-        int post(lua_State* L);
-        void run_background();
+        int post(lua_State* L);//tolua_export
+        void run_background();//tolua_export
 
-        int addtimer(lua_State *L);
+        int addtimer(lua_State *L);//tolua_export
     public:
-        uint32_t id;
-        char name[64];
-//tolua_end
-//
+        uint32_t id;//tolua_export
+        char name[64];//tolua_export
     public:
         void send_node_reg();
         int create_file_event(int fd, int mask, aeFileProc* proc, void* clientData);

@@ -6,22 +6,19 @@
 #include "component/netcomponent.h"
 #include "net/http_parser.h"
 
-//tolua_begin
-class HttpComponent : public Component
-{
+class HttpComponent : public Component {//tolua_export
     public:
-        HttpComponent();
-        virtual ~HttpComponent();
-        virtual int recv(Message* msg);
-        virtual void awake();
-        int send_binary_frame(int sid, const void* data, unsigned short datalen);
-        int send_binary_frame(int sid, Buffer* buffer);
-        int send_string_frame(int sid, const char* str);
-        int send_string(int sid, const char* str);
-        int send_string(lua_State* L);
-        int send_buffer(int sid, Buffer* buffer);
+        HttpComponent();//tolua_export
+        virtual ~HttpComponent();//tolua_export
+        virtual int recv(Message* msg);//tolua_export
+        virtual void awake();//tolua_export
+        int send_binary_frame(int sid, const void* data, unsigned short datalen);//tolua_export
+        int send_binary_frame(int sid, Buffer* buffer);//tolua_export
+        int send_string_frame(int sid, const char* str);//tolua_export
+        int send_string(int sid, const char* str);//tolua_export
+        int send_string(lua_State* L);//tolua_export
+        int send_buffer(int sid, Buffer* buffer);//tolua_export
     public:
-//tolua_end
         int recv_new_connection(Message* msg);
         int recv_close_connection(Message* msg);
         int recv_net_raw_data(Message* msg);
@@ -35,7 +32,6 @@ class HttpComponent : public Component
         int dispatch_request(int sockfd);
     private:
         NetComponent* net_component;
-//
 DECLAR(HttpComponent);
 
 };//tolua_export

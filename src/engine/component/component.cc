@@ -55,31 +55,91 @@ GameObject* Component::get_gameobject()
 
 int Component::create_file_event(int fd, int mask, aeFileProc* proc, void* clientData)
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return 0;
+    }
+    if (!this->gameobject->node)
+    {
+        LOG_ERROR("no node");
+        return 0;
+    }
     return this->gameobject->node->create_file_event(fd, mask, proc, clientData);
 }
 
 void Component::delete_file_event(int fd, int mask)
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return;
+    }
+    if (!this->gameobject->node)
+    {
+        LOG_ERROR("no node");
+        return;
+    }
     this->gameobject->node->delete_file_event(fd, mask);
 }
 
 int64_t Component::lua_getnumber(const char *fieldname)
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return 0;
+    }
+    if (!this->gameobject->node)
+    {
+        LOG_ERROR("no node");
+        return 0;
+    }
     return this->gameobject->node->lua_getnumber(fieldname);
 }
 
 const char* Component::lua_getstring(const char *fieldname)
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return "";
+    }
+    if (!this->gameobject->node)
+    {
+        LOG_ERROR("no node");
+        return "";
+    }
     return this->gameobject->node->lua_getstring(fieldname);
 }
 
 int Component::lua_pushfunction(const char *func)
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return 0;
+    }
+    if (!this->gameobject->node)
+    {
+        LOG_ERROR("no node");
+        return 0;
+    }
     return this->gameobject->node->lua_pushfunction(func);
 }
 
 int Component::lua_printstack()
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return 0;
+    }
+    if (!this->gameobject->node)
+    {
+        LOG_ERROR("no node");
+        return 0;
+    }
     return this->gameobject->node->lua_printstack();
 } 
 
@@ -150,35 +210,72 @@ void Component::send_gameobject_msg(int dst_nodeid, int dst_objectid, Message* m
 
 int Component::reg_msg(unsigned int id)
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return 0;
+    }
     return this->gameobject->reg_msg(id, this);
 }
 
 int Component::unreg_msg(unsigned int id)
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return 0;
+    }
     return this->gameobject->unreg_msg(id, this);
 }
 
 
 int Component::get_component(lua_State* L)
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return 0;
+    }
     return this->gameobject->get_component(L);
 }
 
 Component* Component::get_component(const char* name)
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return NULL;
+    }
     return this->gameobject->get_component(name);
 }
 
 Message* Component::alloc_msg()
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return NULL;
+    }
+    if (!this->gameobject->node)
+    {
+        LOG_ERROR("no node");
+        return NULL;
+    }
     return this->gameobject->node->alloc_msg();
 }
 
 
 void Component::destory_msg(Message* msg)
 {
+    if (!this->gameobject)
+    {
+        LOG_ERROR("no gameobject");
+        return;
+    }
+    if (!this->gameobject->node)
+    {
+        LOG_ERROR("no node");
+        return;
+    }
     this->gameobject->node->destory_msg(msg);
 }
-
-
-

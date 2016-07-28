@@ -13,7 +13,7 @@ public:
      * 中心节点是选举出来的，如果不知道实体在哪里，可以通过中心节点转发
      */
     static Node* center_node;//tolua_export
-    static std::map<int, Node*> object_map_;
+    static std::map<int, Node*> object_map;
 
 
     /*

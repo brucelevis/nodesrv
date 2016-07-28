@@ -415,7 +415,7 @@ int Node::real_connect()
     return 0;
 }
 
-void Node::update(long long cur_tick)
+void Node::update(uint64_t cur_tick)
 {
     
     if (!this->is_connect_ && this->ip_[0])
@@ -634,8 +634,10 @@ int Node::real_close(int sockfd, const char* err)
     //移动事件
     delete_file_event(sockfd, AE_READABLE);
     delete_file_event(sockfd, AE_WRITABLE);
+
     //关闭socket
-    ::close(sockfd);
+    shutdown(sockfd, SHUT_RDWR);
+    close(sockfd);
     if (sockfd == this->sockfd_)
     {
         this->is_connect_ = false;

@@ -4,14 +4,11 @@
 #include "component/component.h"
 #include <map>
 
-//tolua_begin
-class TestComponent : public Component
-{
+class TestComponent : public Component {//tolua_export
     public:
-        TestComponent();
-        virtual ~TestComponent();
-        int test();
-//tolua_end
+        TestComponent();//tolua_export
+        virtual ~TestComponent();//tolua_export
+        int test();//tolua_export
 
 DECLAR(TestComponent);
 

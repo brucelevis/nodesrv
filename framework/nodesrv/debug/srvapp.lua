@@ -11,7 +11,7 @@ function _atexit()
 end
 
 function clearpid()
-    local selfpid = System.getpid()
+    local selfpid = os.getpid()
     loginfo('exit pid(%d)', selfpid)
     --清理pid
     local file = io.open('pid', 'r')
@@ -36,7 +36,7 @@ function recordpid()
         end
     end
 
-    local pid = System.getpid()
+    local pid = os.getpid()
     local file = io.open('pid', 'w+')
     file:write(pid)
     file:close()
@@ -73,7 +73,7 @@ File.chdir(running_dir)
 loginfo('running dir(%s)', File.getcwd())
 
 --本地节点
-NodeMgr.create_node_local(Config.nodeid)
+NodeMgr:create_node_local(Config.nodeid)
 if is_daemon then
     mynode:run_background()
     local d = os.date('*t')
@@ -87,7 +87,7 @@ mynode:listen(Config.host, Config.port)
 local srvlist = Config.srvgrap[Config.nodeid]
 if srvlist then
     for k, nodeid in pairs(srvlist) do
-        local node = NodeMgr.create_node_remote(nodeid)
+        local node = NodeMgr:create_node_remote(nodeid)
         local node_conf = Config.srvlist[nodeid]
         node:connect(node_conf.host, node_conf.port)
         _G[node_conf.srvname] = nodeid

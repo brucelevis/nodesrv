@@ -1,0 +1,111 @@
+package unity;
+
+/*
+
+更新帧
+当前帧
+当前时间
+detal时间
+操作数组
+
+
+UNITY接口
+
+新建对象
+参数：（字符串）资源名称
+
+
+销毁对象
+参数：（字符串）对象路径
+
+设置父对象：
+参数：对象路径
+参数：目标对象路径
+
+移动对象
+参数：（字符串）对象路径
+参数：当前位置
+参数：目标位置
+
+旋转对象
+参数：（字符串）对象路径
+参数：当前角度
+参数：目标角度
+
+缩放对象
+参数：（字符串）对象路径
+参数：当前大小
+参数：目标大小
+
+*/
+
+message Vector3
+{
+    optional float x = 1[default = 0];
+    optional float y = 2[default = 0];
+    optional float z = 3[default = 0];
+}
+
+message RorateAction
+{
+    optional int32 objectid = 1[default = 0];
+    optional Vector3 src_rorate = 2;
+    optional Vector3 dst_rorate = 3;
+}
+
+
+message ScaleAction
+{
+    optional int32 objectid = 1[default = 0];
+    optional Vector3 src_scale = 2;
+    optional Vector3 dst_scale = 3;
+}
+
+
+message MoveAction
+{
+    optional int32 objectid = 1[default = 0];
+    optional Vector3 src_position = 2;
+    optional Vector3 dst_position = 3;
+}
+
+message DestroyAction 
+{
+    optional int32 objectid = 1[default = 0];
+    optional int32 delay = 2[default = 0];
+}
+
+
+message InstantiateAction 
+{
+    optional int32 objectid = 1[default = 0];
+    optional string prefab = 2;
+    optional string objname = 3;
+}
+
+message PlayAnimAction 
+{
+    optional int32 objectid = 1[default = 0];
+    optional string animname = 2;
+}
+
+message StopAnimAction 
+{
+    optional int32 objectid = 1[default = 0];
+    optional string animname = 2;
+}
+
+//更新帧
+message FRAME
+{
+    optional int32 frame = 1[default = 0];
+    optional int32 detal = 2[default = 0];
+    repeated MoveAction move = 3;
+    repeated InstantiateAction instantiate = 4;
+    repeated DestroyAction destroy = 5;
+    repeated ScaleAction scale = 6;
+    repeated RorateAction rorate = 7;
+    repeated PlayAnimAction play_anim = 8;
+    repeated StopAnimAction stop_anim = 9;
+}
+

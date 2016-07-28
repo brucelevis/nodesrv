@@ -1,6 +1,6 @@
 
 
-.PHONY:gatesrv test adminsrv scenesrv datasrv 
+.PHONY:centersrv gatesrv test adminsrv scenesrv datasrv 
 
 reload:
 	bin/reload

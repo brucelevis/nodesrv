@@ -20,43 +20,39 @@ extern "C" {
 class Node;
 
 
-//tolua_begin
-namespace NodeMgr
-{
-//tolua_end
-    extern aeEventLoop* loop;
-    extern lua_State* L;
-    extern std::map<int, Node*> node_map_;
-    extern std::vector<Node*> node_vector_;
-    extern std::vector<Node*> temp_node_vector_;
+class NodeMgr {//tolua_export
+public:
+    static aeEventLoop* loop;
+    static lua_State* L;
+    static std::map<int, Node*> node_map_;
+    static std::vector<Node*> node_vector_;
+    static std::vector<Node*> temp_node_vector_;
 
-    void main(int argc, char** argv);
+    static void main(int argc, char** argv);
 
-    void lua_dofile(const char* filepath);
-    void lua_reglib(int (*p)(lua_State* L));
+    static void lua_dofile(const char* filepath);
+    static void lua_reglib(int (*p)(lua_State* L));
 
-//tolua_begin
 
-    void runloop();
+    static void update(uint64_t cur_tick);
 
     /*
      * 查找节点
      */
-    Node* find_node(int nodeid);
+    static Node* find_node(int nodeid);
 
     /*
      * 创建节点
      */
-    Node* create_temp_node();
-    Node* create_node_local(int nodeid);
-    Node* create_node_remote(int nodeid);
+    static Node* create_temp_node();
+    static Node* create_node_local(int nodeid);//tolua_export
+    static Node* create_node_remote(int nodeid);//tolua_export
 
     //将实体传输到目标节点
-    void transfer_gameobject(GameObject* src_object, int dst_nodeid);
+    static void transfer_gameobject(GameObject* src_object, int dst_nodeid);
 
-    void create_gameobject_remote(GameObject* src_object, int dst_nodeid, const char* filepath);
+    static void create_gameobject_remote(GameObject* src_object, int dst_nodeid, const char* filepath);
 
-};
-//tolua_end
+};//tolua_export
 
 #endif

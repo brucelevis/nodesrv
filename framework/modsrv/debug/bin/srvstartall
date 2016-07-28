@@ -1,9 +1,0 @@
-#!bin/lneox
-dofile(os.getenv('ENGINE_PATH')..'/bin/luaenv')
-
-
-for k, conf in pairs(Config.srvlist) do
-    os.execute(string.format('%s %s -d', conf.bin, conf.srvname))
-end
-
-

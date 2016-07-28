@@ -36,21 +36,19 @@ class POSTMethod
         POSTMethod& operator <<(::google::protobuf::Message* msg);
 };
 
-//tolua_begin
-class POSTComponent : public Component
-{
+class POSTComponent : public Component {//tolua_export
+
     public:
-        POSTComponent();
-        ~POSTComponent();
-//tolua_end
-        //self:invoke(dst_nodeid, dst_entityid, 'Login.PLAYER_ENTER', 1, 2)
+        POSTComponent();//tolua_export
+        ~POSTComponent();//tolua_export
+
         int post(lua_State* L);
         void awake();
         int recv(Message* msg);
         int recv_post(Message* msg);
-DECLAR(POSTComponent);
     public:
         POSTMethod method;
+DECLAR(POSTComponent);
 };//tolua_export
 
 

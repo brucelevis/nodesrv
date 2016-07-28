@@ -1,1 +1,0 @@
-module('Guild', package.seeall)

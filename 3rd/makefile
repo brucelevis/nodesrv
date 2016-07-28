@@ -31,6 +31,7 @@ install:
 	cp -rf hiredis/libhiredis.a ../lib/libhiredis.a
 	cp -rf lua/src/liblua.a ../lib/liblua.a
 	cp -rf tolua++/tolua++.a ../lib/tolua++.a
+	cp -rf tolua++/tolua++ ../lib/tolua++
 	cp -rf /usr/local/lib/libprotobuf.a ../lib/libprotobuf.a
 	cp -rf mysql/lib/libmysqlclient.a ../lib/libmysqlclient.a
 	rm -rf ../include

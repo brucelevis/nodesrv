@@ -15,6 +15,8 @@ $cfile "msg/msg.h"
 $cfile "container/buffer.h"
 $cfile "file/file.h"
 $cfile "display/transform.h"
+$cfile "display/vector3.h"
+$cfile "date/date.h"
 
 $lfile "data/lib.lua"
 

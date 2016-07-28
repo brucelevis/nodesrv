@@ -2,6 +2,7 @@
 #include "node/gameobject.h"
 #include "component/component.h"
 #include "component/scriptcomponent.h"
+#include "display/transform.h"
 #include "log/log.h"
 
 #include <string.h>
@@ -18,11 +19,12 @@ GameObject::GameObject()
     this->node = 0;
     this->id = 0;
     this->name[0] = 0;
+    this->transform = NULL;
+    this->transform = add_component<Transform>();
 }
 
 GameObject::~GameObject()
 {
-    destory();
     for(int i = 0; i < (int)children.size(); i++)
     {
         GameObject* object = children[i];
@@ -115,8 +117,12 @@ int GameObject::add_component(Component* component)
 
 int GameObject::del_component(Component* component)
 {
+    if (!component)
+    {
+        return 0;
+    }
     std::map<std::string, Component*>::iterator it = comp_map.begin();
-    for (; it != comp_map.end(); it++)
+    for (; it != comp_map.end(); ++it)
     {
         if (component == it->second)
         {
@@ -135,6 +141,7 @@ int GameObject::del_component(Component* component)
             break;
         }
     }
+    delete component;
     return 0;
 }
 
@@ -289,11 +296,6 @@ ScriptComponent* GameObject::get_script(const char* classname)
 
 void GameObject::destory()
 {
-    for (int i = 0; i < (int)comp_vector.size(); i++)
-    {
-        Component* component = comp_vector[i];
-        component->destory();
-    }
 }
 
 void GameObject::awake()

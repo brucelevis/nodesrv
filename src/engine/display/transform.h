@@ -1,18 +1,20 @@
-#ifndef _TEST_COMPONENT_H_
-#define _TEST_COMPONENT_H_
+#ifndef _TRANSFORM_H_
+#define _TRANSFORM_H_
 
 #include "component/component.h"
+#include "display/vector3.h"
 #include <map>
 
-//tolua_begin
-class Transform : public Component
-{
+class Transform : public Component {//tolua_export
     public:
-        Transform();
-        virtual ~Transform();
-//tolua_end
+        Transform();//tolua_export
+        virtual ~Transform();//tolua_export
 
-DECLAR(Transform);
+    public:
+        Vector3 position;//tolua_export
+        Vector3 scale;//tolua_export
+        Vector3 rotation;//tolua_export
+        DECLAR(Transform);
 
 };//tolua_export
 

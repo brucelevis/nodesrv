@@ -1,6 +1,5 @@
 
 --环境的初始化
-
 local root_path = os.getenv('NEOX_DIR')
 if not root_path then
     print('please set env NEOX_DIR')

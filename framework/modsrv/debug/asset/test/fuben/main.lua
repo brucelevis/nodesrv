@@ -1,2 +1,0 @@
-module('Fuben', package.seeall)
-

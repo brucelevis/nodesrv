@@ -6,7 +6,7 @@ INCLUDE_DIRS =-I. -I$(ROOT_PATH)/include -I$(ROOT_PATH)/include/lua -I$(ROOT_PAT
 
 LIB_DIRS =
 
-LIBS =$(ROOT_PATH)/lib/libprotobuf.a $(ROOT_PATH)/lib/liblua.a $(ROOT_PATH)/3rd/mysql/lib/libmysqlclient.a $(ROOT_PATH)/lib/libhiredis.a $(ROOT_PATH)/lib/tolua++.a  
+LIBS =$(ROOT_PATH)/lib/libprotobuf.a $(ROOT_PATH)/lib/liblua.a $(ROOT_PATH)/lib/libmysqlclient.a $(ROOT_PATH)/lib/libhiredis.a $(ROOT_PATH)/lib/tolua++.a  
 
 DY_LIBS = -lm -ldl -lreadline -lncurses -lpthread
 
@@ -24,15 +24,17 @@ SOURCE = $(wildcard \
 		 file/*.cc\
 		 type/*.cc\
 		 encrypt/*.cc\
+		 unity/*.cc\
+		 date/*.cc\
 		 display/*.cc\
 		 lualib/redis/*.cc\
 		 lualib/json/*.cc\
-		 lualib/date/*.cc\
 		 lualib/string/*.cc\
 		 lualib/port/*.cc\
 		 lualib/srvapp/*.cc\
+		 lualib/bit/*.cc\
 		 lualib/pblua/*.cc\
-		 lualib/system/*.cc\
+		 lualib/os/*.cc\
 		 lualib/mysql/*.cc\
 		 interface.cc\
 		 neox.cc\

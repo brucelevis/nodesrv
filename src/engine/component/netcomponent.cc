@@ -244,6 +244,8 @@ void NetComponent::real_close(int sockfd, const char* reason)
     Recvbuf::free(sockfd);
     Sendbuf::free(sockfd);
     this->delete_file_event(sockfd, AE_WRITABLE | AE_READABLE);
+    shutdown(sockfd, SHUT_RDWR);
+    close(sockfd);
 
     Message* msg = alloc_msg();
     msg->header.src_nodeid = 0;

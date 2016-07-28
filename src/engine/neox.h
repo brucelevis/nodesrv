@@ -3,7 +3,7 @@
 #include "lualib/json/json.h"
 #include "lualib/json/ljson.h"
 #include "lualib/srvapp/srvapp.h"
-#include "lualib/system/lsystem.h"
+#include "lualib/os/los.h"
 #include "lualib/string/lstring.h"
 #include "lualib/port/pb_port.h"
 #include "lualib/port/rmi_port.h"
@@ -18,6 +18,7 @@
 #include "net/lsocket.h"
 #include "net/httpclient.h"
 #include "msg/msg.h"
+#include "date/date.h"
 #include "node/gameobject.h"
 #include "node/router.h"
 #include "node/node.h"
@@ -41,26 +42,18 @@ extern "C" {
 #include <tolua++.h>
 }
 
-//tolua_begin
-namespace Neox
-{
-    int main(int argc, char** argv);
+class Neox {//tolua_export
+    public:
+        static uint64_t delta;//tolua_export
+        static int frame_rate;//tolua_export
+        static int main(int argc, char** argv);//tolua_export
 
-    Node* create_node_remote(int nodeid);
+        static Node* create_node_remote(int nodeid);//tolua_export
 
-    // 在本地服务器上创建实体
-    GameObject* create_gameobject_local(int nodeid, const char* filepath = "");
+        // 在本地服务器上创建实体
+        static GameObject* create_gameobject_local(int nodeid, const char* filepath = "");//tolua_export
 
-    // 守护进程模型
-    void fork_daemon();
+        // 主循环
+        static void loop();//tolua_export
 
-    // 主循环
-    void loop();
-//tolua_end
-
-    extern int frame_rate;
-    int lua_openlibs(lua_State* L);
-    void lua_dofile(const char* filepath);
-//tolua_begin
-};
-//tolua_end
+};//tolua_export

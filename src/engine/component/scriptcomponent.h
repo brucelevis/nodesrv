@@ -9,24 +9,23 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-//tolua_begin
-class ScriptComponent : public Component
-{
+class ScriptComponent : public Component {//tolua_export
     public:
-        ScriptComponent(const char* modname);
-        virtual ~ScriptComponent();
+        ScriptComponent(const char* modname);//tolua_export
+        virtual ~ScriptComponent(); //tolua_export
 
-        virtual void awake();
-        virtual void update(uint64_t cur_tick);
-        virtual int recv(Message* msg);
+        virtual void awake();//tolua_export
+        virtual void update(uint64_t cur_tick);//tolua_export
+        virtual int recv(Message* msg);//tolua_export
 
-        int addtimer(lua_State *L);
+        int addtimer(lua_State *L);//tolua_export
     public:
-        char modname[64];
-//tolua_end
-DECLAR(ScriptComponent);
+        char modname[64];//tolua_export
+
     private:
         int init_script(const char* modname);
+
+DECLAR(ScriptComponent);
 };//tolua_export
 
 #endif

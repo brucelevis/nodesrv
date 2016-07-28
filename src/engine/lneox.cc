@@ -322,7 +322,7 @@ static int pmain (lua_State *L) {
     if (argv[0] && argv[0][0]) progname = argv[0];
     lua_gc(L, LUA_GCSTOP, 0);  /* stop collector during initialization */
     luaL_openlibs(L);  /* open libraries */
-    Neox::lua_openlibs(L);
+    Script::lua_openlibs(L);
     lua_gc(L, LUA_GCRESTART, 0);
     s->status = handle_luainit(L);
     if (s->status != 0) return 0;

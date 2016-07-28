@@ -2,15 +2,15 @@
 #include "node/router.h"
 #include "node/node.h"
 
-std::map<int, Node*> Router::object_map_;
+std::map<int, Node*> Router::object_map;
 
 Node* Router::center_node;
 
 Node* Router::find_route(int objid)
 {
     std::map<int, Node*>::iterator it;
-    it = object_map_.find(objid);
-    if (it != object_map_.end())
+    it = object_map.find(objid);
+    if (it != object_map.end())
     {
         Node* node = it->second;
         if (node->is_disconnect())
@@ -25,8 +25,8 @@ Node* Router::find_route(int objid)
 Node* Router::where(int objid)
 {
     std::map<int, Node*>::iterator it;
-    it = object_map_.find(objid);
-    if (it != object_map_.end())
+    it = object_map.find(objid);
+    if (it != object_map.end())
     {
         return it->second;
     }
@@ -35,5 +35,5 @@ Node* Router::where(int objid)
 
 void Router::update_route(Node* node, int objid, int expire_time)
 {
-    object_map_[objid] = node;
+    object_map[objid] = node;
 }
